@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>السلة | Heru</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <link rel="stylesheet" href="./assets/css/tokens.css">
+  <link rel="stylesheet" href="./assets/css/base.css">
+  <link rel="stylesheet" href="./assets/css/components.css">
+  
+  <style>
+    /* PAGE LAYOUT */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 var(--space-4); }
+    .section { padding: var(--space-8) 0 var(--space-16); }
+    
+    .breadcrumb { color: var(--text-secondary); font-size: var(--text-sm); margin-block-end: var(--space-6); display: flex; gap: 8px; }
+    .breadcrumb a { color: var(--text-primary); transition: color 0.2s; }
+    .breadcrumb a:hover { color: var(--accent); }
+    .breadcrumb span { color: var(--text-muted); }
+    .page-title { font-size: var(--text-4xl); font-family: var(--font-display); margin: 0 0 var(--space-8) 0; }
+    
+    /* CART LAYOUT */
+    .cart-layout {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: var(--space-8);
+      align-items: flex-start;
+    }
+    @media (max-width: 900px) { .cart-layout { grid-template-columns: 1fr; } }
+    
+    .cart-items-wrapper {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+    }
+    .cart-item {
+      display: flex;
+      align-items: stretch;
+      gap: var(--space-4);
+      padding-block: var(--space-4);
+      border-bottom: 1px dashed var(--border-strong);
+    }
+    .cart-item:last-child { border-bottom: none; }
+    @media (max-width: 480px) {
+      .cart-item { flex-direction: column; align-items: center; text-align: center; }
+    }
+    .cart-item-img {
+      width: 100px;
+      height: 100px;
+      border-radius: var(--radius-md);
+      object-fit: cover;
+      flex-shrink: 0;
+      border: 1px solid var(--border);
+    }
+    .cart-item-details {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: var(--space-2);
+    }
+    .cart-item-title { font-weight: 700; font-size: var(--text-lg); margin: 0; }
+    .cart-item-price { color: var(--text-secondary); font-family: var(--font-number); font-weight: 600; font-size: var(--text-base); }
+    
+    .cart-item-controls {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+    @media (max-width: 480px) { .cart-item-controls { align-items: center; gap: var(--space-4); } }
+    .quantity-selector {
+      display: inline-flex; align-items: center;
+      border: 1px solid var(--border-strong); border-radius: var(--radius-md); overflow: hidden;
+      margin-block-end: var(--space-2);
+    }
+    .quantity-btn {
+      background: var(--bg-elevated); border: none; color: var(--text-primary);
+      width: 32px; height: 32px; cursor: pointer; text-align: center;
+    }
+    .quantity-input {
+      width: 40px; height: 32px; background: transparent; border: none;
+      color: var(--text-primary); text-align: center; font-family: var(--font-number); pointer-events: none;
+    }
+    .btn-remove {
+      background: transparent; border: none; color: var(--error); cursor: pointer;
+      font-size: var(--text-sm); font-weight: 600; display: flex; align-items: center; gap: 4px;
+    }
+    
+    /* SUMMARY LAYOUT */
+    .cart-summary-wrapper {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+      position: sticky;
+      top: 100px;
+    }
+    .summary-row {
+      display: flex; justify-content: space-between; margin-block-end: var(--space-4); font-weight: 600; color: var(--text-secondary);
+    }
+    .summary-row span:last-child { font-family: var(--font-number); color: var(--text-primary); }
+    .summary-total {
+      font-size: var(--text-2xl); font-weight: 700; color: var(--text-primary);
+      border-top: 1px solid var(--border); padding-block-start: var(--space-5); margin-block-start: var(--space-2);
+    }
+    .summary-total span:last-child { color: var(--accent); }
+    
+    .coupon-section {
+      display: flex; gap: var(--space-2); margin-block-start: var(--space-6); margin-block-end: var(--space-2);
+    }
+    .empty-state {
+      background: var(--bg-card); border-radius: var(--radius-lg); border: 1px dashed var(--border-strong);
+      padding: var(--space-12) var(--space-4); grid-column: 1/-1;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <header>
+  <!-- Navbar Component Shared -->
+  <nav class="navbar" aria-label="التنقل الرئيسي">
+      <a href="./" class="navbar-logo" data-setting="store_name">HERU</a>
+      <div class="navbar-links">
+          <a href="./">الرئيسية</a>
+          <a href="./shop">المتجر</a>
+          <a href="./suggest">اقتراح تصميم</a>
+      </div>
+      <div class="navbar-actions">
+          <a href="./cart" class="cart-badge btn-ghost" data-count="0" aria-label="سلة التسوق" style="font-size: var(--text-xl);">🛒</a>
+          
+          <button data-lang-toggle onclick="window.toggleLanguage()" class="btn-ghost font-display" aria-label="تغيير اللغة" style="font-weight: 700;">EN</button>
+          <button class="mobile-menu-toggle" aria-label="فتح القائمة الرئيسية" aria-expanded="false">☰</button>
+      </div>
+  </nav>
+  </header>
+
+  <div class="mobile-menu">
+      <button class="mobile-menu-toggle open font-display" onclick="document.querySelector('.mobile-menu').classList.remove('open')" style="align-self: flex-end; font-size: 24px;">✕</button>
+      <a href="./" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);">الرئيسية</a>
+      <a href="./shop" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);">المتجر</a>
+      <a href="./suggest" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);">اقتراح تصميم</a>
+  </div>
+
+  <main class="container section">
+      <div class="breadcrumb">
+          <a href="./">الرئيسية</a> <span>/</span> <span style="font-weight:600; color:var(--text-primary);">سلة المشتريات</span>
+      </div>
+      <h1 class="page-title">عناصر السلة</h1>
+
+      <div class="cart-layout" id="main-layout" style="display:none;">
+          <div class="cart-items-wrapper" id="cart-container">
+              <!-- Rendered items -->
+          </div>
+          
+          <div class="cart-summary-wrapper">
+              <h3 style="margin: 0 0 var(--space-6) 0;">ملخص الطلب الأساسي</h3>
+              <div class="summary-row"><span>المجموع الفرعي:</span><span id="summ-sub">0 ج.م</span></div>
+              <div class="summary-row" id="summ-disc-row" style="display:none;"><span>الخصم (كوبون):</span><span style="color:var(--success);" id="summ-disc">0 ج.م -</span></div>
+              <div class="summary-row"><span>رسوم الشحن التوصيل:</span><span style="color:var(--success);">مجاني بالكامل!</span></div>
+              <div class="summary-total summary-row"><span>الإجمالي:</span><span id="summ-total">0 ج.م</span></div>
+              
+              <div class="coupon-section">
+                  <input type="text" id="inp-coupon" class="input-field" placeholder="لديك كود خصم؟" style="text-transform:uppercase;">
+                  <button class="btn btn-secondary" onclick="window.applyCoupon()" id="btn-coupon">تطبيق</button>
+              </div>
+              <div id="lbl-coupon-msg" style="font-size:13px; font-weight:600; margin-block-end:var(--space-6);"></div>
+              
+              <button class="btn btn-primary btn-full btn-lg" onclick="window.location.href='/checkout'" id="btn-checkout" style="font-size:var(--text-xl);">بدء إتمام الطلب الآن</button>
+          </div>
+      </div>
+      
+      <!-- Empty State -->
+      <div id="empty-state" class="empty-state" style="display:none;">
+          <span style="font-size:80px; opacity:0.3;">🛍️</span>
+          <h2 style="font-family:var(--font-display); font-size:var(--text-3xl); margin-block-end:var(--space-2);">سلتك فارغة، أضف السعادة فيها!</h2>
+          <p style="color:var(--text-secondary); margin-block-end:var(--space-6);">لم تقم بشراء أي منتجات حتى الآن.</p>
+          <button class="btn btn-primary btn-lg" onclick="window.location.href='/shop'">تسوّق أحدث المنتجات</button>
+      </div>
+
+  </main>
+  
+  <div id="toast-container" class="toast-container"></div>
+
+  <script type="module">
+      import { supabaseClient } from '/assets/js/supabase.js';
+
+      document.addEventListener('DOMContentLoaded', () => {
+          let cart = JSON.parse(localStorage.getItem('heru_cart')) || [];
+          let activeCoupon = JSON.parse(localStorage.getItem('heru_active_coupon')) || null;
+
+          // Tools
+          window.showToast = (msg, type='info') => {
+              const c = document.getElementById('toast-container');
+              if(!c) return;
+              const t = document.createElement('div'); t.className = `toast toast-${type}`; t.innerText = msg;
+              c.appendChild(t); setTimeout(()=>t.remove(), 3000);
+          };
+
+          const saveAndRender = () => {
+              localStorage.setItem('heru_cart', JSON.stringify(cart));
+              renderCartUI();
+          };
+
+          window.updateQty = (id, delta) => {
+              const idx = cart.findIndex(c => c.id === id);
+              if(idx > -1) {
+                  let v = cart[idx].quantity + delta;
+                  if(v < 1) v = 1;
+                  if(v > cart[idx].maxStock) {
+                      v = cart[idx].maxStock;
+                      window.showToast('تجاوزت الحد الأقصى للمخزون!', 'warning');
+                  }
+                  cart[idx].quantity = v;
+                  saveAndRender();
+              }
+          };
+
+          window.removeItem = (id) => {
+              cart = cart.filter(c => c.id !== id);
+              saveAndRender();
+          };
+
+          // Render UI logic
+          const renderCartUI = () => {
+              const mainBlock = document.getElementById('main-layout');
+              const emptyBlock = document.getElementById('empty-state');
+              
+              if(cart.length === 0) {
+                  mainBlock.style.display = 'none'; emptyBlock.style.display = 'flex';
+                  document.querySelector('.cart-badge').setAttribute('data-count', 0);
+                  return;
+              } else {
+                  mainBlock.style.display = 'grid'; emptyBlock.style.display = 'none';
+              }
+
+              // Render Items Container
+              const container = document.getElementById('cart-container');
+              let html = '';
+              let subtotal = 0;
+              let itemsCount = 0;
+              
+              cart.forEach(item => {
+                  subtotal += (item.price * item.quantity);
+                  itemsCount += item.quantity;
+                  html += `
+                  <div class="cart-item">
+                       <img src="${item.image}" alt="" class="cart-item-img">
+                       <div class="cart-item-details">
+                           <h3 class="cart-item-title"><a href="./product?id=${item.id}">${item.name}</a></h3>
+                           <div class="cart-item-price">${item.price} ج.م لكل قطعة</div>
+                       </div>
+                       <div class="cart-item-controls">
+                           <div class="quantity-selector">
+                               <button class="quantity-btn" onclick="window.updateQty('${item.id}', -1)">−</button>
+                               <input type="number" class="quantity-input" value="${item.quantity}" readonly>
+                               <button class="quantity-btn" onclick="window.updateQty('${item.id}', 1)">+</button>
+                           </div>
+                           <button class="btn-remove" onclick="window.removeItem('${item.id}')">✕ إزالة العنصر</button>
+                       </div>
+                  </div>
+                  `;
+              });
+              container.innerHTML = html;
+              document.querySelector('.cart-badge').setAttribute('data-count', itemsCount);
+
+              // Calculate Discounts
+              let discountVal = 0;
+              if (activeCoupon) {
+                  if (activeCoupon.type === 'percentage') {
+                      discountVal = subtotal * (activeCoupon.value / 100);
+                  } else {
+                      discountVal = activeCoupon.value;
+                  }
+                  // Enforce min order check just in case items were removed
+                  if(activeCoupon.min_order && subtotal < activeCoupon.min_order) {
+                      localStorage.removeItem('heru_active_coupon');
+                      activeCoupon = null;
+                      discountVal = 0;
+                      document.getElementById('lbl-coupon-msg').innerText = 'تم إلغاء الكوبون لعدم استيفاء الحد الأدنى للطلب.';
+                      document.getElementById('lbl-coupon-msg').style.color = 'var(--error)';
+                  }
+              }
+
+              let finalTotal = Math.max(0, subtotal - discountVal);
+
+              // Update Summary text
+              document.getElementById('summ-sub').innerText = `${subtotal.toFixed(2)} ج.م`;
+              document.getElementById('summ-total').innerText = `${finalTotal.toFixed(2)} ج.م`;
+              
+              const discRow = document.getElementById('summ-disc-row');
+              if(activeCoupon) {
+                  discRow.style.display = 'flex';
+                  document.getElementById('summ-disc').innerText = `${discountVal.toFixed(2)} ج.م -`;
+                  document.getElementById('inp-coupon').value = activeCoupon.code;
+                  document.getElementById('btn-coupon').innerText = 'تحديث المراجعة';
+                  document.getElementById('lbl-coupon-msg').innerText = `✓ كود خصم (${activeCoupon.code}) فعال وتم التطبيق`;
+                  document.getElementById('lbl-coupon-msg').style.color = 'var(--success)';
+              } else {
+                  discRow.style.display = 'none';
+                  document.getElementById('inp-coupon').value = '';
+              }
+          };
+
+          // Apply Coupon Logic using Supabase validation
+          window.applyCoupon = async () => {
+              const code = document.getElementById('inp-coupon').value.trim().toUpperCase();
+              const msg = document.getElementById('lbl-coupon-msg');
+              if(!code) {
+                  activeCoupon = null; localStorage.removeItem('heru_active_coupon');
+                  msg.innerText = ''; renderCartUI(); return;
+              }
+              
+              const btn = document.getElementById('btn-coupon');
+              btn.classList.add('btn-loading');
+              
+              const subtotal = cart.reduce((a, c) => a + (c.price * c.quantity), 0);
+
+              try {
+                  if(!supabaseClient) throw new Error("اتصال غير سليم بالقاعدة");
+                  const { data, error } = await supabaseClient.from('coupons').select('*').eq('code', code).eq('active', true).single();
+                  
+                  if(error || !data) throw new Error('كود الخصم غير صالح أو لا يوجد');
+                  if(data.max_uses && data.uses_count >= data.max_uses) throw new Error('الكود تجاوز عدد مرات الاستخدام المسموحة');
+                  if(data.expires_at && new Date(data.expires_at) < new Date()) throw new Error('تم انتهاء مدة صلاحية هذا الكود');
+                  if(data.min_order && subtotal < data.min_order) throw new Error(`الحد الأدنى لتطبيق الكود هو ${data.min_order} جنيه`);
+                  
+                  // Verification success
+                  activeCoupon = data;
+                  localStorage.setItem('heru_active_coupon', JSON.stringify(data));
+                  window.showToast('كود الخصم سارٍ وتم التطبيق!', 'success');
+                  renderCartUI();
+                  
+              } catch(e) {
+                  msg.innerText = `✗ ${e.message}`;
+                  msg.style.color = 'var(--error)';
+                  activeCoupon = null;
+                  localStorage.removeItem('heru_active_coupon');
+                  renderCartUI();
+              } finally {
+                  btn.classList.remove('btn-loading');
+              }
+          };
+
+          // init
+          renderCartUI();
+      });
+  </script>
+
+<script>
+document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape') {
+        document.querySelectorAll('.mobile-menu.open, .filter-overlay.open, .filters-wrapper.open, .modal-overlay.open').forEach(el => el.classList.remove('open'));
+    }
+});
+</script>
+
+<!-- Cookie Notice -->
+<style>
+  #cookie-notice {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background: var(--bg-elevated);
+    border-top: 1px solid var(--border);
+    padding: var(--space-4) var(--space-6);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-4);
+    z-index: 9999;
+    box-shadow: 0 -4px 24px rgba(0,0,0,0.6);
+    transform: translateY(100%);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  #cookie-notice.visible { transform: translateY(0); }
+  .cookie-text { font-size: var(--text-sm); color: var(--text-secondary); flex: 1; }
+  .cookie-actions { display: flex; gap: var(--space-3); flex-shrink:0; }
+  @media(max-width: 600px) {
+    #cookie-notice { flex-direction: column; text-align: center; padding: var(--space-4); margin-bottom:-1px;}
+    .cookie-actions { width: 100%; }
+    .cookie-actions button { flex: 1; padding: var(--space-3); }
+  }
+</style>
+<div id="cookie-notice" role="dialog" aria-live="polite" aria-label="إشعار الخصوصية">
+    <div class="cookie-text">
+        نستخدم تقنية <strong>LocalStorage</strong> لحفظ سلة التسوق وتفضيلاتك. نحن لا نستخدم ملفات تعريف الارتباط (Cookies) للتتبع. يمكنك الاطلاع على <a href="./privacy" style="color:var(--accent); text-decoration:underline;">سياسة الخصوصية</a> لمزيد من التفاصيل.
+    </div>
+    <div class="cookie-actions">
+        <button class="btn btn-primary" id="btn-accept-cookie" aria-label="موافق ومتابعة">موافق</button>
+    </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+     if(!localStorage.getItem('heru_cookie_accepted')) {
+         setTimeout(() => { const c = document.getElementById('cookie-notice'); if(c) c.classList.add('visible'); }, 800);
+     }
+     const btnC = document.getElementById('btn-accept-cookie');
+     if(btnC) {
+         btnC.addEventListener('click', () => {
+             localStorage.setItem('heru_cookie_accepted', 'yes');
+             document.getElementById('cookie-notice').classList.remove('visible');
+         });
+     }
+  });
+</script>
+
+
+<!-- Vercel Performance & Reliability -->
+<script defer src="./_vercel/speed-insights/script.js"></script>
+<script defer src="./_vercel/insights/script.js"></script>
+<script>
+  window.addEventListener('error', (e) => {
+      // Prevent verbose console if handled, silent UX failure mode
+      if(window.showToast) window.showToast('حدث خطأ غير متوقع — حاول مرة أخرى', 'error');
+  });
+  window.addEventListener('unhandledrejection', (e) => {
+      if(window.showToast) window.showToast('تم رفض الاتصال بالخادم — يرجى التواصل عبر الواتساب بدلاً من ذلك.', 'error');
+  });
+</script>
+
+</body>
+</html>

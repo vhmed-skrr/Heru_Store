@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تأكيد الطلب | Heru</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <link rel="stylesheet" href="./assets/css/tokens.css">
+  <link rel="stylesheet" href="./assets/css/base.css">
+  <link rel="stylesheet" href="./assets/css/components.css">
+  
+  <style>
+    .container { max-width: 800px; margin: 0 auto; padding: 0 var(--space-4); }
+    .section { padding: var(--space-12) 0 var(--space-16); }
+    
+    .loading-box { text-align: center; padding: var(--space-16) 0; }
+    .empty-state { text-align: center; padding: var(--space-16); background: var(--bg-elevated); border-radius: var(--radius-lg); }
+    
+    .success-icon-wrapper {
+      width: 96px; height: 96px; border-radius: 50%; background: rgba(34, 197, 94, 0.15); 
+      color: var(--success); display: flex; justify-content: center; align-items: center; 
+      font-size: 48px; margin: 0 auto var(--space-6);
+      animation: popScale 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes popScale { 0% {transform: scale(0); opacity: 0;} 100%{transform: scale(1); opacity: 1;} }
+    
+    .page-title { font-size: var(--text-3xl); font-family: var(--font-display); text-align: center; margin-block-end: var(--space-2); }
+    .page-subtitle { color: var(--text-secondary); text-align: center; margin-block-end: var(--space-8); }
+    
+    .invoice-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: var(--space-8);
+        margin-block-end: var(--space-8);
+        box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+    }
+    .ord-num-banner {
+        background: var(--bg-elevated);
+        border: 2px dashed var(--border-accent);
+        border-radius: var(--radius-md);
+        padding: var(--space-4);
+        text-align: center;
+        margin-block-end: var(--space-6);
+    }
+    .ord-num-banner p { margin: 0 0 4px 0; color: var(--text-secondary); font-size: var(--text-sm); }
+    .ord-num-banner h2 { margin: 0; font-family: var(--font-number); letter-spacing: 2px; color: var(--accent); }
+    
+    .instruction-box {
+        background: rgba(240, 235, 225, 0.05);
+        border-right: 4px solid var(--accent);
+        padding: var(--space-4);
+        border-radius: var(--radius-sm);
+        margin-block-end: var(--space-8);
+        line-height: 1.6;
+    }
+    
+    .details-row { display: flex; justify-content: space-between; margin-block-end: var(--space-3); border-bottom: 1px dashed var(--border-strong); padding-bottom: var(--space-3); }
+    .details-row:last-child { border-bottom: none; }
+    .d-total { font-weight: 700; font-size: var(--text-xl); color: var(--accent); border-top: 1px solid var(--border); padding-top: var(--space-4); }
+    
+    .actions { display: flex; gap: var(--space-4); justify-content: center; flex-wrap: wrap; }
+    .actions .btn { min-width: 200px; }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- Minimal Nav -->
+  <nav class="navbar" style="justify-content: center; border-bottom: none;">
+      <a href="./" class="navbar-logo" data-setting="store_name">HERU</a>
+  </nav>
+
+  <main class="container section">
+
+      <!-- View: Loading -->
+      <div id="view-loading" class="loading-box">
+          <div class="spinner font-display" style="font-size:24px; animation: pulse 1s infinite alternate;">جارِ المراجعة...</div>
+      </div>
+
+      <!-- View: Error Not Found -->
+      <div id="view-error" class="empty-state" style="display:none;">
+          <div style="font-size:64px; margin-block-end:var(--space-4);">🤔</div>
+          <h2 class="page-title">لم نتمكن من إيجاد هذا الطلب</h2>
+          <p style="color:var(--text-muted); margin-block-end:var(--space-6);">الرابط غير صحيح أو تم مسح الطلب.</p>
+          <button class="btn btn-primary" onclick="window.location.href='/'">العودة للرئيسية</button>
+      </div>
+
+      <!-- View: Success Confirmation -->
+      <div id="view-success" style="display:none;">
+          
+          <div class="success-icon-wrapper">✓</div>
+          <h1 class="page-title">تم استلام طلبك بنجاح! 🎉</h1>
+          <p class="page-subtitle">نحن سعداء لاختيارك Heru. سنتولى الأمر من هنا.</p>
+          
+          <div class="invoice-card">
+              <div class="ord-num-banner">
+                  <p>رقم الطلب المرجعي الخاص بك</p>
+                  <h2 id="lbl-ordernum">ORD-0000-0000</h2>
+              </div>
+              
+              <div class="instruction-box">
+                  <strong style="display:block; margin-block-end:4px; font-size:var(--text-sm);">إرشادات الخطوة القادمة:</strong>
+                  <span id="lbl-instruction">جاري التحميل...</span>
+              </div>
+              
+              <h3 style="margin-block-end:var(--space-4); font-size:var(--text-lg);">ملخص سريع</h3>
+              
+              <div id="items-list" style="margin-block-end:var(--space-4); color:var(--text-secondary);">
+                  <!-- Dynamically populated items -->
+              </div>
+              
+              <div class="details-row">
+                  <span>طريقة الدفع المختارة</span>
+                  <span id="lbl-payment" style="font-weight:600;">...</span>
+              </div>
+              
+              <div class="details-row d-total">
+                  <span style="color:var(--text-primary);">المبلغ المتبقي / الإجمالي</span>
+                  <span id="lbl-total" class="font-num">0 ج.م</span>
+              </div>
+          </div>
+          
+          <div class="actions">
+              <button class="btn btn-secondary" onclick="window.location.href='/shop'">تسوّق المزيد</button>
+              <button class="btn btn-secondary" id="btn-track">تتبع خط سير الطلب</button>
+              <button class="btn btn-whatsapp" id="btn-wa">تواصل للدعم (واتساب)</button>
+          </div>
+
+      </div>
+
+  </main>
+
+  <script type="module">
+      import { supabaseClient } from '/assets/js/supabase.js';
+
+      document.addEventListener('DOMContentLoaded', async () => {
+          const params = new URLSearchParams(window.location.search);
+          const orderNum = params.get('order');
+
+          const vLoad = document.getElementById('view-loading');
+          const vErr = document.getElementById('view-error');
+          const vSucc = document.getElementById('view-success');
+
+          if(!orderNum) {
+              vLoad.style.display = 'none'; vErr.style.display = 'block'; return;
+          }
+
+          try {
+              if(!supabaseClient) throw new Error("No DB config");
+              const { data, error } = await supabaseClient.from('orders').select('*').eq('order_number', orderNum).single();
+              if(error || !data) throw error;
+              
+              renderConfirmation(data);
+              
+          } catch(e) {
+              vLoad.style.display = 'none'; vErr.style.display = 'block';
+          }
+
+          function renderConfirmation(order) {
+              vLoad.style.display = 'none';
+              vSucc.style.display = 'block';
+              
+              document.getElementById('lbl-ordernum').innerText = order.order_number;
+              document.getElementById('lbl-total').innerText = `${order.total} ج.م`;
+              
+              // Payment method mapping specific responses
+              let pMethod = '', instStr = '';
+              if(order.payment_method === 'cash') {
+                  pMethod = 'الدفع كاش عند التسليم 💵';
+                  instStr = 'سنتواصل معك عبر الهاتف خلال 24 ساعة لتأكيد موعد التوصيل ومطابقة العنوان.';
+              } else if (order.payment_method === 'instapay') {
+                  pMethod = 'تحويل محفظة InstaPay 📱';
+                  instStr = `يُرجى إرسال إيصال التحويل بشكل واضح على رقم الدعم الفني الخاص بنا (واتساب) مصحوباً برقم الطلب [${order.order_number}] لسرعة التأكيد.`;
+              } else if (order.payment_method === 'fawry') {
+                  pMethod = 'مدفوعات ماكينة Fawry 🏧';
+                  instStr = `يرجى التوجه لأقرب فرع مدفوعات فوري واستخدام الرقم المرجعي للطلب [${order.order_number}] لدفع القيمة والمتابعة معنا.`;
+              }
+              document.getElementById('lbl-payment').innerText = pMethod;
+              document.getElementById('lbl-instruction').innerText = instStr;
+
+              // Items 
+              let iHtml = '';
+              (order.items || []).forEach(i => {
+                  iHtml += `<div class="details-row" style="border-bottom:none; margin-bottom:4px; padding-bottom:0;">
+                      <span>- ${i.name} <span class="font-num" style="color:var(--text-muted); font-size:12px;">(x${i.quantity})</span></span>
+                      <span class="font-num">${i.price * i.quantity} ج</span>
+                  </div>`;
+              });
+              document.getElementById('items-list').innerHTML = iHtml;
+
+              // Action listeners
+              document.getElementById('btn-track').onclick = () => {
+                  window.location.href = `/track-order?order=${order.order_number}`;
+              };
+              
+              document.getElementById('btn-wa').onclick = () => {
+                  const m = `مرحباً فريق هيرو،\nبخصوص طلبي رقم: *${order.order_number}*\nلدي استفسار أو مرفق بخصوصه...`;
+                  window.open(`https://wa.me/${window.ENV?.WHATSAPP_NUMBER || '201124519232'}?text=${encodeURIComponent(m)}`, '_blank');
+              };
+              
+              // Scroll to top
+              window.scrollTo({top:0, behavior:'smooth'});
+          }
+      });
+  </script>
+
+<script>
+document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape') {
+        document.querySelectorAll('.mobile-menu.open, .filter-overlay.open, .filters-wrapper.open, .modal-overlay.open').forEach(el => el.classList.remove('open'));
+    }
+});
+</script>
+
+<!-- Cookie Notice -->
+<style>
+  #cookie-notice {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background: var(--bg-elevated);
+    border-top: 1px solid var(--border);
+    padding: var(--space-4) var(--space-6);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-4);
+    z-index: 9999;
+    box-shadow: 0 -4px 24px rgba(0,0,0,0.6);
+    transform: translateY(100%);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  #cookie-notice.visible { transform: translateY(0); }
+  .cookie-text { font-size: var(--text-sm); color: var(--text-secondary); flex: 1; }
+  .cookie-actions { display: flex; gap: var(--space-3); flex-shrink:0; }
+  @media(max-width: 600px) {
+    #cookie-notice { flex-direction: column; text-align: center; padding: var(--space-4); margin-bottom:-1px;}
+    .cookie-actions { width: 100%; }
+    .cookie-actions button { flex: 1; padding: var(--space-3); }
+  }
+</style>
+<div id="cookie-notice" role="dialog" aria-live="polite" aria-label="إشعار الخصوصية">
+    <div class="cookie-text">
+        نستخدم تقنية <strong>LocalStorage</strong> لحفظ سلة التسوق وتفضيلاتك. نحن لا نستخدم ملفات تعريف الارتباط (Cookies) للتتبع. يمكنك الاطلاع على <a href="./privacy" style="color:var(--accent); text-decoration:underline;">سياسة الخصوصية</a> لمزيد من التفاصيل.
+    </div>
+    <div class="cookie-actions">
+        <button class="btn btn-primary" id="btn-accept-cookie" aria-label="موافق ومتابعة">موافق</button>
+    </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+     if(!localStorage.getItem('heru_cookie_accepted')) {
+         setTimeout(() => { const c = document.getElementById('cookie-notice'); if(c) c.classList.add('visible'); }, 800);
+     }
+     const btnC = document.getElementById('btn-accept-cookie');
+     if(btnC) {
+         btnC.addEventListener('click', () => {
+             localStorage.setItem('heru_cookie_accepted', 'yes');
+             document.getElementById('cookie-notice').classList.remove('visible');
+         });
+     }
+  });
+</script>
+
+
+<!-- Vercel Performance & Reliability -->
+<script defer src="./_vercel/speed-insights/script.js"></script>
+<script defer src="./_vercel/insights/script.js"></script>
+<script>
+  window.addEventListener('error', (e) => {
+      // Prevent verbose console if handled, silent UX failure mode
+      if(window.showToast) window.showToast('حدث خطأ غير متوقع — حاول مرة أخرى', 'error');
+  });
+  window.addEventListener('unhandledrejection', (e) => {
+      if(window.showToast) window.showToast('تم رفض الاتصال بالخادم — يرجى التواصل عبر الواتساب بدلاً من ذلك.', 'error');
+  });
+</script>
+
+</body>
+</html>

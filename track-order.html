@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تتبع الطلب | Heru</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <link rel="stylesheet" href="./assets/css/tokens.css">
+  <link rel="stylesheet" href="./assets/css/base.css">
+  <link rel="stylesheet" href="./assets/css/components.css">
+  
+  <style>
+    .container { max-width: 800px; margin: 0 auto; padding: 0 var(--space-4); }
+    .section { padding: var(--space-12) 0 var(--space-16); }
+    .page-title { font-size: var(--text-3xl); font-family: var(--font-display); text-align: center; margin-block-end: var(--space-8); }
+    
+    .search-box {
+        background: var(--bg-card); padding: var(--space-8);
+        border-radius: var(--radius-lg); border: 1px solid var(--border);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.3); margin-block-end: var(--space-8);
+    }
+
+    /* TIMELINE */
+    .tracking-results { display: none; background: var(--bg-elevated); padding: var(--space-8); border-radius: var(--radius-lg); border: 1px solid var(--border-accent); }
+    
+    .timeline { position: relative; padding-inline-start: var(--space-8); margin-block-end: var(--space-8); }
+    .timeline::before {
+        content: ''; position: absolute; inset-inline-start: 45px; top: 15px; bottom: 30px;
+        width: 2px; background: var(--border-strong); z-index: 0;
+    }
+    
+    .t-step {
+        display: flex; gap: var(--space-6); align-items: flex-start;
+        margin-block-end: var(--space-8); position: relative; z-index: 1;
+    }
+    .t-step:last-child { margin-block-end: 0; }
+    
+    .t-icon {
+        width: 32px; height: 32px; border-radius: 50%;
+        background: var(--bg-card); border: 2px solid var(--border-strong);
+        display: flex; justify-content: center; align-items: center;
+        color: var(--text-muted); font-size: 14px; flex-shrink: 0; transition: all 0.3s;
+    }
+    
+    /* STATES */
+    .t-step.completed .t-icon { background: var(--success); border-color: var(--success); color: var(--bg-primary); }
+    .t-step.current .t-icon { background: var(--accent); border-color: var(--accent); color: var(--bg-primary); box-shadow: 0 0 16px rgba(240, 235, 225, 0.4); }
+    .t-step.cancelled .t-icon { background: var(--error); border-color: var(--error); color: var(--bg-primary); box-shadow: 0 0 16px rgba(239, 68, 68, 0.4); }
+    
+    .t-content { flex: 1; padding-top: 4px; }
+    .t-title { font-weight: 700; margin-block-end: 4px; color: var(--text-secondary); font-size: var(--text-lg); }
+    
+    .t-step.completed .t-title { color: var(--success); }
+    .t-step.current .t-title { color: var(--accent); }
+    .t-step.cancelled .t-title { color: var(--error); }
+    
+    .t-desc { font-size: var(--text-sm); color: var(--text-muted); line-height: 1.6; }
+    .t-date { font-size: 11px; color: var(--text-secondary); margin-block-start:var(--space-2); font-family: var(--font-number); }
+    
+    /* Order Basic Meta Summary */
+    .order-meta { background: var(--bg-card); border: 1px dashed var(--border-strong); border-radius: var(--radius-md); padding: var(--space-4); margin-block-end: var(--space-6); font-size: var(--text-sm); }
+    .meta-row { display: flex; justify-content: space-between; margin-block-end: var(--space-2); }
+    .meta-row:last-child { margin: 0; }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header>
+  <nav class="navbar" aria-label="التنقل الرئيسي">
+      <a href="./" class="navbar-logo" data-setting="store_name">HERU</a>
+      <div class="navbar-links">
+          <a href="./">الرئيسية</a>
+          <a href="./shop">المتجر</a>
+      </div>
+      <div class="navbar-actions">
+          <a href="./cart" class="cart-badge btn-ghost" data-count="0">🛒</a>
+      </div>
+  </nav>
+  </header>
+
+  <main class="container section">
+      <h1 class="page-title">تتبع خط سير طلبك 🚀</h1>
+      
+      <!-- Search Form -->
+      <div class="search-box" id="search-view">
+          <p style="text-align:center; color:var(--text-secondary); margin-block-end:var(--space-8);">أدخل رقم طلبك ورقم الهاتف نفسه المُستخدم أثناء الشراء للتحقق من هوية الطلب ومتابعة التحديثات الحية.</p>
+
+          <form id="track-form" onsubmit="window.searchLogic(event)">
+              <div style="margin-block-end: var(--space-4);">
+                  <label class="form-label">رقم الطلب (Order ID)</label>
+                  <input type="text" id="inp-ord" class="input-field font-num" placeholder="ORD-YYYY-XXXX" required dir="ltr" style="text-align:right;">
+              </div>
+              <div style="margin-block-end: var(--space-8);">
+                  <label class="form-label">رقم الهاتف المُطابق للطلب</label>
+                  <input type="tel" id="inp-phone" class="input-field font-num" placeholder="01XXXXXXXXX" required dir="ltr" style="text-align:right;">
+              </div>
+              <button type="submit" class="btn btn-primary btn-full btn-lg" id="btn-track">عرض حالة الطلب</button>
+          </form>
+      </div>
+
+      <!-- Results View -->
+      <div class="tracking-results" id="result-view">
+          
+          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); padding-bottom:var(--space-4); margin-bottom:var(--space-6);">
+              <h2 style="margin:0; font-family:var(--font-display); font-size:var(--text-xl);">النتيجة الحية</h2>
+              <button class="btn-ghost" onclick="window.resetView()" style="font-size:14px; text-decoration:underline;">بحث عن طلب آخر</button>
+          </div>
+          
+          <div class="order-meta">
+              <div class="meta-row"><span style="color:var(--text-muted);">رقم التسلسل:</span><strong id="meta-ord" class="font-num" style="color:var(--accent);"></strong></div>
+              <div class="meta-row"><span style="color:var(--text-muted);">تاريخ الإصدار:</span><strong id="meta-date" class="font-num"></strong></div>
+              <div class="meta-row"><span style="color:var(--text-muted);">مكان التوصيل:</span><strong id="meta-addr"></strong></div>
+              <div class="meta-row"><span style="color:var(--text-muted);">إجمالي المدفوعات:</span><strong id="meta-total" class="font-num"></strong></div>
+          </div>
+          
+          <div class="timeline" id="timeline-container">
+             <!-- Dynamically plotted -->
+          </div>
+
+          <div style="text-align:center; margin-top:var(--space-8);">
+             <p style="color:var(--text-muted); font-size:14px; margin-bottom:12px;">واجهتك أي مشكلة أو تود إلغاء / تعديل الطلب؟</p>
+             <button class="btn btn-whatsapp" id="btn-wa">تواصل مع خدمة العملاء (واتساب)</button>
+          </div>
+      </div>
+
+  </main>
+  
+  <div id="toast-container" class="toast-container"></div>
+
+  <script type="module">
+      import { supabaseClient } from '/assets/js/supabase.js';
+
+      document.addEventListener('DOMContentLoaded', () => {
+          
+          // Pre-fill Order from URL Param immediately
+          const autoOrd = new URLSearchParams(window.location.search).get('order');
+          if(autoOrd) document.getElementById('inp-ord').value = autoOrd;
+
+          // Enums Mapping Logic
+          const FLOW = ['pending', 'confirmed', 'processing', 'shipped', 'delivered'];
+          const DICT = {
+              'pending': { title: 'تم استلام الطلب', desc: 'تلقينا طلبك عبر النظام وبدأنا في مراجعته والتحضير للعمل عليه.', icon: '📋' },
+              'confirmed': { title: 'تم تأكيد الطلب', desc: 'تم مراجعة الطلب والموافقة المبدئية عليه، وجاري نقله لمرحلة التعبئة.', icon: '✅' },
+              'processing': { title: 'قيد التجهيز والتغليف', desc: 'الآن نقوم بجمع وتغليف منتجات الفن الخاص بك بأمان في الصناديق.', icon: '📦' },
+              'shipped': { title: 'في الطريق إليك', desc: 'مندوب الشحن استلم طردك وهو يطير في الطريق إليك بأمان.', icon: '🚚' },
+              'delivered': { title: 'تم التسليم بنجاح', desc: 'مبروك! نتمنى أن ينال التصميم إعجابك وتستمتع بالمنتجات.', icon: '🎉' },
+              'cancelled': { title: 'تم إلغاء الطلب', desc: 'تم إيقاف وإلغاء هذا الطلب من النظام إما بناءً على طلبك أو لوجود مشكلة.', icon: '❌' },
+          };
+
+          window.showToast = (msg, type='info') => {
+              const c = document.getElementById('toast-container');
+              if(!c) return;
+              const t = document.createElement('div'); t.className = `toast toast-${type}`; t.innerText = msg;
+              c.appendChild(t); setTimeout(()=>t.remove(), 4000);
+          };
+
+          window.resetView = () => {
+              document.getElementById('result-view').style.display='none';
+              document.getElementById('search-view').style.display='block';
+              document.getElementById('track-form').reset();
+          };
+
+          window.searchLogic = async (e) => {
+              e.preventDefault();
+              
+              const oVal = document.getElementById('inp-ord').value.trim();
+              const pVal = document.getElementById('inp-phone').value.trim();
+              
+              if(!oVal || !pVal) return;
+              
+              const btn = document.getElementById('btn-track');
+              btn.classList.add('btn-loading');
+
+              try {
+                  if(!supabaseClient) throw new Error("No client config.");
+                  const { data, error } = await supabaseClient.from('orders').select('*')
+                        .eq('order_number', oVal)
+                        .eq('phone', pVal).single();
+                  
+                  if(error || !data) throw error;
+                  
+                  renderResult(data);
+
+              } catch(err) {
+                  window.showToast('عفواً، لا يوجد أي طلب فعلي ببيانات الهاتف والرقم المرجعي المرفقة.', 'error');
+              } finally {
+                  btn.classList.remove('btn-loading');
+              }
+          };
+
+          function renderResult(order) {
+              document.getElementById('search-view').style.display = 'none';
+              document.getElementById('result-view').style.display = 'block';
+              
+              // Map Meta
+              document.getElementById('meta-ord').innerText = order.order_number;
+              const d = new Date(order.created_at);
+              document.getElementById('meta-date').innerText = `${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()} - ${d.getHours()}:${d.getMinutes()}`;
+              document.getElementById('meta-addr').innerText = `${order.governorate}، ${order.city}`;
+              document.getElementById('meta-total').innerText = `${order.total} ج.م`;
+
+              const status = order.status; // pending, confirmed, processing, shipped, delivered, cancelled
+              const container = document.getElementById('timeline-container');
+              let html = '';
+
+              if (status === 'cancelled') {
+                   // Special Cancelled flow
+                   html += createStep(DICT['pending'], 'completed', order.created_at);
+                   html += createStep(DICT['cancelled'], 'cancelled current', '');
+              } else {
+                   // Standard positive flow
+                   const currIdx = FLOW.indexOf(status) > -1 ? FLOW.indexOf(status) : 0;
+                   
+                   FLOW.forEach((stepName, idx) => {
+                       let stateClass = '';
+                       let dateStamp = '';
+                       
+                       if(idx < currIdx) stateClass = 'completed';
+                       else if(idx === currIdx) { stateClass = 'current'; }
+                       
+                       // Usually dates are logged in history table, but we dummy it from creation for demo unless provided
+                       if(idx === 0) dateStamp = new Intl.DateTimeFormat('ar-EG', { dateStyle:'short', timeStyle:'short' }).format(new Date(order.created_at));
+                       if(idx === currIdx && idx > 0) dateStamp = 'التحديث الأخير';
+
+                       html += createStep(DICT[stepName], stateClass, dateStamp);
+                   });
+              }
+              container.innerHTML = html;
+              
+              document.getElementById('btn-wa').onclick = () => {
+                  const WA_MSG = `مرحباً فريق الدعم،\nأود الاستفسار حول تحديثات أو محتويات الطلب المرجعي: *${order.order_number}*`;
+                  window.open(`https://wa.me/${window.ENV?.WHATSAPP_NUMBER || '201124519232'}?text=${encodeURIComponent(WA_MSG)}`, '_blank');
+              };
+          }
+
+          function createStep(meta, stateClass, dateText) {
+              const symbol = (stateClass === 'completed') ? '✓' : meta.icon;
+              return `<div class="t-step ${stateClass}">
+                  <div class="t-icon font-display">${symbol}</div>
+                  <div class="t-content">
+                      <div class="t-title">${meta.title}</div>
+                      <div class="t-desc">${meta.desc}</div>
+                      ${dateText ? `<div class="t-date">${dateText}</div>` : ''}
+                  </div>
+              </div>`;
+          }
+      });
+  </script>
+
+<script>
+document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape') {
+        document.querySelectorAll('.mobile-menu.open, .filter-overlay.open, .filters-wrapper.open, .modal-overlay.open').forEach(el => el.classList.remove('open'));
+    }
+});
+</script>
+
+<!-- Cookie Notice -->
+<style>
+  #cookie-notice {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background: var(--bg-elevated);
+    border-top: 1px solid var(--border);
+    padding: var(--space-4) var(--space-6);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-4);
+    z-index: 9999;
+    box-shadow: 0 -4px 24px rgba(0,0,0,0.6);
+    transform: translateY(100%);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  #cookie-notice.visible { transform: translateY(0); }
+  .cookie-text { font-size: var(--text-sm); color: var(--text-secondary); flex: 1; }
+  .cookie-actions { display: flex; gap: var(--space-3); flex-shrink:0; }
+  @media(max-width: 600px) {
+    #cookie-notice { flex-direction: column; text-align: center; padding: var(--space-4); margin-bottom:-1px;}
+    .cookie-actions { width: 100%; }
+    .cookie-actions button { flex: 1; padding: var(--space-3); }
+  }
+</style>
+<div id="cookie-notice" role="dialog" aria-live="polite" aria-label="إشعار الخصوصية">
+    <div class="cookie-text">
+        نستخدم تقنية <strong>LocalStorage</strong> لحفظ سلة التسوق وتفضيلاتك. نحن لا نستخدم ملفات تعريف الارتباط (Cookies) للتتبع. يمكنك الاطلاع على <a href="./privacy" style="color:var(--accent); text-decoration:underline;">سياسة الخصوصية</a> لمزيد من التفاصيل.
+    </div>
+    <div class="cookie-actions">
+        <button class="btn btn-primary" id="btn-accept-cookie" aria-label="موافق ومتابعة">موافق</button>
+    </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+     if(!localStorage.getItem('heru_cookie_accepted')) {
+         setTimeout(() => { const c = document.getElementById('cookie-notice'); if(c) c.classList.add('visible'); }, 800);
+     }
+     const btnC = document.getElementById('btn-accept-cookie');
+     if(btnC) {
+         btnC.addEventListener('click', () => {
+             localStorage.setItem('heru_cookie_accepted', 'yes');
+             document.getElementById('cookie-notice').classList.remove('visible');
+         });
+     }
+  });
+</script>
+
+
+<!-- Vercel Performance & Reliability -->
+<script defer src="./_vercel/speed-insights/script.js"></script>
+<script defer src="./_vercel/insights/script.js"></script>
+<script>
+  window.addEventListener('error', (e) => {
+      // Prevent verbose console if handled, silent UX failure mode
+      if(window.showToast) window.showToast('حدث خطأ غير متوقع — حاول مرة أخرى', 'error');
+  });
+  window.addEventListener('unhandledrejection', (e) => {
+      if(window.showToast) window.showToast('تم رفض الاتصال بالخادم — يرجى التواصل عبر الواتساب بدلاً من ذلك.', 'error');
+  });
+</script>
+
+</body>
+</html>

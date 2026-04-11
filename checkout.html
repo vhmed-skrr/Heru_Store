@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إتمام الطلب | Heru</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <link rel="stylesheet" href="./assets/css/tokens.css">
+  <link rel="stylesheet" href="./assets/css/base.css">
+  <link rel="stylesheet" href="./assets/css/components.css">
+  
+  <style>
+    /* LAYOUT EXTRAS */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 var(--space-4); }
+    .section { padding: var(--space-8) 0 var(--space-16); }
+    .page-title { font-size: var(--text-3xl); font-family: var(--font-display); margin: 0; text-align: center; }
+    
+    .checkout-layout { display: grid; grid-template-columns: 2fr 1fr; gap: var(--space-8); align-items: start; }
+    @media (max-width: 900px) { .checkout-layout { grid-template-columns: 1fr; } }
+    
+    .checkout-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-6); margin-block-end: var(--space-8); }
+    .step-title { font-size: var(--text-2xl); font-family: var(--font-display); margin-block-end: var(--space-6); display: flex; align-items: center; gap: var(--space-3); padding-bottom:var(--space-4); border-bottom:1px solid var(--border);}
+    .circle-idx { display: inline-flex; width: 32px; height: 32px; background: var(--accent); color: var(--bg-primary); border-radius: 50%; font-size: var(--text-base); font-family: var(--font-number); align-items: center; justify-content: center; font-weight:700; }
+
+    /* STEPS PROGRESS */
+    .progress-bar { display: flex; justify-content: center; gap: var(--space-6); margin-block-end: var(--space-12); font-weight: 600; flex-wrap: wrap;}
+    .progress-step { display: flex; align-items: center; gap: var(--space-2); color: var(--text-secondary); opacity: 0.5;}
+    .progress-step.active { color: var(--text-primary); opacity: 1; }
+    .progress-step.active .circle-idx { background: var(--accent); color: var(--bg-primary); }
+    
+    /* RADIO CARDS */
+    .radio-card { display: block; position: relative; cursor: pointer; margin-block-end: var(--space-4); margin-top:0; }
+    .radio-card input { position: absolute; visibility: hidden; }
+    .radio-content { border: 2px solid var(--border-strong); border-radius: var(--radius-md); padding: var(--space-4); transition: all 0.2s; background:var(--bg-elevated); display: flex; flex-direction:column;}
+    .radio-card:hover .radio-content { border-color: var(--text-muted); }
+    .radio-card input:checked + .radio-content { border-color: var(--accent); background: rgba(240,235,225,0.02); }
+    .radio-extra { display: none; padding-block-start: var(--space-4); border-top: 1px dashed var(--border-accent); margin-block-start: var(--space-3); font-size: var(--text-sm); line-height:1.6; }
+    .radio-card input:checked + .radio-content .radio-extra { display: block; animation: openFade 0.3s forwards; }
+    
+    @keyframes openFade { from {opacity:0; transform:translateY(-10px);} to{opacity:1; transform:translateY(0);} }
+
+    /* SUMMARY VIEW */
+    .summary-box { background: var(--bg-elevated); position: sticky; top: 100px; }
+    .chk-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-block: var(--space-3); font-size:var(--text-sm); }
+    .chk-item:last-child { border-bottom: none; }
+    .summary-row { display: flex; justify-content: space-between; margin-block-end: var(--space-3); font-weight: 600; color:var(--text-secondary);}
+    .summary-row span:last-child { color: var(--text-primary); font-family: var(--font-number); }
+    .summary-total { font-size: var(--text-2xl); font-weight: 700; color: var(--text-primary); border-top: 1px solid var(--border); padding-block-start: var(--space-4); margin-block-start: var(--space-2); }
+    .summary-total span:last-child { color: var(--accent); }
+    
+    /* MODS FOR INPUTS GRID */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+    @media(max-width: 640px) { .form-grid { grid-template-columns: 1fr; } }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- Navbar Simple For checkout to keep focus -->
+  <nav class="navbar" style="justify-content: center;">
+      <a href="./" class="navbar-logo" data-setting="store_name">HERU</a>
+  </nav>
+
+  <main class="container section">
+      
+      <div class="progress-bar">
+          <div class="progress-step active"><div class="circle-idx">1</div> البيانات والدفع</div>
+          <div class="progress-step"><div class="circle-idx" style="background:var(--bg-card); border:1px solid var(--border);">2</div> تأكيد الطلب</div>
+      </div>
+      
+      <div class="checkout-layout">
+          <div>
+              <!-- STEP 1: Delivery Data -->
+              <div class="checkout-box">
+                  <h2 class="step-title"><span class="circle-idx">1</span> بيانات التوصيل الشخصية</h2>
+                  
+                  <div class="form-grid">
+                      <div style="margin-block-end: var(--space-4);">
+                          <label class="form-label" for="chk-name">الاسم بالكامل (رُباعي أو ثُلاثي) <span style="color:var(--error);">*</span></label>
+                          <input aria-describedby="chk-name-error" aria-required="true" type="text" id="chk-name" class="input-field" placeholder="مثال: أحمد محمد محمود" required>
+                          <div class="form-error-message" id="chk-name-error" role="alert" aria-live="assertive"></div>
+                      </div>
+                      <div style="margin-block-end: var(--space-4);">
+                          <label class="form-label" for="chk-phone">رقم الهاتف الأساسي <span style="color:var(--error);">*</span></label>
+                          <input aria-describedby="chk-phone-error" aria-required="true" type="tel" id="chk-phone" class="input-field font-num" placeholder="01X-XXXX-XXXX" required dir="ltr">
+                          <div class="form-error-message" id="chk-phone-error" role="alert" aria-live="assertive"></div>
+                      </div>
+                  </div>
+                  
+                  <div class="form-grid">
+                      <div style="margin-block-end: var(--space-4);">
+                          <label class="form-label" for="chk-gov">المحافظة <span style="color:var(--error);">*</span></label>
+                          <select aria-describedby="chk-gov-error" aria-required="true" id="chk-gov" class="select-field" required>
+                              <option value="">اختر المحافظة...</option>
+                              <option value="القاهرة">القاهرة</option><option value="الجيزة">الجيزة</option><option value="الإسكندرية">الإسكندرية</option><option value="الدقهلية">الدقهلية</option><option value="البحر الأحمر">البحر الأحمر</option><option value="البحيرة">البحيرة</option><option value="الفيوم">الفيوم</option><option value="الغربية">الغربية</option><option value="الإسماعيلية">الإسماعيلية</option><option value="المنوفية">المنوفية</option><option value="المنيا">المنيا</option><option value="القليوبية">القليوبية</option><option value="الوادي الجديد">الوادي الجديد</option><option value="السويس">السويس</option><option value="أسوان">أسوان</option><option value="أسيوط">أسيوط</option><option value="بني سويف">بني سويف</option><option value="بورسعيد">بورسعيد</option><option value="دمياط">دمياط</option><option value="الشرقية">الشرقية</option><option value="جنوب سيناء">جنوب سيناء</option><option value="كفر الشيخ">كفر الشيخ</option><option value="مطروح">مطروح</option><option value="الأقصر">الأقصر</option><option value="قنا">قنا</option><option value="شمال سيناء">شمال سيناء</option><option value="سوهاج">سوهاج</option>
+                          </select>
+                          <div class="form-error-message" id="chk-gov-error" role="alert" aria-live="assertive"></div>
+                      </div>
+                      <div style="margin-block-end: var(--space-4);">
+                          <label class="form-label" for="chk-city">المنطقة / تفاصيل المدينة <span style="color:var(--error);">*</span></label>
+                          <input aria-describedby="chk-city-error" aria-required="true" type="text" id="chk-city" class="input-field" placeholder="مثال: مدينة نصر، شارع مكرم عبيد" required>
+                          <div class="form-error-message" id="chk-city-error" role="alert" aria-live="assertive"></div>
+                      </div>
+                  </div>
+                  
+                  <div style="margin-block-end: var(--space-4);">
+                      <label class="form-label" for="chk-address">العنوان بالتفصيل الدقيق <span style="color:var(--error);">*</span></label>
+                          <textarea aria-describedby="chk-address-error" aria-required="true" id="chk-address" class="textarea-field" placeholder="رقم العمارة، الدور، رقم الشقة أو علامة مميزة..." style="min-height:80px;" required></textarea>
+                      <div class="form-error-message" id="chk-address-error" role="alert" aria-live="assertive"></div>
+                  </div>
+                  
+                  <div>
+                      <label class="form-label" for="chk-notes">ملاحظات الطلب (اختياري)</label>
+                          <textarea aria-describedby="chk-notes-error" id="chk-notes" class="textarea-field" placeholder="أية ملاحظات إضافية بخصوص موعد التسليم أو التصميم..." style="min-height:80px;"></textarea>
+                  </div>
+              </div>
+              
+              <!-- STEP 2: Payment Data -->
+              <div class="checkout-box">
+                  <h2 class="step-title"><span class="circle-idx">2</span> اختار طريقة الدفع المريحة ليك</h2>
+                  
+                  <label class="radio-card">
+                     <input type="radio" name="payment" value="cash" checked>
+                     <div class="radio-content">
+                         <div style="font-weight:700; font-size:var(--text-lg); display:flex; align-items:center; gap:8px;">💵 الدفع كاش عند الاستلام</div>
+                         <div class="radio-desc">قم بالدفع لمندوب التوصيل يدوياً وقت استلامك للطلب بأمان تام — بدون أي رسوم وعمولات مخفية.</div>
+                     </div>
+                  </label>
+
+                  <label class="radio-card">
+                     <input type="radio" name="payment" value="instapay">
+                     <div class="radio-content">
+                         <div style="font-weight:700; font-size:var(--text-lg); display:flex; align-items:center; gap:8px;">📱 محفظة InstaPay (انستاباي)</div>
+                         <div class="radio-desc">سهولة وسرعة وموثوقية في الدفع المباشر من الموبايل.</div>
+                         <div class="radio-extra bg-overlay p-4 rounded" style="background: rgba(0,0,0,0.2); padding:12px; border-radius: var(--radius-md);">
+                              الرجاء تحويل قيمة الطلب النهائية بالجنيه المصري إلى الرقم المعتمد:
+                              <div class="font-num" style="color:var(--accent); font-size:var(--text-xl); font-weight:700; margin: 4px 0;">01124519232</div>
+                              سنقوم ببدء ترتيب طلبك فوراً بمجرد أن تقوم بإرسال <b>إيصال عملية التحويل</b> لممثلنا على الواتساب.
+                         </div>
+                     </div>
+                  </label>
+
+                  <label class="radio-card">
+                     <input type="radio" name="payment" value="fawry">
+                     <div class="radio-content">
+                         <div style="font-weight:700; font-size:var(--text-lg); display:flex; align-items:center; gap:8px;">🏧 ماكينات Fawry للمدفوعات</div>
+                         <div class="radio-desc">ادفع كاش من أقرب ماركت، أو صيدلية بها ماكينة فوري بمنتهى السرعة.</div>
+                         <div class="radio-extra font-num" style="background: rgba(0,0,0,0.2); padding:12px; border-radius: var(--radius-md);">
+                              شكرًا لاختيارك فوري. نظراً لكونه نظام أوتوماتيكي سيتم توليد وتخصيص <b>رقم فوري مرجعي</b> لدفعك وإرساله من خلال ممثلنا على رسائل الواتساب بمجرد إصدار فاتورتك! 
+                         </div>
+                     </div>
+                  </label>
+              </div>
+          </div>
+          
+          <!-- SUMMARY VIEW SIDEBAR -->
+          <div>
+              <div class="checkout-box summary-box">
+                  <h3 style="margin: 0 0 var(--space-4) 0;">مراجعة الطلب النهائي</h3>
+                  
+                  <div id="checkout-items" style="border-bottom:1px solid var(--border); padding-bottom:var(--space-4); margin-bottom:var(--space-4);">
+                      <!-- Items from cart populated here -->
+                  </div>
+                  
+                  <div class="summary-row"><span>مجموع المنتجات:</span><span id="summ-sub">0 ج.م</span></div>
+                  <div class="summary-row" id="summ-disc-row" style="display:none;"><span>الخصم المستحق:</span><span style="color:var(--success);" id="summ-disc">0 ج.م -</span></div>
+                  <div class="summary-row"><span>الشحن للمحافظة:</span><span style="color:var(--success);">مجاني بالكامل!</span></div>
+                  
+                  <div class="summary-total summary-row"><span>الإجمالي المضاف:</span><span id="summ-total">0 ج.م</span></div>
+                  
+                  <button class="btn btn-primary btn-lg btn-full" style="margin-block-start: var(--space-8); height: 64px; font-size: var(--text-2xl);" id="btn-submit-order" onclick="window.submitOrder()">تأكيد وإتمام الطلب الآن</button>
+                  <div style="font-size:12px; color:var(--text-muted); text-align:center; margin-top:12px;">بالنقر هنا أنت توافق ضمنياً على شروط متجر هيرو.</div>
+              </div>
+          </div>
+      </div>
+      
+  </main>
+  
+  <div id="toast-container" class="toast-container"></div>
+
+  <script type="module">
+      import { supabaseClient } from '/assets/js/supabase.js';
+
+      document.addEventListener('DOMContentLoaded', () => {
+
+          // Basic checks
+          const cart = JSON.parse(localStorage.getItem('heru_cart')) || [];
+          const activeCoupon = JSON.parse(localStorage.getItem('heru_active_coupon')) || null;
+          if (cart.length === 0) { window.location.replace('/cart'); return; }
+
+          let calc = { subtotal: 0, discount: 0, total: 0, couponDetails: null };
+
+          // Global Tool
+          window.showToast = (msg, type='info') => {
+              const c = document.getElementById('toast-container');
+              if(!c) return;
+              const t = document.createElement('div'); t.className = `toast toast-${type}`; t.innerText = msg;
+              c.appendChild(t); setTimeout(()=>t.remove(), 4000);
+          };
+
+          // Build Summary UI
+          function buildUISummary() {
+              const cContainer = document.getElementById('checkout-items');
+              let html = '';
+              cart.forEach(item => {
+                  calc.subtotal += (item.price * item.quantity);
+                  html += `<div class="chk-item">
+                     <span style="flex:1; padding-inline-end: 12px; font-weight:600;">${item.name} <span class="font-num" style="color:var(--text-muted);">x${item.quantity}</span></span>
+                     <span class="font-num" style="white-space:nowrap;">${item.price * item.quantity} ج.م</span>
+                  </div>`;
+              });
+              cContainer.innerHTML = html;
+
+              if(activeCoupon) {
+                  if (activeCoupon.type === 'percentage') {
+                      calc.discount = calc.subtotal * (activeCoupon.value / 100);
+                  } else {
+                      calc.discount = activeCoupon.value;
+                  }
+                  calc.couponDetails = activeCoupon;
+                  document.getElementById('summ-disc-row').style.display = 'flex';
+                  document.getElementById('summ-disc').innerText = `${calc.discount.toFixed(2)} ج.م -`;
+              }
+              
+              calc.total = Math.max(0, calc.subtotal - calc.discount);
+              document.getElementById('summ-sub').innerText = `${calc.subtotal.toFixed(2)} ج.م`;
+              document.getElementById('summ-total').innerText = `${calc.total.toFixed(2)} ج.م`;
+          }
+          buildUISummary();
+
+          // Input Validators
+          const $ = (id) => document.getElementById(id);
+          const iName = $('chk-name');
+          const iPhone = $('chk-phone');
+          const iGov = $('chk-gov');
+          const iCity = $('chk-city');
+          const iAddr = $('chk-address');
+          const iNotes = $('chk-notes');
+
+          function validateEgyptianPhone(p) { return /^01[0125][0-9]{8}$/.test(p); }
+          function checkField(el, cond, errorMsg) {
+              const errEl = $(el.id + '-error');
+              if(!cond) {
+                  el.classList.add('input-error'); if(errEl) errEl.innerText = errorMsg; return false;
+              } else {
+                  el.classList.remove('input-error'); if(errEl) errEl.innerText = ''; return true;
+              }
+          }
+
+          // Blur Events bindings
+          iName.addEventListener('blur', () => checkField(iName, iName.value.trim().length > 2, '* يرجى إدخال اسمك بصيغة معبرة وصحيحة'));
+          iPhone.addEventListener('blur', () => checkField(iPhone, validateEgyptianPhone(iPhone.value.trim()), '* رقم هاتف مصري غير صالح (يجب أن يبدأ بـ 01)'));
+          iGov.addEventListener('change', () => checkField(iGov, iGov.value !== '', '* يرجى اختيار المحافظة لتسعير الشحن'));
+          iCity.addEventListener('blur', () => checkField(iCity, iCity.value.trim().length > 1, '* تفاصيل مدينتك/منطقتك هامة جداً'));
+          iAddr.addEventListener('blur', () => checkField(iAddr, iAddr.value.trim().length > 5, '* العنوان التفصيلي يجب ألا يكون فارغاً لأمان التوصيل'));
+
+          // Order Generation Utils
+          async function genOrdNum() {
+              const base = `ORD-${new Date().getFullYear()}-${Date.now().toString().slice(-4)}`;
+              if(!supabaseClient) return base; // fallback
+              const { data } = await supabaseClient.from('orders').select('id').eq('order_number', base).limit(1);
+              if (data && data.length > 0) return `ORD-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
+              return base;
+          }
+
+          // Order Submission Processor
+          window.submitOrder = async () => {
+              // Forced Validation Pass
+              const v1 = checkField(iName, iName.value.trim().length > 2, '* يرجى إدخال البيانات المفقودة هنا بشكل سليم');
+              const v2 = checkField(iPhone, validateEgyptianPhone(iPhone.value.trim()), '* راجع رقم الهاتف');
+              const v3 = checkField(iGov, iGov.value !== '', '* يرجى المراجعة وتحديد الحقل أدناه');
+              const v4 = checkField(iCity, iCity.value.trim().length > 1, '* يرجى استيفاء بيانات العنوان كلياً');
+              const v5 = checkField(iAddr, iAddr.value.trim().length > 5, '* يرجى استيفاء بيانات العنوان كلياً لاستلامك الطلب');
+              
+              if(!v1 || !v2 || !v3 || !v4 || !v5) {
+                  window.showToast('عفواً، برجاء مراجعة البيانات المحددة باللون الأحمر وتصليحها لتسهيل التوصيل!', 'error');
+                  return;
+              }
+              
+              const btnObj = $('btn-submit-order');
+              btnObj.classList.add('btn-loading');
+
+              try {
+                  const payMethodStr = document.querySelector('input[name="payment"]:checked').value;
+                  const finalNum = await genOrdNum();
+                  
+                  const thePayload = {
+                      order_number: finalNum,
+                      customer_name: iName.value.trim(),
+                      phone: iPhone.value.trim(),
+                      governorate: iGov.value,
+                      city: iCity.value.trim(),
+                      address: iAddr.value.trim(),
+                      items: cart,
+                      subtotal: calc.subtotal,
+                      discount: calc.discount,
+                      coupon_code: calc.couponDetails ? calc.couponDetails.code : null,
+                      total: calc.total,
+                      status: 'pending',
+                      payment_method: payMethodStr,
+                      payment_status: 'unpaid',
+                      notes: iNotes.value.trim()
+                  };
+                  
+                  // Submit logic
+                  if(!supabaseClient) throw new Error("Connection failed unexpectedly");
+                  const { error: insErr } = await supabaseClient.from('orders').insert([thePayload]);
+                  if(insErr) throw insErr;
+                  
+                  // Consume Coupon implicitly if existed via +1 on uses
+                  if (calc.couponDetails) {
+                      await supabaseClient.from('coupons').update({ uses_count: (calc.couponDetails.uses_count || 0) + 1 }).eq('id', calc.couponDetails.id);
+                  }
+
+                  // Cleaning cart since confirmed successfully 
+                  localStorage.removeItem('heru_cart');
+                  localStorage.removeItem('heru_active_coupon');
+                  
+                  // Logic Wa
+                  let msgItms = ''; cart.forEach(i => { msgItms += `- ${i.name} × ${i.quantity} = ${i.price * i.quantity} ج\n`; });
+                  let pArabic = payMethodStr === 'cash' ? 'كاش في أيدك الدفع' : (payMethodStr === 'instapay' ? 'InstaPay تحويل منزلي' : 'عن طريق منفذ مكن فـوري');
+                  let pEInfo = '';
+                  if(payMethodStr === 'instapay') pEInfo = '\n(لقد سددت/جاهز لإرسال إيصال الدفع البنكي)';
+                  if(payMethodStr === 'fawry') pEInfo = `\n(أنتظر إرسال كود ماكينة فوري لدفع أوردر ${finalNum})`;
+
+                  const WA_MSG = `🛍️ طلب جديد كلياً — Heru Store\n━━━━━━━━━━━━━━━\n🔖 رقم المعرف: ${finalNum}\n\n👤 تفاصيل صاحب الطلب:\nالاسم: ${thePayload.customer_name}\nالتواصل: ${thePayload.phone}\nالعنوان: ${thePayload.governorate} / ${thePayload.city}، ${thePayload.address}\n\n📦 محتويات الطرد المطلوب:\n${msgItms}\n🧾 صافي الحساب:\nالمجموع: ${thePayload.subtotal} ج\nالخصومات: ${thePayload.discount} ج\nأجرة الشحن: مجــاني\n*المبلغ المستحق النهائي: ${thePayload.total} جنيه*\n\n💳 طريقة دفعك المحددة: ${pArabic}${pEInfo}\n\n📝 ملحوظات أخرى؟: ${thePayload.notes || 'لا يوجد'}\n━━━━━━━━━━━━━━━\nهذه الرسالة مولدة آلياً وتم تسجيل طلبك، نرجو ترك الرسالة لترتيب الحجز وإتمام الأمر بنجاح ✨.`;
+                  
+                  // We bypass popup rules explicitly with anchor injection inside promises context if needed or directly linking. Target _self replaces behavior smoothly sometimes if fallback triggered.
+                  
+                  setTimeout(() => {
+                      // Attempt WA send in background tab if allowed. Fallback handle via generic window routing tracking!
+                      try { window.open(`https://wa.me/${window.ENV?.WHATSAPP_NUMBER || '201124519232'}?text=${encodeURIComponent(WA_MSG)}`, '_blank'); } catch(e){}
+                      window.location.replace(`/confirmation?order=${finalNum}`);
+                  }, 150);
+
+              } catch(e) {
+                  window.showToast('خطأ بالسيرفر الداخلي. يرجى محاولة تأكيد الطلب مرة أخرى بعد بضع ثوان.', 'error');
+                  btnObj.classList.remove('btn-loading');
+              }
+          };
+      });
+  </script>
+
+<script>
+document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape') {
+        document.querySelectorAll('.mobile-menu.open, .filter-overlay.open, .filters-wrapper.open, .modal-overlay.open').forEach(el => el.classList.remove('open'));
+    }
+});
+</script>
+
+<!-- Cookie Notice -->
+<style>
+  #cookie-notice {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background: var(--bg-elevated);
+    border-top: 1px solid var(--border);
+    padding: var(--space-4) var(--space-6);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-4);
+    z-index: 9999;
+    box-shadow: 0 -4px 24px rgba(0,0,0,0.6);
+    transform: translateY(100%);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  #cookie-notice.visible { transform: translateY(0); }
+  .cookie-text { font-size: var(--text-sm); color: var(--text-secondary); flex: 1; }
+  .cookie-actions { display: flex; gap: var(--space-3); flex-shrink:0; }
+  @media(max-width: 600px) {
+    #cookie-notice { flex-direction: column; text-align: center; padding: var(--space-4); margin-bottom:-1px;}
+    .cookie-actions { width: 100%; }
+    .cookie-actions button { flex: 1; padding: var(--space-3); }
+  }
+</style>
+<div id="cookie-notice" role="dialog" aria-live="polite" aria-label="إشعار الخصوصية">
+    <div class="cookie-text">
+        نستخدم تقنية <strong>LocalStorage</strong> لحفظ سلة التسوق وتفضيلاتك. نحن لا نستخدم ملفات تعريف الارتباط (Cookies) للتتبع. يمكنك الاطلاع على <a href="./privacy" style="color:var(--accent); text-decoration:underline;">سياسة الخصوصية</a> لمزيد من التفاصيل.
+    </div>
+    <div class="cookie-actions">
+        <button class="btn btn-primary" id="btn-accept-cookie" aria-label="موافق ومتابعة">موافق</button>
+    </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+     if(!localStorage.getItem('heru_cookie_accepted')) {
+         setTimeout(() => { const c = document.getElementById('cookie-notice'); if(c) c.classList.add('visible'); }, 800);
+     }
+     const btnC = document.getElementById('btn-accept-cookie');
+     if(btnC) {
+         btnC.addEventListener('click', () => {
+             localStorage.setItem('heru_cookie_accepted', 'yes');
+             document.getElementById('cookie-notice').classList.remove('visible');
+         });
+     }
+  });
+</script>
+
+
+<!-- Vercel Performance & Reliability -->
+<script defer src="./_vercel/speed-insights/script.js"></script>
+<script defer src="./_vercel/insights/script.js"></script>
+<script>
+  window.addEventListener('error', (e) => {
+      // Prevent verbose console if handled, silent UX failure mode
+      if(window.showToast) window.showToast('حدث خطأ غير متوقع — حاول مرة أخرى', 'error');
+  });
+  window.addEventListener('unhandledrejection', (e) => {
+      if(window.showToast) window.showToast('تم رفض الاتصال بالخادم — يرجى التواصل عبر الواتساب بدلاً من ذلك.', 'error');
+  });
+</script>
+
+</body>
+</html>

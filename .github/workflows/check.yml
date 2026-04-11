@@ -1,0 +1,37 @@
+name: CI Check
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  verify-codequality:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        
+      - name: Verify vercel.json (JSON Lint)
+        run: jq empty vercel.json
+        
+      - name: Check Viewport Meta in HTML files
+        run: |
+          for file in *.html; do
+            if [ -f "$file" ]; then
+              if ! grep -qE '<meta.*name="viewport"|<meta.*name=''viewport''' "$file"; then
+                echo "❌ Error: Missing viewport meta tag in $file"
+                exit 1
+              fi
+            fi
+          done
+          echo "✅ All HTML files contain viewport tags."
+
+      - name: Check no console.log in JS files
+        run: |
+          if grep -rE 'console\.log' assets/js/; then
+            echo "❌ Error: console.log found in JS files. Please remove them before merging."
+            exit 1
+          fi
+          echo "✅ No console logs found in JS assets."

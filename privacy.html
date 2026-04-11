@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>سياسة الخصوصية | Heru</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <link rel="stylesheet" href="./assets/css/tokens.css">
+  <link rel="stylesheet" href="./assets/css/base.css">
+  <link rel="stylesheet" href="./assets/css/components.css">
+  
+  <style>
+    .container { max-width: 800px; margin: 0 auto; padding: 0 var(--space-4); }
+    .section { padding: var(--space-16) 0; }
+    .page-header { margin-block-end: var(--space-12); padding-block-end: var(--space-6); border-bottom: 1px solid var(--border); }
+    .page-title { font-family: var(--font-display); font-size: var(--text-4xl); margin-block-end: var(--space-3); color: var(--text-primary); }
+    .last-updated { color: var(--text-secondary); font-size: var(--text-sm); font-family: var(--font-number); }
+    
+    .content-body { color: var(--text-secondary); font-size: 1.1rem; line-height: 1.8; }
+    .content-body h2 { color: var(--text-primary); font-family: var(--font-display); font-size: var(--text-2xl); margin-block-start: var(--space-12); margin-block-end: var(--space-4); }
+    .content-body ul { margin-block-end: var(--space-6); padding-inline-start: var(--space-6); }
+    .content-body li { margin-block-end: var(--space-2); }
+  </style>
+</head>
+<body>
+
+  <header>
+      <nav class="navbar" aria-label="التنقل الرئيسي">
+          <a href="./" class="navbar-logo" aria-label="الصفحة الرئيسية">HERU</a>
+          <ul class="navbar-links" style="list-style: none; margin: 0; padding: 0;">
+              <li><a href="./">الرئيسية</a></li>
+              <li><a href="./shop">المتجر</a></li>
+              <li><a href="./suggest">اقتراح تصميم</a></li>
+          </ul>
+          <div class="navbar-actions">
+              <a href="./cart" class="cart-badge btn-ghost" data-count="0" aria-label="سلة التسوق" style="font-size: var(--text-xl);">🛒</a>
+              
+          <button data-lang-toggle onclick="window.toggleLanguage()" class="btn-ghost font-display" aria-label="تغيير اللغة" style="font-weight: 700;">EN</button>
+          <button class="mobile-menu-toggle" aria-label="فتح القائمة الرئيسية" aria-expanded="false">☰</button>
+          </div>
+      </nav>
+  </header>
+
+   <!-- Mobile Menu Drawer -->
+  <div class="mobile-menu">
+      <button class="mobile-menu-toggle open font-display" onclick="document.querySelector('.mobile-menu').classList.remove('open')" style="align-self: flex-end; font-size: 24px; display: block;" aria-label="إغلاق">✕</button>
+      <a href="./" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);">الرئيسية</a>
+      <a href="./shop" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);">المتجر</a>
+      <a href="./suggest" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);">اقتراح تصميم</a>
+  </div>
+
+  <main id="main-content" class="container section">
+      <div class="page-header">
+          <h1 class="page-title">سياسة الخصوصية</h1>
+          <div class="last-updated">آخر تحديث: 11 أبريل 2026</div>
+      </div>
+      
+      <div class="content-body">
+          <h2>١. ما البيانات التي نجمعها</h2>
+          <ul>
+              <li><strong>الاسم ورقم الهاتف والعنوان:</strong> يتم جمعها وبشكل حصري فقط عند إتمام طلب الشراء لغرض التوصيل والتأكيد.</li>
+              <li><strong>بيانات السلة المفضلة:</strong> محفوظة كلياً داخل حيز جهازك وتصفحك الشخصي بتقنية (LocalStorage) ولا نعلم عنها شيئاً ولا تُحفظ في خوادمنا إلا بعد إتمام طلبك.</li>
+              <li><strong>التقييمات والاقتراحات:</strong> تُجمع بحرية إذا اخترت أنت إرسالها إلينا لدراستها أو عرضها.</li>
+              <li><strong>لا نجمع:</strong> أية بيانات خاصة ببطاقاتك الائتمانية أو طرق دفعك (جميع تحويلات الدفع تتم خارج نظامنا أو الدفع عند الاستلام).</li>
+              <li><strong>لا نجمع:</strong> ملفات الارتباط (تتبع المتصفح Tracking Cookies)، فنحن نحترم خصوصية تصفحك تماماً.</li>
+          </ul>
+
+          <h2>٢. لماذا نجمع هذه البيانات</h2>
+          <ul>
+              <li>لمعالجة طلبك وتوصيله لعنوانك الصحيح وتأمين وصول المنتج بدقة.</li>
+              <li>للتمكن من التواصل معك شخصياً بخصوص طلبك عبر منصة واتساب وتأكيده لتفادي الإزعاج والمشاكل.</li>
+          </ul>
+
+          <h2>٣. مع من نشارك بياناتك</h2>
+          <ul>
+              <li><strong>لا نبيع ولا نشارك</strong> أياً من بياناتك الشخصية مع أي طرف ثالث تجاري أو أي مؤسسة إعلانية.</li>
+              <li>تُحفظ بيانات الطلبات المُدخلة فقط على بيئة خوادم (Supabase.com) السحابية الآمنة، ويمكنك الاطلاع على سياساتهم الشديدة من موقعهم الرسمي.</li>
+          </ul>
+
+          <h2>٤. حقوقك المُطلقة</h2>
+          <ul>
+              <li>حق طلب الاطلاع وعرض جميع بياناتك المخزنة لدينا متى شئت.</li>
+              <li>حق طلب محو وإزالة وحذف بيانات طلباتك من سجلاتنا نهائياً.</li>
+              <li>يُمكنك ممارسة هذه الحقوق بسهولة تامة عبر التواصل الفوري معنا عن طريق الواتساب على الرقم المخصص بالأسفل.</li>
+          </ul>
+
+          <h2>٥. تواصل معنا للاستفسارات</h2>
+          <p>
+              في حال وجود أي استفسارات أو شكوى تخص سياساتنا الأمنية وطرق الخصوصية، يسعدنا تواصلكم على مدار الساعة من خلال الواتساب: <br>
+              <a href="https://wa.me/201124519232" class="font-num" style="color:var(--accent); font-weight:700; text-decoration:none; display:inline-block; margin-top:8px;" dir="ltr">+20 112 451 9232</a>
+          </p>
+      </div>
+  </main>
+  
+  <!-- Footer -->
+  <footer class="footer">
+      <div class="container">
+          <div class="footer-grid">
+              <div class="footer-col">
+                  <h4 class="font-display" style="font-weight: 900; font-size: var(--text-3xl); color: var(--accent); letter-spacing: 2px;">HERU</h4>
+                  <p style="color: var(--text-secondary); margin-block-end: var(--space-4);">متجر هيرو للمنتجات الشبابية. بنقدم لك منتجات بتعبر عن أسلوب حياتك وروحك المختلفة.</p>
+                  <div class="social-links" id="footer-social">
+                      <!-- Instagram -->
+                      <a href="#" 
+                         class="social-link" 
+                         data-social="instagram"
+                         target="_blank" 
+                         rel="noopener noreferrer"
+                         aria-label="Instagram"
+                         style="display:none;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" 
+                             stroke="currentColor" stroke-width="1.5">
+                          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                          <circle cx="12" cy="12" r="4"/>
+                          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+                        </svg>
+                      </a>
+
+                      <!-- Facebook -->
+                      <a href="#"
+                         class="social-link"
+                         data-social="facebook"
+                         target="_blank"
+                         rel="noopener noreferrer"
+                         aria-label="Facebook"
+                         style="display:none;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="1.5">
+                          <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                        </svg>
+                      </a>
+
+                      <!-- TikTok -->
+                      <a href="#"
+                         class="social-link"
+                         data-social="tiktok"
+                         target="_blank"
+                         rel="noopener noreferrer"
+                         aria-label="TikTok"
+                         style="display:none;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5
+                                   2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1
+                                   V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34
+                                   6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69
+                                   a8.18 8.18 0 0 0 4.78 1.52V6.74a4.85 4.85 0 0 1-1.01-.05z"/>
+                        </svg>
+                      </a>
+
+                      <!-- Telegram -->
+                      <a href="#"
+                         class="social-link"
+                         data-social="telegram"
+                         target="_blank"
+                         rel="noopener noreferrer"
+                         aria-label="Telegram"
+                         style="display:none;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="1.5">
+                          <path d="m22 2-7 20-4-9-9-4 20-7z"/>
+                          <path d="M22 2 11 13"/>
+                        </svg>
+                      </a>
+                  </div>
+              </div>
+              <div class="footer-col">
+                  <h4>المتجر</h4>
+                  <div class="footer-links">
+                      <a href="./shop">كل المنتجات</a>
+                      <a href="./shop?category=caps">كابات</a>
+                      <a href="./shop?filter=new">الجديد</a>
+                      <a href="./shop?filter=best">الأكثر مبيعاً</a>
+                  </div>
+              </div>
+              <div class="footer-col">
+                  <h4>الدعم</h4>
+                  <div class="footer-links">
+                      <a href="./track-order">تتبع الطلب</a>
+                      <a href="./suggest">اقتراح تصميم</a>
+                      <a href="./privacy">سياسة الخصوصية</a>
+                      <a href="./terms">شروط الاستخدام</a>
+                  </div>
+              </div>
+              <div class="footer-col">
+                  <h4>تواصل معنا</h4>
+                  <div class="footer-links">
+                      <span style="color: var(--text-secondary);">💬 واتساب:</span>
+                      <a href="https://wa.me/201124519232" dir="ltr" class="font-num" style="font-size: var(--text-lg); font-weight: 700;">+20 112 451 9232</a>
+                  </div>
+              </div>
+          </div>
+          <div class="copyright">
+              &copy; <span class="font-num">2026</span> Heru Store. كافة الحقوق محفوظة.
+          </div>
+      </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Init cart badge logic from simple generic func
+        try {
+            const cart = JSON.parse(localStorage.getItem('heru_cart')) || [];
+            const badge = document.querySelector('.cart-badge');
+            if(badge) {
+                const c = cart.reduce((a, item) => a + item.quantity, 0);
+                badge.setAttribute('data-count', c);
+                badge.setAttribute('aria-label', 'سلة التسوق، ' + c + ' منتجات');
+            }
+        } catch(e) {}
+    });
+    document.addEventListener('keydown', (e) => {
+        if(e.key === 'Escape') {
+            document.querySelectorAll('.mobile-menu.open, .filter-overlay.open, .filters-wrapper.open, .modal-overlay.open').forEach(el => el.classList.remove('open'));
+        }
+    });
+  </script>
+
+<!-- Cookie Notice -->
+<style>
+  #cookie-notice {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background: var(--bg-elevated);
+    border-top: 1px solid var(--border);
+    padding: var(--space-4) var(--space-6);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-4);
+    z-index: 9999;
+    box-shadow: 0 -4px 24px rgba(0,0,0,0.6);
+    transform: translateY(100%);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  #cookie-notice.visible { transform: translateY(0); }
+  .cookie-text { font-size: var(--text-sm); color: var(--text-secondary); flex: 1; }
+  .cookie-actions { display: flex; gap: var(--space-3); flex-shrink:0; }
+  @media(max-width: 600px) {
+    #cookie-notice { flex-direction: column; text-align: center; padding: var(--space-4); margin-bottom:-1px;}
+    .cookie-actions { width: 100%; }
+    .cookie-actions button { flex: 1; padding: var(--space-3); }
+  }
+</style>
+<div id="cookie-notice" role="dialog" aria-live="polite" aria-label="إشعار الخصوصية">
+    <div class="cookie-text">
+        نستخدم تقنية <strong>LocalStorage</strong> لحفظ سلة التسوق وتفضيلاتك. نحن لا نستخدم ملفات تعريف الارتباط (Cookies) للتتبع. يمكنك الاطلاع على <a href="./privacy" style="color:var(--accent); text-decoration:underline;">سياسة الخصوصية</a> لمزيد من التفاصيل.
+    </div>
+    <div class="cookie-actions">
+        <button class="btn btn-primary" id="btn-accept-cookie" aria-label="موافق ومتابعة">موافق</button>
+    </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+     if(!localStorage.getItem('heru_cookie_accepted')) {
+         setTimeout(() => { const c = document.getElementById('cookie-notice'); if(c) c.classList.add('visible'); }, 800);
+     }
+     const btnC = document.getElementById('btn-accept-cookie');
+     if(btnC) {
+         btnC.addEventListener('click', () => {
+             localStorage.setItem('heru_cookie_accepted', 'yes');
+             document.getElementById('cookie-notice').classList.remove('visible');
+         });
+     }
+  });
+</script>
+
+
+<!-- Vercel Performance & Reliability -->
+<script defer src="./_vercel/speed-insights/script.js"></script>
+<script defer src="./_vercel/insights/script.js"></script>
+<script>
+  window.addEventListener('error', (e) => {
+      // Prevent verbose console if handled, silent UX failure mode
+      if(window.showToast) window.showToast('حدث خطأ غير متوقع — حاول مرة أخرى', 'error');
+  });
+  window.addEventListener('unhandledrejection', (e) => {
+      if(window.showToast) window.showToast('تم رفض الاتصال بالخادم — يرجى التواصل عبر الواتساب بدلاً من ذلك.', 'error');
+  });
+</script>
+
+</body>
+</html>

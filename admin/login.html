@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تسجيل الدخول | Heru Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <style>
+    body { background-color: #050505; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
+    .login-box {
+      width: 100%; max-width: 420px; padding: var(--space-8);
+      background: var(--bg-card); border-radius: var(--radius-lg);
+      border: 1px solid var(--border-strong);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    }
+    .logo-container { text-align: center; margin-block-end: var(--space-8); }
+    .logo-container h1 { font-family: var(--font-display); font-size: 40px; color: var(--accent); margin: 0; letter-spacing: 2px; }
+    .logo-container p { color: var(--text-muted); font-size: var(--text-sm); margin-top: 4px; }
+    
+    .toast-container { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 9999; }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <div class="login-box">
+      <div class="logo-container">
+          <h1>HERU</h1>
+          <p>Admin Secure Portal</p>
+      </div>
+
+      <form id="login-form">
+          <div style="margin-block-end: var(--space-5);">
+              <label class="form-label" style="color:var(--text-secondary);">البريد الإلكتروني للإدارة</label>
+              <input type="email" id="inp-email" class="input-field" dir="ltr" placeholder="admin@herustore.com" required>
+          </div>
+          <div style="margin-block-end: var(--space-6);">
+              <label class="form-label" style="display:flex; justify-content:space-between; color:var(--text-secondary);">
+                  <span>كلمة المرور</span>
+                  <a href="#" id="forgot-pw" style="color:var(--accent); font-size:12px; font-weight:normal;">تذكرها؟</a>
+              </label>
+              <input type="password" id="inp-pass" class="input-field" dir="ltr" placeholder="•••••••••" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full btn-lg" id="btn-login">تأكيد الدخول</button>
+      </form>
+      
+  </div>
+
+  <script type="module">
+      import { supabaseClient } from '/assets/js/supabase.js';
+
+      window.showToast = (msg, type='info') => {
+          const c = document.getElementById('toast-container');
+          if(!c) return;
+          const t = document.createElement('div'); t.className = `toast toast-${type}`; t.innerText = msg;
+          c.appendChild(t); setTimeout(()=>t.remove(), 4000);
+      };
+
+      document.addEventListener('DOMContentLoaded', async () => {
+          if (!supabaseClient) { window.showToast('عفواً، لا يوجد اتصال بخادم Supabase', 'error'); return; }
+
+          // Watcher for Auth (Security Check)
+          const { data: { session }, error } = await supabaseClient.auth.getSession();
+          if (session && !error) {
+              window.location.replace('/admin/index.html');
+              return;
+          }
+
+          document.getElementById('login-form').addEventListener('submit', async (e) => {
+              e.preventDefault();
+              const email = document.getElementById('inp-email').value.trim();
+              const pass = document.getElementById('inp-pass').value.trim();
+              
+              if(!email || !pass) return;
+
+              // Security: Brute Force Guard
+              const lockInfoRaw = localStorage.getItem('heru_admin_lock');
+              const lockInfo = lockInfoRaw ? JSON.parse(lockInfoRaw) : { attempts: 0, lockedUntil: 0 };
+              if (Date.now() < lockInfo.lockedUntil) {
+                  window.showToast('تعليق أمني مؤقت بسبب تكرار المحاولات. جرب بعد قليل.', 'error');
+                  return;
+              }
+
+              const btn = document.getElementById('btn-login');
+              btn.classList.add('btn-loading');
+
+              try {
+                  const { data, error } = await supabaseClient.auth.signInWithPassword({
+                      email: email, password: pass
+                  });
+
+                  if (error) throw error;
+                  
+                  // Login success
+                  localStorage.removeItem('heru_admin_lock');
+                  window.location.replace('/admin/index.html');
+                  
+              } catch(err) {
+                  console.error(err);
+                  lockInfo.attempts += 1;
+                  if (lockInfo.attempts >= 5) {
+                      lockInfo.lockedUntil = Date.now() + 30000; // 30 sec lockdown
+                      lockInfo.attempts = 0;
+                  }
+                  localStorage.setItem('heru_admin_lock', JSON.stringify(lockInfo));
+                  
+                  window.showToast('بيانات الدخول خاطئة أو غير مسجلة بالنظام.', 'error');
+              } finally {
+                  btn.classList.remove('btn-loading');
+              }
+          });
+
+          // Password Reset Flow Link
+          document.getElementById('forgot-pw').addEventListener('click', async (e) => {
+              e.preventDefault();
+              const email = document.getElementById('inp-email').value.trim();
+              if(!email) { window.showToast('يرجى كتابة البريد الإلكتروني بالأعلى أولاً..', 'error'); return; }
+              
+              const confirmed = confirm('هل تريد إرسال رابط تأكيد وتحديث كلمة المرور إلى البريد أعلاه؟');
+              if (confirmed) {
+                  try {
+                      const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+                          redirectTo: `${window.location.origin}/admin/login.html`
+                      });
+                      if(error) throw error;
+                      window.showToast('طُلب من السيرفر. راجع بريدك الإلكتروني إذا كان مسجلاً بالفعلاً.', 'info');
+                  } catch(e) {
+                      window.showToast('حدث خطأ بالاتصال. يرجى المحاولة لاحقاً', 'error');
+                  }
+              }
+          });
+      });
+  </script>
+</body>
+</html>

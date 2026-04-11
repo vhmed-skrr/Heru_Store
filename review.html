@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>قيم المتجر | Heru</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <link rel="stylesheet" href="./assets/css/tokens.css">
+  <link rel="stylesheet" href="./assets/css/base.css">
+  <link rel="stylesheet" href="./assets/css/components.css">
+  
+  <style>
+    .container { max-width: 600px; margin: 0 auto; padding: 0 var(--space-4); }
+    .hero-small { text-align: center; padding: var(--space-12) 0 var(--space-8) 0; }
+    .hero-title { font-family: var(--font-display); font-size: var(--text-4xl); margin-block-end: var(--space-4); }
+    
+    .form-wrapper {
+        background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg);
+        padding: var(--space-8); box-shadow: 0 4px 24px rgba(0,0,0,0.2); margin-block-end: var(--space-16);
+    }
+    
+    .stars-input { display: flex; flex-direction: row-reverse; justify-content: center; gap: 8px; margin-block-end: var(--space-6); }
+    .star-btn {
+        background: transparent; border: none; font-size: 40px; color: var(--border-strong);
+        cursor: pointer; transition: color 0.2s, transform 0.2s; outline: none; -webkit-tap-highlight-color: transparent;
+    }
+    /* Star Interactive Logic CSS Reverse Trick */
+    .star-btn:hover, .star-btn:hover ~ .star-btn { color: var(--accent); transform: scale(1.1); }
+    .star-btn.active, .star-btn.active ~ .star-btn { color: var(--warning); }
+    
+    .success-msg { text-align: center; padding: var(--space-8) var(--space-4); display: none; }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <nav class="navbar" style="justify-content:center;">
+      <a href="./" class="navbar-logo" data-setting="store_name">HERU</a>
+  </nav>
+
+  <main class="container">
+      
+      <div class="hero-small" id="hero-sec">
+          <h1 class="hero-title">شاركنا رأيك في متجر Heru 🤍</h1>
+          <p style="color:var(--text-secondary); font-size:var(--text-lg);">رأيك وتقييمك يساعداننا لنقدم لك الأفضل دائمًا، ويضمن للشباب الآخرين تجربة موثوقة!</p>
+      </div>
+
+      <div class="form-wrapper" id="form-view">
+          <form id="review-form" onsubmit="window.submitReview(event)">
+              
+              <div style="text-align:center; margin-block-end:var(--space-2); color:var(--text-primary); font-weight:700;">ما هو تقييمك العام لتجربتك؟</div>
+              
+              <!-- Stars Container (Reverse mapped for CSS sibling selector) -->
+              <div class="stars-input" id="stars-container" role="radiogroup" aria-label="التقييم">
+                  <button type="button" class="star-btn" data-val="5" role="radio" aria-checked="false" aria-label="5 نجوم">★</button>
+                  <button type="button" class="star-btn" data-val="4" role="radio" aria-checked="false" aria-label="4 نجوم">★</button>
+                  <button type="button" class="star-btn" data-val="3" role="radio" aria-checked="false" aria-label="3 نجوم">★</button>
+                  <button type="button" class="star-btn" data-val="2" role="radio" aria-checked="false" aria-label="نجمتان">★</button>
+                  <button type="button" class="star-btn" data-val="1" role="radio" aria-checked="false" aria-label="نجمة واحدة">★</button>
+              </div>
+              <input type="hidden" id="inp-rating" value="0">
+              <div class="form-error-message" id="err-rating" style="text-align:center; margin-top:-10px; margin-bottom:16px;"></div>
+              
+              <div style="margin-block-end: var(--space-5);">
+                  <label class="form-label">الاسم <span style="color:var(--error);">*</span></label>
+                  <input type="text" id="inp-name" class="input-field" placeholder="اسمك الكريم" required>
+              </div>
+              
+              <div style="margin-block-end: var(--space-6);">
+                  <label class="form-label">تعليقك (اختصاص وخدمة العملاء، الجودة، التوصيل) <span style="color:var(--error);">*</span></label>
+                  <textarea id="inp-comment" class="textarea-field" style="min-height: 100px;" placeholder="اكتب لنا تجربتك الرائعة أو أي ملاحظات للتطوير..." required></textarea>
+              </div>
+              
+              <button type="submit" class="btn btn-primary btn-full btn-lg" id="btn-submit">أرسل تقييمك الآن</button>
+          </form>
+      </div>
+      
+      <div class="success-msg" id="success-view">
+          <div style="font-size: 64px; margin-block-end: var(--space-4);">🙏</div>
+          <h2 class="hero-title">شكراً لمرورك الكريم ومساهمتك!</h2>
+          <p style="color:var(--text-secondary); margin-block-end:var(--space-6); font-size:var(--text-lg);" id="lbl-thanks">تقييمك سيظهر في لوحة آراء الزوار بعد التحقق والمراجعة. نتمنى رؤيتك قريباً.</p>
+          <button class="btn btn-primary btn-lg" onclick="window.location.href='/shop'">تسوّق أحدث المنتجات</button>
+      </div>
+
+  </main>
+  
+  <div id="toast-container" class="toast-container"></div>
+
+  <script type="module">
+      import { supabaseClient } from '/assets/js/supabase.js';
+
+      document.addEventListener('DOMContentLoaded', () => {
+
+          if(localStorage.getItem('heru_store_reviewed')) {
+              document.getElementById('form-view').style.display='none';
+              document.getElementById('success-view').style.display='block';
+              document.getElementById('hero-sec').style.display='none';
+              document.getElementById('lbl-thanks').innerText = "سبق وأن شرفتنا بتقييمك — شكراً جزيلاً لك على دعمك المستمر!";
+              return;
+          }
+
+          // Stars Interactions
+          const stars = document.querySelectorAll('.star-btn');
+          const inpRating = document.getElementById('inp-rating');
+          
+          stars.forEach(s => {
+              s.addEventListener('click', (e) => {
+                  const val = parseInt(e.target.getAttribute('data-val'));
+                  inpRating.value = val;
+                  stars.forEach(st => {
+                      if(parseInt(st.getAttribute('data-val')) <= val) {
+                          st.classList.add('active');
+                          st.setAttribute('aria-checked', parseInt(st.getAttribute('data-val')) === val ? 'true' : 'false');
+                      } else {
+                          st.classList.remove('active');
+                          st.setAttribute('aria-checked', 'false');
+                      }
+                  });
+              });
+          });
+
+          window.submitReview = async (e) => {
+              e.preventDefault();
+              
+              if(inpRating.value === "0") {
+                  document.getElementById('err-rating').innerText = '* يرجى النقر وتحديد عدد النجوم أولاً.';
+                  return;
+              } else document.getElementById('err-rating').innerText = '';
+              
+              const btn = document.getElementById('btn-submit');
+              btn.classList.add('btn-loading');
+
+              const payload = {
+                  reviewer_name: document.getElementById('inp-name').value.trim(),
+                  rating: parseInt(inpRating.value),
+                  comment: document.getElementById('inp-comment').value.trim(),
+                  approved: false
+              };
+
+              try {
+                  const { error } = await supabaseClient.from('store_reviews').insert([payload]);
+                  if(error) throw error;
+                  
+                  localStorage.setItem('heru_store_reviewed', 'yes');
+                  
+                  document.getElementById('form-view').style.display='none';
+                  document.getElementById('hero-sec').style.display='none';
+                  document.getElementById('success-view').style.display='block';
+                  window.scrollTo({top:0, behavior:'smooth'});
+                  
+              } catch(err) {
+                  const c = document.getElementById('toast-container');
+                  if(c){ const t = document.createElement('div'); t.className="toast toast-error"; t.innerText="حدث خطأ. حاول مرة أخرى."; c.appendChild(t); setTimeout(()=>t.remove(), 4000); }
+              } finally {
+                  btn.classList.remove('btn-loading');
+              }
+          };
+      });
+  </script>
+
+<script>
+document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape') {
+        document.querySelectorAll('.mobile-menu.open, .filter-overlay.open, .filters-wrapper.open, .modal-overlay.open').forEach(el => el.classList.remove('open'));
+    }
+});
+</script>
+
+<!-- Cookie Notice -->
+<style>
+  #cookie-notice {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background: var(--bg-elevated);
+    border-top: 1px solid var(--border);
+    padding: var(--space-4) var(--space-6);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-4);
+    z-index: 9999;
+    box-shadow: 0 -4px 24px rgba(0,0,0,0.6);
+    transform: translateY(100%);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  #cookie-notice.visible { transform: translateY(0); }
+  .cookie-text { font-size: var(--text-sm); color: var(--text-secondary); flex: 1; }
+  .cookie-actions { display: flex; gap: var(--space-3); flex-shrink:0; }
+  @media(max-width: 600px) {
+    #cookie-notice { flex-direction: column; text-align: center; padding: var(--space-4); margin-bottom:-1px;}
+    .cookie-actions { width: 100%; }
+    .cookie-actions button { flex: 1; padding: var(--space-3); }
+  }
+</style>
+<div id="cookie-notice" role="dialog" aria-live="polite" aria-label="إشعار الخصوصية">
+    <div class="cookie-text">
+        نستخدم تقنية <strong>LocalStorage</strong> لحفظ سلة التسوق وتفضيلاتك. نحن لا نستخدم ملفات تعريف الارتباط (Cookies) للتتبع. يمكنك الاطلاع على <a href="./privacy" style="color:var(--accent); text-decoration:underline;">سياسة الخصوصية</a> لمزيد من التفاصيل.
+    </div>
+    <div class="cookie-actions">
+        <button class="btn btn-primary" id="btn-accept-cookie" aria-label="موافق ومتابعة">موافق</button>
+    </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+     if(!localStorage.getItem('heru_cookie_accepted')) {
+         setTimeout(() => { const c = document.getElementById('cookie-notice'); if(c) c.classList.add('visible'); }, 800);
+     }
+     const btnC = document.getElementById('btn-accept-cookie');
+     if(btnC) {
+         btnC.addEventListener('click', () => {
+             localStorage.setItem('heru_cookie_accepted', 'yes');
+             document.getElementById('cookie-notice').classList.remove('visible');
+         });
+     }
+  });
+</script>
+
+
+<!-- Vercel Performance & Reliability -->
+<script defer src="./_vercel/speed-insights/script.js"></script>
+<script defer src="./_vercel/insights/script.js"></script>
+<script>
+  window.addEventListener('error', (e) => {
+      // Prevent verbose console if handled, silent UX failure mode
+      if(window.showToast) window.showToast('حدث خطأ غير متوقع — حاول مرة أخرى', 'error');
+  });
+  window.addEventListener('unhandledrejection', (e) => {
+      if(window.showToast) window.showToast('تم رفض الاتصال بالخادم — يرجى التواصل عبر الواتساب بدلاً من ذلك.', 'error');
+  });
+</script>
+
+</body>
+</html>

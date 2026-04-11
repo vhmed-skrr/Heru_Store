@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة القيادة | Heru Admin</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  
+  <style>
+    body { background-color: #030303; margin: 0; padding: 0; overflow: hidden; }
+    
+    .admin-layout { display: flex; height: 100vh; width: 100vw; }
+    
+    /* Sidebar */
+    .sidebar { width: 260px; background: #080808; border-left: 1px solid var(--border-strong); display: flex; flex-direction: column; overflow-y: auto; flex-shrink: 0; }
+    .sidebar-logo { padding: var(--space-6); text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); margin-block-end: var(--space-4); }
+    .sidebar-logo h1 { font-family: var(--font-display); font-size: 32px; color: var(--accent); margin: 0; letter-spacing: 2px; }
+    
+    .nav-menu { flex: 1; padding: 0 var(--space-2); }
+    .nav-btn { 
+        display: flex; align-items: center; gap: 12px; width: 100%; padding: var(--space-4); margin-bottom: 4px; border: none; background: transparent; color: var(--text-secondary); text-align: right; cursor: pointer; border-radius: var(--radius-sm); font-size: 15px; font-weight: 600; transition: all 0.2s;
+    }
+    .nav-btn:hover { background: rgba(240, 235, 225, 0.04); color: var(--text-primary); }
+    .nav-btn.active { background: rgba(240, 235, 225, 0.08); color: var(--accent); border-right: 4px solid var(--accent); }
+    
+    .sidebar-footer { padding: var(--space-6); border-top: 1px solid rgba(255,255,255,0.05); }
+    .btn-logout { background: transparent; border: 1px solid var(--error); color: var(--error); padding: 8px; width: 100%; text-align: center; border-radius: var(--radius-sm); cursor: pointer; }
+    
+    /* Main Area */
+    .main-area { flex: 1; padding: var(--space-8); overflow-y: auto; background: #0a0a0a; position: relative; }
+    
+    .view-panel { display: none; animation: fadeIn 0.3s ease; }
+    .view-panel.active-view { display: block; }
+    @keyframes fadeIn { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
+    
+    .page-header { display: flex; justify-content: space-between; align-items: center; margin-block-end: var(--space-8); border-bottom: 1px solid var(--border-strong); padding-bottom: var(--space-6); }
+    .page-header h2 { margin: 0; font-family: var(--font-display); font-size: 28px; color: var(--text-primary); }
+    
+    /* Stats */
+    .stats-tray { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-6); margin-block-end: var(--space-8); }
+    .stat-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: var(--space-6); box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+    .stat-label { color: var(--text-muted); font-size: 14px; margin-bottom: 8px; font-weight: 600; }
+    .stat-num { font-size: 32px; font-weight: 700; color: var(--accent); margin-bottom: 4px; font-family: var(--font-number); }
+    .stat-meta { font-size: 12px; color: var(--success); }
+    
+    /* Data Tables */
+    .table-container { background: var(--bg-card); border: 1px solid var(--border-strong); border-radius: var(--radius-lg); overflow-x: auto; }
+    .data-table { width: 100%; border-collapse: collapse; text-align: right; }
+    .data-table th, .data-table td { padding: 16px; border-bottom: 1px solid var(--border-strong); font-size: 14px; }
+    .data-table th { background: rgba(255,255,255,0.02); color: var(--text-muted); font-weight: normal; }
+    .data-table tr:hover { background: rgba(255,255,255,0.01); }
+    
+    /* Status Badges */
+    .badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+    .badge.pending { background: rgba(234, 179, 8, 0.15); color: #eab308; }
+    .badge.processing { background: rgba(59, 130, 246, 0.15); color: #3b82f6; }
+    .badge.shipped { background: rgba(168, 85, 247, 0.15); color: #a855f7; }
+    .badge.delivered { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
+    .badge.cancelled { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+    
+    /* Actions */
+    .action-btn { background: transparent; border: none; color: var(--accent); cursor: pointer; text-decoration: underline; font-size: 12px; margin-left: 8px; }
+    
+    /* Modal System */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: flex-start; padding: 60px 20px; overflow-y: auto; z-index: 1000; backdrop-filter: blur(4px); }
+    .modal-overlay.active { display: flex; }
+    .modal-box { background: var(--bg-card); width: 100%; max-width: 700px; border-radius: var(--radius-lg); border: 1px solid var(--border-accent); position: relative; padding: var(--space-8); box-shadow: 0 20px 60px rgba(0,0,0,0.6); }
+    .modal-close { position: absolute; left: 24px; top: 24px; cursor: pointer; font-size: 24px; color: var(--text-muted); line-height: 1; border: none; background: transparent; }
+    
+    /* Cloudinary Box inside modal */
+    .drag-box { border: 2px dashed var(--border-strong); padding: 32px; text-align: center; border-radius: 8px; cursor: pointer; margin-bottom: 16px; background: rgba(255,255,255,0.02); }
+    .drag-box:hover { border-color: var(--accent); }
+    
+    .toast-container { position: fixed; top: 24px; left: 50%; transform: translateX(-50%); z-index: 9999; }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- Full Guard Veil -->
+  <div id="auth-guard" style="position:fixed; inset:0; background:#000; z-index:99999; display:flex; justify-content:center; align-items:center; color:#fff; font-size:24px; font-family:var(--font-display);">جارٍ مصادقة الجلسة...</div>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <div class="admin-layout">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+          <div class="sidebar-logo">
+              <h1>HERU</h1>
+              <span style="color:var(--text-muted); font-size:12px;">Secure Protocol</span>
+          </div>
+          
+          <nav class="nav-menu" id="admin-nav">
+              <button class="nav-btn active" data-target="dashboard">📊 لوحة المؤشرات</button>
+              <button class="nav-btn" data-target="orders">📦 الطلبات والمبيعات</button>
+              <button class="nav-btn" data-target="products">📝 إدارة المنتجات</button>
+              <button class="nav-btn" data-target="categories">🗂️ تصنيفات المتجر</button>
+              <button class="nav-btn" data-target="coupons">🎟️ محرك الكوبونات</button>
+              <button class="nav-btn" data-target="reviews">⭐ المراجعات الحية</button>
+              <button class="nav-btn" data-target="suggestions">💡 صندوق الاقتراحات</button>
+              <button class="nav-btn" data-target="settings">⚙️ الإعدادات العامة</button>
+          </nav>
+          
+          <div class="sidebar-footer">
+              <button class="btn-logout" id="btn-logout">تسجيل الخروج 🚪</button>
+          </div>
+      </aside>
+      
+      <!-- Main Work Area -->
+      <main class="main-area">
+          
+          <!-- VIEW 1: Dashboard -->
+          <section id="view-dashboard" class="view-panel active-view">
+              <div class="page-header">
+                  <h2>نظرة عامة على النشاط</h2>
+                  <div style="font-size:14px; color:var(--text-muted);" id="dash-time">...</div>
+              </div>
+              
+              <div class="stats-tray">
+                  <div class="stat-card">
+                      <div class="stat-label">المبيعات الإجمالية</div>
+                      <div class="stat-num" id="st-sales">0</div>
+                      <div class="stat-meta">EGP عبر جميع الطلبات</div>
+                  </div>
+                  <div class="stat-card">
+                      <div class="stat-label">إجمالي الطلبات (المنجزة)</div>
+                      <div class="stat-num" id="st-orders">0</div>
+                      <div class="stat-meta">طلب تم تسليمه</div>
+                  </div>
+                  <div class="stat-card" style="border-color:var(--warning);">
+                      <div class="stat-label">طلبات قيد المراجعة</div>
+                      <div class="stat-num" id="st-pending">0</div>
+                      <div class="stat-meta" style="color:var(--warning);">تتطلب انتباهك فوراً</div>
+                  </div>
+                  <div class="stat-card">
+                      <div class="stat-label">تقييمات جديدة</div>
+                      <div class="stat-num" id="st-reviews">0</div>
+                      <div class="stat-meta">بانتظار موافقتك للعرض</div>
+                  </div>
+              </div>
+              
+              <h3 style="margin-bottom:16px; font-weight:normal; font-size:18px;">أحدث التحركات (آخر 10 طلبات)</h3>
+              <div class="table-container">
+                  <table class="data-table">
+                      <thead>
+                          <tr>
+                              <th>الرقم المرجعي</th>
+                              <th>العميل</th>
+                              <th>الهاتف</th>
+                              <th>الإجمالي</th>
+                              <th>طريقة الدفع</th>
+                              <th>الحالة</th>
+                          </tr>
+                      </thead>
+                      <tbody id="tbl-recent-orders">
+                          <tr><td colspan="6" style="text-align:center;">جاري الجلب...</td></tr>
+                      </tbody>
+                  </table>
+              </div>
+          </section>
+
+          <section id="view-orders" class="view-panel">
+              <div class="page-header">
+                  <h2>سجل الطلبات</h2>
+                  <div style="display:flex; gap:16px; align-items:center;">
+                      <input type="text" id="srch-orders" placeholder="البحث برقم..." class="input-field" style="width: 200px; margin:0;">
+                      <button class="btn btn-secondary" onclick="appAdmin.exportOrdersCSV()">📥 تصدير CSV</button>
+                  </div>
+              </div>
+              
+              <div style="display:flex; gap:8px; margin-bottom:16px;" id="order-tabs">
+                  <button class="btn btn-secondary btn-sm" data-status="all" style="border-color:var(--accent);">الكل</button>
+                  <button class="btn btn-ghost btn-sm" data-status="pending">مراجعة</button>
+                  <button class="btn btn-ghost btn-sm" data-status="confirmed">مؤكد</button>
+                  <button class="btn btn-ghost btn-sm" data-status="processing">يُجهز</button>
+                  <button class="btn btn-ghost btn-sm" data-status="shipped">مشحون</button>
+                  <button class="btn btn-ghost btn-sm" data-status="delivered">مسلّم</button>
+                  <button class="btn btn-ghost btn-sm" data-status="cancelled">ملغى</button>
+              </div>
+              
+              <div class="table-container">
+                  <table class="data-table">
+                      <thead>
+                          <tr>
+                              <th>رقم الطلب</th>
+                              <th>العميل</th>
+                              <th>المحافظة</th>
+                              <th>طريقة الدفع</th>
+                              <th>الصافي</th>
+                              <th>البطاقة</th>
+                              <th>التاريخ</th>
+                              <th>إجراء</th>
+                          </tr>
+                      </thead>
+                      <tbody id="tbl-orders">
+                          <!-- ... -->
+                      </tbody>
+                  </table>
+              </div>
+          </section>
+
+          <!-- VIEW 3: Products -->
+          <section id="view-products" class="view-panel">
+              <div class="page-header">
+                  <h2>إدارة المستودع</h2>
+                  <button class="btn btn-primary" onclick="adminModals.openProduct()">+ منتج جديد للكتالوج</button>
+              </div>
+              
+              <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:16px;" id="grid-products">
+                  <!-- Product Cards injected here -->
+              </div>
+          </section>
+
+          <!-- VIEW 4: Categories -->
+          <!-- To be implemented by JS -->
+          <section id="view-categories" class="view-panel">
+              <div class="page-header">
+                  <h2>مفاتيح التصنيفات</h2>
+                  <button class="btn btn-primary" onclick="adminModals.openCategory()">+ قسم جديد</button>
+              </div>
+              <div class="table-container">
+                  <table class="data-table">
+                      <tbody id="list-categories"></tbody>
+                  </table>
+              </div>
+          </section>
+
+          <!-- VIEW 5, 6, 7, 8 ... -->
+          <section id="view-coupons" class="view-panel"><div class="page-header"><h2>الكوبونات</h2><button class="btn btn-primary" onclick="adminModals.openCoupon()">+ كوبون</button></div><div class="table-container"><table class="data-table" id="tbl-coupons"></table></div></section>
+          
+          <section id="view-reviews" class="view-panel"><div class="page-header"><h2>المراجعات الجماهيرية</h2></div><div class="table-container"><table class="data-table" id="tbl-reviews"></table></div></section>
+          
+          <section id="view-suggestions" class="view-panel"><div class="page-header"><h2>مقترحات المبدعين</h2></div><div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:16px;" id="grid-suggestions"></div></section>
+          
+          <section id="view-settings" class="view-panel">
+              <div class="page-header"><h2>إعدادات النظام العليا</h2></div>
+              <!-- Hidden fields to prevent admin-app.js from throwing errors when loading legacy settings logic -->
+              <input type="hidden" id="set-whatsapp">
+              <input type="hidden" id="set-preset">
+
+              <div style="max-width:800px; background:var(--bg-card); padding:24px; border-radius:8px; border:1px solid var(--border);">
+                  
+                  <fieldset style="border:1px solid var(--border); padding:16px; border-radius:8px;">
+                      <legend style="color:var(--accent); padding:0 8px;">إعدادات عامة</legend>
+                      <div style="margin-bottom:16px;">
+                          <label class="form-label">اسم المتجر</label>
+                          <input type="text" id="store-name" class="input-field">
+                      </div>
+                      <div style="margin-bottom:16px;">
+                          <label class="form-label">رقم العمل المسجل (WhatsApp)</label>
+                          <input type="text" id="whatsapp" class="input-field" dir="ltr">
+                      </div>
+                  </fieldset>
+
+                  <fieldset style="border:1px solid var(--border); padding:16px; border-radius:8px; margin-top:16px;">
+                    <legend style="color:var(--accent); padding:0 8px;">Hero Section</legend>
+                    <div style="margin-bottom:16px;">
+                        <label class="form-label">العنوان الرئيسي</label>
+                        <input type="text" id="hero-title" class="input-field">
+                    </div>
+                    <div style="margin-bottom:16px;">
+                        <label class="form-label">العنوان الفرعي</label>
+                        <input type="text" id="hero-subtitle" class="input-field">
+                    </div>
+                    <div style="margin-bottom:16px;">
+                        <label class="form-label">نص الزر الأول</label>
+                        <input type="text" id="hero-cta-primary" class="input-field">
+                    </div>
+                    <div style="margin-bottom:16px;">
+                        <label class="form-label">نص الزر الثاني</label>
+                        <input type="text" id="hero-cta-secondary" class="input-field">
+                    </div>
+                  </fieldset>
+
+                  <fieldset style="border:1px solid var(--border); padding:16px; border-radius:8px; margin-top:16px;">
+                    <legend style="color:var(--accent); padding:0 8px;">شريط الإعلانات</legend>
+                    <div style="margin-bottom:16px;">
+                        <label class="form-label" style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+                            <input type="checkbox" id="announcement-active"> تفعيل شريط الإعلانات
+                        </label>
+                    </div>
+                    <div style="margin-bottom:16px;">
+                        <label class="form-label">عناصر الشريط</label>
+                        <textarea id="announcement-items" class="textarea-field"></textarea>
+                        <small style="color:var(--text-muted); display:block; margin-top:8px;">
+                            مثال: شحن مجاني|تصاميم حصرية|اقترح تصميمك
+                            <br>كل عنصر مفصول بـ | (Pipe)
+                        </small>
+                    </div>
+                  </fieldset>
+
+                  <fieldset style="border:1px solid var(--border); padding:16px; border-radius:8px; margin-top:16px;">
+                    <legend style="color:var(--accent); padding:0 8px;">الـ Footer</legend>
+                    <div style="margin-bottom:16px;">
+                        <label class="form-label">وصف المتجر</label>
+                        <input type="text" id="footer-tagline" class="input-field">
+                    </div>
+                    <div style="margin-bottom:16px;">
+                        <label class="form-label">ساعات الدعم</label>
+                        <input type="text" id="footer-support-hours" class="input-field" dir="ltr">
+                    </div>
+<div class="form-group" style="margin-top:16px; margin-bottom:16px;">
+  <label style="color:var(--text-secondary); font-size:13px; 
+                display:block; margin-bottom:12px;">
+    روابط السوشيال (اتركها فارغة لإخفاء الأيقونة)
+  </label>
+
+  <div style="display:flex; flex-direction:column; gap:10px;">
+    
+    <div style="display:flex; align-items:center; gap:10px;">
+      <span style="width:90px; color:var(--text-secondary); font-size:13px; 
+                   flex-shrink:0;">📸 Instagram</span>
+      <input type="url" 
+             id="social-instagram" 
+             class="input-field" 
+             placeholder="https://instagram.com/yourpage"
+             style="flex:1;" dir="ltr">
+    </div>
+
+    <div style="display:flex; align-items:center; gap:10px;">
+      <span style="width:90px; color:var(--text-secondary); font-size:13px; 
+                   flex-shrink:0;">👥 Facebook</span>
+      <input type="url" 
+             id="social-facebook" 
+             class="input-field" 
+             placeholder="https://facebook.com/yourpage"
+             style="flex:1;" dir="ltr">
+    </div>
+
+    <div style="display:flex; align-items:center; gap:10px;">
+      <span style="width:90px; color:var(--text-secondary); font-size:13px; 
+                   flex-shrink:0;">🎵 TikTok</span>
+      <input type="url" 
+             id="social-tiktok" 
+             class="input-field" 
+             placeholder="https://tiktok.com/@yourpage"
+             style="flex:1;" dir="ltr">
+    </div>
+
+    <div style="display:flex; align-items:center; gap:10px;">
+      <span style="width:90px; color:var(--text-secondary); font-size:13px; 
+                   flex-shrink:0;">✈️ Telegram</span>
+      <input type="url" 
+             id="social-telegram" 
+             class="input-field" 
+             placeholder="https://t.me/yourchannel"
+             style="flex:1;" dir="ltr">
+    </div>
+
+  </div>
+</div>
+                  </fieldset>
+
+                  <fieldset style="border:1px solid var(--border); padding:16px; border-radius:8px; margin-top:16px; margin-bottom: 24px;">
+                    <legend style="color:var(--accent); padding:0 8px;">الهوية البصرية</legend>
+                    <div style="
+                      background: rgba(255,150,0,0.1);
+                      border: 1px solid rgba(255,150,0,0.3);
+                      border-radius: 8px;
+                      padding: 12px 16px;
+                      margin-bottom: 16px;
+                      color: #FF9500;
+                      font-size: 14px;
+                    ">
+                      ⚠️ تغيير الألوان يؤثر على شكل الموقع بالكامل.
+                      احتفظ بالقيم الأصلية قبل التغيير:
+                      الخلفية الأصلية: #080808 | اللون المميز: #F0EBE1
+                    </div>
+                    <div style="margin-bottom:16px;">
+                        <label class="form-label">لون الخلفية الأساسي</label>
+                        <input type="color" id="store-bg-primary" class="input-field" style="height:50px; padding:4px;">
+                    </div>
+                    <div style="margin-bottom:16px;">
+                        <label class="form-label">اللون المميز (Accent)</label>
+                        <input type="color" id="store-accent-color" class="input-field" style="height:50px; padding:4px;">
+                    </div>
+                    <div style="margin-bottom:16px;">
+                        <label class="form-label">Cloudinary Cloud Name</label>
+                        <input type="text" id="cloudinary-cloud-name" class="input-field" dir="ltr">
+                    </div>
+                    <div style="margin-bottom:16px;">
+                        <label class="form-label">Cloudinary Upload Preset</label>
+                        <input type="text" id="cloudinary-upload-preset" class="input-field" dir="ltr">
+                    </div>
+                  </fieldset>
+
+                  <button class="btn btn-primary btn-lg" onclick="window.saveAllSettings()">حفظ التغييرات</button>
+              </div>
+          </section>
+
+      </main>
+  </div>
+
+  <!-- MODALS -->
+  <!-- Product Modal -->
+  <div class="modal-overlay" id="modal-product">
+      <div class="modal-box">
+          <button class="modal-close" onclick="adminModals.closeProduct()">×</button>
+          <h3 style="margin-top:0; font-family:var(--font-display); font-size:24px;" id="p-modal-title">تكوين منتج جديد</h3>
+          <form id="form-product">
+              <input type="hidden" id="p-id">
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
+                  <div><label class="form-label">اسم المنتج (العربية) *</label><input type="text" id="p-name-ar" class="input-field" required></div>
+                  <div><label class="form-label">اسم المنتج (سُلاج الانفصال)</label><input type="text" id="p-name-en" class="input-field" dir="ltr" required></div>
+              </div>
+              <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:16px;">
+                  <div><label class="form-label">التسعيرة العادية *</label><input type="number" id="p-price" class="input-field" dir="ltr" required></div>
+                  <div><label class="form-label">المخزون المتوفر *</label><input type="number" id="p-stock" class="input-field" dir="ltr" required></div>
+                  <div><label class="form-label">التصنيف التابع</label><select id="p-category" class="input-field"></select></div>
+              </div>
+              <div style="margin-bottom:16px;">
+                  <label class="form-label">الوصف الدعائي *</label>
+                  <textarea id="p-desc" class="textarea-field" style="height:100px;" required></textarea>
+              </div>
+              <div style="margin-bottom:16px;">
+                  <label class="form-label">الصور الأساسية (Cloudinary Upload MAX: 5)</label>
+                  <div class="drag-box" id="p-upl-box">
+                      <input type="file" id="p-file" accept="image/jpeg, image/webp, image/png" style="display:none;" multiple>
+                      <div id="p-upl-meta" style="color:var(--text-muted);">اسحب وأسقط أو انقر لرفع صور المنتج</div>
+                      <div id="p-upl-progress" style="height:4px; width:0%; background:var(--accent); margin-top:8px; border-radius:2px; transition:0.2s;"></div>
+                  </div>
+                  <div id="p-images-preview" style="display:flex; gap:8px; flex-wrap:wrap;"></div>
+              </div>
+              <div style="display:flex; gap:24px; margin-bottom:24px;">
+                  <label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="checkbox" id="p-active" checked> منتج نشط للبيع</label>
+                  <label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="checkbox" id="p-featured"> واجهة المتجر (مميز)</label>
+              </div>
+              <button type="button" id="btn-save-product" class="btn btn-primary btn-full btn-lg">اعتماد التحديثات بـ Supabase</button>
+          </form>
+      </div>
+  </div>
+
+  <!-- Category Modal -->
+  <div class="modal-overlay" id="modal-category">
+      <div class="modal-box">
+          <button type="button" class="modal-close" onclick="document.getElementById('modal-category').classList.remove('active')">×</button>
+          <h3 style="margin-top:0; font-family:var(--font-display); font-size:24px;" id="c-modal-title">تكوين قسم جديد</h3>
+          <form id="form-category">
+              <input type="hidden" id="c-id">
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
+                  <div><label class="form-label">اسم القسم (العربية) *</label><input type="text" id="c-name-ar" class="input-field" required></div>
+                  <div><label class="form-label">اسم القسم (بالإنجليزية)</label><input type="text" id="c-name-en" class="input-field" dir="ltr"></div>
+              </div>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
+                  <div><label class="form-label">اللون المرئي (Hex)</label><input type="text" id="c-color" class="input-field" dir="ltr" placeholder="#000000"></div>
+                  <div><label class="form-label">ترتيب العرض</label><input type="number" id="c-sort" class="input-field" dir="ltr" value="0"></div>
+              </div>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
+                  <div>
+                    <label class="form-label">نوع العرض</label>
+                    <select id="category-display-type" class="input-field">
+                      <option value="icon">أيقونة (افتراضي)</option>
+                      <option value="image">صورة</option>
+                      <option value="color">لون فقط</option>
+                    </select>
+                  </div>
+                  <div id="category-image-group" style="display:none;">
+                    <label class="form-label">صورة التصنيف</label>
+                    <input type="text" id="category-image-url" class="input-field" placeholder="أو أدخل رابط الصورة مباشرة" dir="ltr">
+                  </div>
+              </div>
+              <div style="margin-bottom:24px;">
+                  <label style="display:flex; align-items:center; gap:8px; cursor:pointer;"><input type="checkbox" id="c-active" checked> قسم نشط</label>
+              </div>
+              <button type="button" id="btn-save-category" class="btn btn-primary btn-full btn-lg">حفظ التحديثات بـ Supabase</button>
+          </form>
+      </div>
+  </div>
+
+  <!-- Order Details Modal -->
+  <div class="modal-overlay" id="modal-order">
+      <div class="modal-box" style="max-width:800px;">
+          <button class="modal-close" onclick="document.getElementById('modal-order').classList.remove('active')">×</button>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; border-bottom:1px solid var(--border); padding-bottom:16px;">
+              <h3 style="margin:0; font-family:var(--font-display); font-size:24px;">الطلب رقم: <span id="m-o-num" style="color:var(--accent);"></span></h3>
+              <select id="m-o-status" class="input-field" style="width:150px; background:var(--bg-elevated); margin:0;" onchange="appAdmin.triggerOrderStatusChange(this.value)">
+                  <option value="pending">مراجعة جديدة</option>
+                  <option value="confirmed">تم التأكيد</option>
+                  <option value="processing">جاري التجهيز</option>
+                  <option value="shipped">خرج للشحن</option>
+                  <option value="delivered">مُسلّم بنجاح</option>
+                  <option value="cancelled">مُلغى</option>
+              </select>
+          </div>
+          
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:24px;">
+              <div style="background:var(--bg-elevated); padding:16px; border-radius:8px;">
+                  <h4 style="margin-top:0; color:var(--text-secondary);">مدخلات العميل وخط السير</h4>
+                  <div style="font-size:14px; color:var(--text-muted); line-height:1.8;" id="m-o-customer"></div>
+              </div>
+              <div style="background:var(--bg-elevated); padding:16px; border-radius:8px;">
+                  <h4 style="margin-top:0; color:var(--text-secondary);">الفاتورة والتدفق المالي</h4>
+                  <div style="font-size:14px; color:var(--text-muted); line-height:1.8;" id="m-o-bill"></div>
+              </div>
+          </div>
+          
+          <h4 style="margin-top:0; color:var(--text-secondary);">المنتجات المطلوبة في الشحنة</h4>
+          <table class="data-table" style="margin-bottom:16px;">
+              <tbody id="m-o-items"></tbody>
+          </table>
+          
+          <a href="#" class="btn btn-whatsapp btn-full" id="m-o-wa" style="text-align:center; display:block;" target="_blank">بدء تدقيق مع العميل عبر الواتس</a>
+      </div>
+  </div>
+
+
+  <!-- Core Admin Logic injection via Application script map -->
+  <script type="module" src="../assets/js/admin-app.js"></script>
+
+  <!-- Fix for Missing Data APIs and Event Handlers -->
+  <script type="module">
+    import { addProduct, updateProduct, addCategory, updateCategory } from '../assets/js/data.js';
+    import { supabaseClient } from '../assets/js/supabase.js';
+    import { loadAllSettings, saveAllSettings } from '../assets/js/settings.js';
+
+    window.saveAllSettings = saveAllSettings;
+
+    // دالة للتحقق من الجلسة لتأمين الحفظ (RLS protection)
+    async function enforceSession() {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        if (!session) { 
+            window.location.href = '/admin/login'; 
+            return false; 
+        }
+        return true;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // Load initial settings
+        try { loadAllSettings(); } catch(e){}
+
+        const sBtn = document.querySelector('[data-target="settings"]');
+        if(sBtn) sBtn.addEventListener('click', loadAllSettings);
+
+        // --- Fixing Product Save Button with addEventListener('click') ---
+        const saveProductBtn = document.getElementById('btn-save-product');
+        if (saveProductBtn) {
+            saveProductBtn.addEventListener('click', async function(e) {
+                e.preventDefault();
+                
+                const isAuth = await enforceSession();
+                if (!isAuth) return;
+
+                const pId = document.getElementById('p-id').value;
+                const catId = document.getElementById('p-category').value;
+                
+                if (!catId) {
+                    if (window.showToast) window.showToast('يرجى اختيار قسم صحيح', 'error');
+                    return;
+                }
+
+                const images = [];
+                document.querySelectorAll('#p-images-preview img').forEach(i => images.push(i.src));
+
+                const payload = {
+                    name_ar: document.getElementById('p-name-ar').value,
+                    name_en: document.getElementById('p-name-en').value,
+                    price: parseFloat(document.getElementById('p-price').value || 0),
+                    stock: parseInt(document.getElementById('p-stock').value || 0, 10),
+                    category_id: catId, // Should be UUID string properly read from select
+                    description_ar: document.getElementById('p-desc').value,
+                    description_en: document.getElementById('p-desc').value,
+                    images: images,
+                    active: document.getElementById('p-active').checked,
+                    featured: document.getElementById('p-featured').checked
+                };
+
+                const oTxt = this.innerText;
+                this.innerText = 'جارٍ الحفظ...'; 
+                this.disabled = true;
+
+                let res;
+                if (pId && pId.trim() !== '') {
+                    res = await updateProduct(pId, payload);
+                } else {
+                    res = await addProduct(payload);
+                }
+
+                this.innerText = oTxt; 
+                this.disabled = false;
+
+                if (res.error) {
+                    if(window.showToast) window.showToast(res.error, 'error');
+                } else {
+                    if(window.showToast) window.showToast('تم الحفظ بنجاح وجاري تحديث الجدول', 'success');
+                    if(window.adminModals && window.adminModals.closeProduct) {
+                        window.adminModals.closeProduct();
+                    } else {
+                        document.getElementById('modal-product').classList.remove('active');
+                    }
+                    document.querySelector('[data-target="products"]')?.click();
+                }
+            });
+        }
+
+        // --- Fixing Category Save Button with addEventListener('click') ---
+        const saveCategoryBtn = document.getElementById('btn-save-category');
+        if (saveCategoryBtn) {
+            saveCategoryBtn.addEventListener('click', async function(e) {
+                e.preventDefault();
+                
+                const isAuth = await enforceSession();
+                if (!isAuth) return;
+
+                const cId = document.getElementById('c-id').value;
+                const payload = {
+                    name_ar: document.getElementById('c-name-ar').value,
+                    name_en: document.getElementById('c-name-en').value,
+                    color: document.getElementById('c-color').value,
+                    sort_order: parseInt(document.getElementById('c-sort').value || 0, 10),
+                    active: document.getElementById('c-active').checked,
+                    display_type: document.getElementById('category-display-type')?.value || 'icon',
+                    image_url: document.getElementById('category-image-url')?.value || ''
+                };
+
+                const oTxt = this.innerText;
+                this.innerText = 'جارٍ الحفظ...'; 
+                this.disabled = true;
+
+                let res;
+                if (cId && cId.trim() !== '') {
+                    res = await updateCategory(cId, payload);
+                } else {
+                    res = await addCategory(payload);
+                }
+
+                this.innerText = oTxt; 
+                this.disabled = false;
+
+                if (res.error) {
+                    if(window.showToast) window.showToast(res.error, 'error');
+                } else {
+                    if(window.showToast) window.showToast('تم حفظ القسم بنجاح', 'success');
+                    document.getElementById('modal-category').classList.remove('active');
+                    document.querySelector('[data-target="categories"]')?.click();
+                }
+            });
+        }
+
+        // Intercept opening modals safely to sync ID properly (solves bug with missing IDs on edit)
+        const patchInterval = setInterval(() => {
+            if (window.adminModals && window.adminModals.editProduct && !window.adminModals.__patched) {
+                window.adminModals.__patched = true;
+
+                const origEditProduct = window.adminModals.editProduct;
+                window.adminModals.editProduct = async (id) => {
+                    document.getElementById('p-id').value = id;
+                    if (origEditProduct) await origEditProduct(id);
+                };
+
+                const origOpenProduct = window.adminModals.openProduct;
+                window.adminModals.openProduct = async () => {
+                    document.getElementById('p-id').value = '';
+                    if (origOpenProduct) await origOpenProduct();
+                };
+
+                // Inject Custom Category Modals Behavior
+                window.adminModals.openCategory = () => {
+                    const frm = document.getElementById('form-category');
+                    if(frm) frm.reset();
+                    document.getElementById('c-id').value = '';
+                    const group = document.getElementById('category-image-group');
+                    if(group) group.style.display = 'none';
+                    document.getElementById('c-modal-title').innerText = 'تكوين قسم جديد';
+                    document.getElementById('modal-category').classList.add('active');
+                };
+
+                window.adminModals.editCategory = async (id) => {
+                    document.getElementById('c-id').value = id;
+                    try {
+                        const { data } = await supabaseClient.from('categories').select('*').eq('id', id).single();
+                        if (data) {
+                            const frm = document.getElementById('form-category');
+                            if(frm) frm.reset();
+                            document.getElementById('c-id').value = data.id;
+                            document.getElementById('c-name-ar').value = data.name_ar || '';
+                            document.getElementById('c-name-en').value = data.name_en || '';
+                            document.getElementById('c-color').value = data.color || '';
+                            document.getElementById('c-sort').value = data.sort_order || 0;
+                            document.getElementById('c-active').checked = data.active !== false;
+
+                            const typeVal = data.display_type || 'icon';
+                            const sel = document.getElementById('category-display-type');
+                            if(sel) sel.value = typeVal;
+                            const grp = document.getElementById('category-image-group');
+                            if(grp) grp.style.display = typeVal === 'image' ? 'block' : 'none';
+                            const urlInp = document.getElementById('category-image-url');
+                            if(urlInp) urlInp.value = data.image_url || '';
+
+                            document.getElementById('c-modal-title').innerText = 'تعديل القسم';
+                            document.getElementById('modal-category').classList.add('active');
+                        }
+                    } catch(e) {
+                        console.error('Error loading category', e);
+                    }
+                };
+
+                clearInterval(patchInterval);
+            }
+        }, 100);
+
+        // Category UI Listener (Image options visibility)
+        const typeSelectBox = document.getElementById('category-display-type');
+        if(typeSelectBox) {
+            typeSelectBox.addEventListener('change', function() {
+                const group = document.getElementById('category-image-group');
+                if(group) group.style.display = this.value === 'image' ? 'block' : 'none';
+            });
+        }
+
+        // Auto-inject edit buttons into categories table
+        const listCategories = document.getElementById('list-categories');
+        if (listCategories) {
+            new MutationObserver(() => {
+                const rows = listCategories.querySelectorAll('tr');
+                rows.forEach(tr => {
+                    const btnCell = tr.querySelector('td:last-child');
+                    if (btnCell && btnCell.innerHTML.includes('deleteCat') && !btnCell.innerHTML.includes('editCategory')) {
+                        const match = btnCell.innerHTML.match(/deleteCat\('([^']+)'\)/);
+                        if (match) {
+                            const editBtn = document.createElement('button');
+                            editBtn.className = 'action-btn';
+                            editBtn.innerText = 'تعديل';
+                            editBtn.onclick = () => { if(window.adminModals.editCategory) window.adminModals.editCategory(match[1]); };
+                            btnCell.prepend(editBtn);
+                        }
+                    }
+                });
+            }).observe(listCategories, { childList: true });
+        }
+    });
+
+  </script>
+</body>
+</html>
