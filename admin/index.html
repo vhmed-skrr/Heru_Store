@@ -79,7 +79,8 @@
     .toast-container { position: fixed; top: 24px; left: 50%; transform: translateX(-50%); z-index: 9999; }
   </style>
 
-  <script src="../assets/js/supabase.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="../assets/js/supabase.js"></script>
 </head>
 <body>
 
@@ -209,7 +210,7 @@
           <section id="view-products" class="view-panel">
               <div class="page-header">
                   <h2>إدارة المستودع</h2>
-                  <button class="btn btn-primary" onclick="openAddProductModal()">+ منتج جديد للكتالوج</button>
+                  <a href="/admin/add-product" class="btn btn-primary">+ منتج جديد للكتالوج</a>
               </div>
               
               <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:16px;" id="grid-products">
@@ -222,7 +223,7 @@
           <section id="view-categories" class="view-panel">
               <div class="page-header">
                   <h2>مفاتيح التصنيفات</h2>
-                  <button class="btn btn-primary" onclick="openAddCategoryModal()">+ قسم جديد</button>
+                  <a href="/admin/add-category" class="btn btn-primary">+ قسم جديد</a>
               </div>
               <div class="table-container">
                   <table class="data-table">
