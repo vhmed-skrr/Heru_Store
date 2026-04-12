@@ -7,6 +7,15 @@ let currentOrderEditId = null;
 let currentProductEditId = null;
 let cachedProductsImages = [];
 
+async function checkAdminAuth() {
+    const { data: { session }, error } = await supabaseClient.auth.getSession();
+    if (!session || error) {
+        window.location.replace('/admin/login.html');
+        return false;
+    }
+    return true;
+}
+
 /** Core Boot & Auth Guard */
 document.addEventListener('DOMContentLoaded', async () => {
     
@@ -17,8 +26,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     // Quick Auth Check
-    const { data: { session }, error } = await supabaseClient.auth.getSession();
-    if (!session || error) { window.location.replace('/admin/login.html'); return; }
+    const isAuth = await checkAdminAuth();
+    if (!isAuth) return;
+    
     document.getElementById('auth-guard').style.display = 'none';
 
     // Auth Watcher
@@ -231,7 +241,7 @@ async function loadProducts() {
                        <h4 style="margin:0 0 8px 0; font-size:16px;">${p.name_ar} ${p.featured ? '⭐' : ''}</h4>
                        <div style="color:var(--text-muted); font-size:12px; margin-bottom:12px;">مخزون: ${p.stock} | السعر: ${p.price}</div>
                        <div style="display:flex; justify-content:space-between;">
-                           <button class="action-btn" style="margin:0;" onclick="adminModals.editProduct('${p.id}')">تعديل المنتج</button>
+                           <a href="/admin/edit-product?id=${p.id}" class="action-btn" style="margin:0; text-decoration:none;">تعديل المنتج</a>
                            <button class="action-btn" style="margin:0; color:var(--error);" onclick="appAdmin.deleteProduct('${p.id}')">حذف</button>
                        </div>
                    </div>
@@ -325,6 +335,8 @@ function setupCloudinaryUploader() {
     const f = document.getElementById('p-file');
     const pBar = document.getElementById('p-upl-progress');
     
+    if (!b || !f) return;
+    
     b.addEventListener('click', () => f.click());
     f.addEventListener('change', async (e) => {
         const files = Array.from(e.target.files);
@@ -376,7 +388,7 @@ window.appAdmin.removeImg = (i) => { cachedProductsImages.splice(i, 1); renderFi
 async function loadCategories() {
     const { data } = await supabaseClient.from('categories').select('*').order('sort_order', { ascending: true });
     let s = '';
-    (data||[]).forEach(c => { s+=`<tr><td>${c.name_ar}</td><td>${c.color||'-'}</td><td><button class="action-btn" onclick="appAdmin.deleteCat('${c.id}')">حذف</button></td></tr>`; });
+    (data||[]).forEach(c => { s+=`<tr><td>${c.name_ar}</td><td>${c.color||'-'}</td><td><a href="/admin/edit-category?id=${c.id}" class="action-btn" style="text-decoration:none;">تعديل</a> <button class="action-btn" style="color:var(--error);" onclick="appAdmin.deleteCat('${c.id}')">حذف</button></td></tr>`; });
     document.getElementById('list-categories').innerHTML = s || '<tr><td colspan="3">لم يتم العثور على أية أقسام</td></tr>';
 }
 window.appAdmin.deleteCat = async (id) => {
