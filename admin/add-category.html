@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إضافة تصنيف جديد — Heru Admin</title>
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <style>
+    body { background: var(--bg-primary); color: var(--text-primary);
+           font-family: var(--font-arabic); min-height: 100vh; padding: 24px; }
+    .page-container { max-width: 640px; margin: 0 auto; }
+    .page-header { display: flex; align-items: center; gap: 16px;
+                   margin-bottom: 32px; }
+    .back-btn { background: var(--bg-card); border: 1px solid var(--border);
+                border-radius: var(--radius-md); padding: 8px 16px;
+                color: var(--text-secondary); text-decoration: none;
+                font-size: 14px; transition: all 0.2s; }
+    .back-btn:hover { border-color: var(--border-accent); color: var(--accent); }
+    .form-card { background: var(--bg-card); border: 1px solid var(--border);
+                 border-radius: var(--radius-lg); padding: 32px; }
+    .form-group { margin-bottom: 20px; }
+    .form-label { display: block; color: var(--text-secondary);
+                  font-size: 14px; margin-bottom: 8px; }
+    .form-label span.required { color: #EF4444; margin-right: 4px; }
+    .input-field, .select-field, .textarea-field {
+      width: 100%; background: var(--bg-elevated);
+      border: 1px solid var(--border); border-radius: var(--radius-md);
+      padding: 12px 16px; color: var(--text-primary);
+      font-family: var(--font-arabic); font-size: 15px;
+      transition: border-color 0.2s; box-sizing: border-box; }
+    .input-field:focus, .select-field:focus, .textarea-field:focus {
+      outline: none; border-color: var(--border-accent); }
+    .textarea-field { resize: vertical; min-height: 100px; }
+    .toggle-group { display: flex; gap: 32px; margin-top: 8px; }
+    .toggle-label { display: flex; align-items: center; gap: 10px;
+                    cursor: pointer; font-size: 15px; }
+    .toggle-label input[type="checkbox"] { width: 18px; height: 18px;
+                                           accent-color: var(--accent); cursor: pointer; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .submit-btn { width: 100%; padding: 14px;
+                  background: var(--accent); color: var(--text-inverse);
+                  border: none; border-radius: var(--radius-md);
+                  font-family: var(--font-arabic); font-size: 16px;
+                  font-weight: 700; cursor: pointer; transition: all 0.2s;
+                  margin-top: 8px; }
+    .submit-btn:hover { background: var(--accent-hover); }
+    .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .success-box { background: rgba(34,197,94,0.1); border: 1px solid #22C55E;
+                   border-radius: var(--radius-md); padding: 20px;
+                   text-align: center; display: none; }
+    .error-box { background: rgba(239,68,68,0.1); border: 1px solid #EF4444;
+                 border-radius: var(--radius-md); padding: 12px 16px;
+                 color: #EF4444; font-size: 14px; display: none;
+                 margin-bottom: 16px; }
+    .section-divider { border: none; border-top: 1px solid var(--border);
+                       margin: 24px 0; }
+  </style>
+</head>
+<body>
+
+<div class="page-container">
+  
+  <div class="page-header">
+    <a href="/admin" class="back-btn">← العودة للأدمن</a>
+    <h1 style="font-size: 22px; margin: 0;">إضافة تصنيف جديد</h1>
+  </div>
+
+  <div class="form-card">
+    
+    <div class="error-box" id="error-box"></div>
+    <div class="success-box" id="success-box">
+      <div style="font-size: 48px; margin-bottom: 12px;">✅</div>
+      <h3 style="margin: 0 0 8px;">تم إضافة التصنيف بنجاح!</h3>
+      <p style="color: var(--text-secondary); margin-bottom: 20px;"
+         id="success-category-name"></p>
+      <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+        <button onclick="resetForm()" class="submit-btn" style="width: auto; padding: 10px 24px;">
+          إضافة تصنيف آخر
+        </button>
+        <a href="/admin" class="back-btn" style="padding: 10px 24px;">
+          العودة للأدمن
+        </a>
+      </div>
+    </div>
+
+    <form id="add-category-form" novalidate>
+
+      <div class="form-group">
+        <label class="form-label">
+          اسم التصنيف بالعربي <span class="required">*</span>
+        </label>
+        <input type="text" id="name-ar" class="input-field"
+               placeholder="مثال: نوت بوك" autocomplete="off">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">اسم التصنيف بالإنجليزي</label>
+        <input type="text" id="name-en" class="input-field"
+               placeholder="Notebooks" dir="ltr" autocomplete="off">
+      </div>
+
+      <hr class="section-divider">
+
+      <div class="grid-2">
+        <div class="form-group" style="margin-bottom: 0;">
+          <label class="form-label">الأيقونة</label>
+          <input type="text" id="icon" class="input-field"
+                 placeholder="📦">
+        </div>
+        <div class="form-group" style="margin-bottom: 0;">
+          <label class="form-label">ترتيب العرض</label>
+          <input type="number" id="sort-order" class="input-field"
+                 min="0" placeholder="0">
+          <small style="color: var(--text-muted); font-size: 12px; display: block; margin-top: 4px;">الأقل = يظهر أولاً</small>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-top: 20px;">
+        <label class="form-label">اللون</label>
+        <div style="display:flex; align-items:center; gap: 8px;">
+            <input type="color" id="color-picker" style="height: 42px; width: 48px; padding:2px; border:1px solid var(--border); border-radius: 4px; cursor: pointer;">
+            <input type="text" id="color-hex" class="input-field" placeholder="#RRGGBB" dir="ltr">
+        </div>
+      </div>
+
+      <hr class="section-divider">
+
+      <div class="form-group">
+        <div class="toggle-group">
+          <label class="toggle-label">
+            <input type="checkbox" id="is-active" checked>
+            <span>نشط (مرئي للزوار)</span>
+          </label>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submit-btn">
+        إضافة التصنيف ✓
+      </button>
+
+    </form>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+const SUPABASE_URL = 'https://yynewmzzurjvghicerby.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5bmV3bXp6dXJqdmdoaWNlcmJ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU4NjI2NTIsImV4cCI6MjA5MTQzODY1Mn0.vov2TwtQAOyNMJshx5YZEWms8LvXdlCQ5U7VOJU71H8';
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+async function checkAuth() {
+  const { data: { session } } = await db.auth.getSession();
+  if (!session) {
+    window.location.href = '/admin/login';
+    return false;
+  }
+  return true;
+}
+
+document.getElementById('color-picker').addEventListener('input', function() {
+  document.getElementById('color-hex').value = this.value;
+});
+document.getElementById('color-hex').addEventListener('input', function() {
+  if (/^#[0-9A-Fa-f]{6}$/.test(this.value)) {
+    document.getElementById('color-picker').value = this.value;
+  }
+});
+
+document.getElementById('add-category-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  const nameAr = document.getElementById('name-ar').value.trim();
+  const errorBox = document.getElementById('error-box');
+  errorBox.style.display = 'none';
+  
+  if (!nameAr) {
+    errorBox.textContent = '⚠️ اسم التصنيف بالعربي مطلوب';
+    errorBox.style.display = 'block';
+    document.getElementById('name-ar').focus();
+    return;
+  }
+  
+  const categoryData = {
+    name_ar:    nameAr,
+    name_en:    document.getElementById('name-en').value.trim() || null,
+    icon:       document.getElementById('icon').value.trim() || '📦',
+    color:      document.getElementById('color-hex').value.trim() || null,
+    sort_order: parseInt(document.getElementById('sort-order').value) || 0,
+    active:     document.getElementById('is-active').checked,
+  };
+  
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'جارٍ الحفظ...';
+  
+  const { data, error } = await db
+    .from('categories')
+    .insert([categoryData])
+    .select()
+    .single();
+  
+  btn.disabled = false;
+  btn.textContent = 'إضافة التصنيف ✓';
+  
+  if (error) {
+    errorBox.textContent = '❌ فشل الحفظ: ' + error.message;
+    errorBox.style.display = 'block';
+    return;
+  }
+  
+  document.getElementById('add-category-form').style.display = 'none';
+  document.getElementById('success-category-name').textContent =
+    'تمت إضافة "' + nameAr + '" بنجاح';
+  document.getElementById('success-box').style.display = 'block';
+});
+
+function resetForm() {
+  document.getElementById('add-category-form').reset();
+  document.getElementById('add-category-form').style.display = 'block';
+  document.getElementById('success-box').style.display = 'none';
+  document.getElementById('error-box').style.display = 'none';
+  document.getElementById('is-active').checked = true;
+  document.getElementById('name-ar').focus();
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  await checkAuth();
+});
+</script>
+</body>
+</html>
