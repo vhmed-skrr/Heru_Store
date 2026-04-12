@@ -200,17 +200,6 @@
       }
     }
     
-    /* PRODUCT OVERRIDES */
-    .product-img {
-       width: 100%;
-       aspect-ratio: 1/1;
-       object-fit: cover;
-    }
-    .product-info { padding: var(--space-4); }
-    .product-cat { font-size: var(--text-xs); color: var(--text-muted); margin-block-end: var(--space-1); }
-    .product-title { font-weight: 700; margin: 0; font-size: var(--text-base); margin-block-end: var(--space-2); }
-    .product-price { font-weight: 600; color: var(--text-secondary); font-family: var(--font-number); }
-    
     .compare-checkbox {
       position: absolute;
       top: var(--space-3);
@@ -416,9 +405,10 @@
         <input type="checkbox" class="compare-cb" id="cmp_{id}" data-id="{id}">
         <label for="cmp_{id}">قارن</label>
       </div>
-      <a href="./product?id={id}" style="display:block; position:relative; overflow:hidden;" class="prod-link">
+      <a href="./product?id={id}" class="prod-img-container prod-link">
         {statusBadge}
         <img src="{image}" alt="{name}" width="400" height="400" class="product-img" loading="lazy">
+        <div class="prod-overlay">عرض سريع</div>
       </a>
       <div class="product-info">
         <div class="product-cat">{catName}</div>

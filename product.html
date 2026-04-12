@@ -60,72 +60,86 @@
     .gallery-section {
       width: 55%;
       position: sticky;
-      top: 100px; /* Offset for navbar */
+      top: 100px;
+      display: flex;
+      gap: var(--space-4);
+      align-items: flex-start;
     }
     .info-section { width: 45%; }
+    
+    .thumbnails-vertical {
+      width: 20%;
+      max-width: 80px;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+      max-height: 500px;
+      overflow-y: auto;
+      scrollbar-width: none;
+    }
+    .thumbnails-vertical::-webkit-scrollbar { display: none; }
+    
+    .thumb {
+      width: 72px;
+      height: 72px;
+      flex-shrink: 0;
+      border-radius: var(--radius-md);
+      border: 2px solid transparent;
+      cursor: pointer;
+      object-fit: cover;
+      opacity: 0.6;
+      transition: all 0.2s ease;
+    }
+    .thumb:hover {
+      filter: brightness(1.2);
+      opacity: 0.8;
+    }
+    .thumb.active {
+      border-color: var(--accent);
+      opacity: 1;
+    }
+    
+    .main-image-column {
+      width: 80%;
+      flex-grow: 1;
+    }
+    .main-image-container {
+      background: #0a0a0a;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      max-height: 500px;
+      aspect-ratio: 4/3;
+      cursor: zoom-in;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .main-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transition: opacity 0.25s ease;
+    }
     
     @media (max-width: 900px) {
       .product-grid { flex-direction: column; gap: var(--space-8); }
       .gallery-section, .info-section { width: 100%; position: static; }
     }
     
-    /* GALLERY DESKTOP */
-    .main-image-container {
-      background: var(--bg-elevated);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      aspect-ratio: 4/5;
-      cursor: zoom-in;
-      margin-block-end: var(--space-4);
-      position: relative;
-    }
-    .main-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: opacity 0.3s;
-    }
-    .thumbnails {
-      display: flex;
-      gap: var(--space-3);
-      overflow-x: auto;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-    }
-    .thumbnails::-webkit-scrollbar { display: none; }
-    .thumb {
-      width: 80px;
-      height: 80px;
-      border-radius: var(--radius-md);
-      border: 2px solid transparent;
-      cursor: pointer;
-      object-fit: cover;
-      opacity: 0.6;
-      transition: all var(--transition-fast);
-      flex-shrink: 0;
-    }
-    .thumb.active { border-color: var(--accent); opacity: 1; }
-    
-    /* MOBILE GALLERY (SWIPE) */
-    .mobile-swipe-gallery { display: none; }
     @media (max-width: 768px) {
-      .main-image-container, .thumbnails { display: none; }
-      .mobile-swipe-gallery {
-        display: flex;
+      .gallery-section {
+        flex-direction: column-reverse;
+      }
+      .thumbnails-vertical {
+        width: 100%;
+        max-width: none;
+        flex-direction: row;
         overflow-x: auto;
-        scroll-snap-type: x mandatory;
-        width: 100vw;
-        margin-inline-start: calc(-1 * var(--space-4));
-        scrollbar-width: none;
+        overflow-y: hidden;
       }
-      .mobile-swipe-item {
-        flex-shrink: 0;
-        width: 100vw;
-        scroll-snap-align: center;
-        aspect-ratio: 4/5;
-      }
-      .mobile-swipe-item img {
-        width: 100%; height: 100%; object-fit: cover;
+      .main-image-column {
+        width: 100%;
       }
     }
     
@@ -372,17 +386,14 @@
       
       <div class="product-grid">
           <!-- Left/Gallery -->
-          <div class="gallery-section">
-              <!-- Desktop gallery -->
-              <div class="main-image-container" onclick="window.openLightbox()">
-                 <img src="" id="main-img" class="main-img" alt="Product Image">
-              </div>
-              <div class="thumbnails" id="thumbnails-container">
+          <div class="gallery-section" id="gallery-section">
+              <div class="thumbnails-vertical" id="thumbnails-container">
                  <!-- Populated by JS -->
               </div>
-              <!-- Mobile Swipe gallery -->
-              <div class="mobile-swipe-gallery" id="mobile-swipe-gallery">
-                 <!-- Populated by JS -->
+              <div class="main-image-column">
+                  <div class="main-image-container" onclick="window.openLightbox()">
+                     <img src="" id="main-img" class="main-img" alt="Product Image">
+                  </div>
               </div>
           </div>
           
@@ -506,11 +517,15 @@
 
   <!-- Template for related card -->
   <template id="tpl-product">
-    <a href="./product?id={id}" class="card-product" style="text-decoration:none; color:inherit;">
-      <img src="{image}" alt="{name}" class="product-img" width="400" height="400" loading="lazy" style="width:100%; aspect-ratio:1/1; object-fit:cover; border-bottom:1px solid var(--border);">
-      <div class="product-info" style="padding:var(--space-4);">
-        <h3 style="font-size:var(--text-base); font-weight:700; margin:0 0 var(--space-2) 0;">{name}</h3>
-        <div style="color:var(--text-secondary); font-weight:600; font-family:var(--font-number);">{price} ج.م</div>
+    <a href="./product?id={id}" class="card-product">
+      <div class="prod-img-container">
+        <img src="{image}" alt="{name}" class="product-img" width="400" height="400" loading="lazy">
+        <div class="prod-overlay">عرض سريع</div>
+      </div>
+      <div class="product-info">
+        <div class="product-cat">هيرو المميزة</div>
+        <h3 class="product-title">{name}</h3>
+        <div class="product-price">{price} ج.م</div>
       </div>
     </a>
   </template>
@@ -662,15 +677,26 @@
           function renderGallery() {
               const mainImg = document.getElementById('main-img');
               const thumbContainer = document.getElementById('thumbnails-container');
-              const swipeContainer = document.getElementById('mobile-swipe-gallery');
               
+              if (!imagesArray || imagesArray.length === 0) {
+                  imagesArray = ['https://placehold.co/800x800/141414/F0EBE1?text=Heru'];
+              }
+
+              if (imagesArray.length <= 1) {
+                  thumbContainer.style.display = 'none';
+                  document.querySelector('.main-image-column').style.width = '100%';
+              } else {
+                  thumbContainer.style.display = '';
+                  document.querySelector('.main-image-column').style.width = '80%';
+              }
+
               const updateMain = (idx) => {
                   currentImageIdx = idx;
                   mainImg.style.opacity = '0';
                   setTimeout(() => {
                       mainImg.src = clFull(imagesArray[idx]);
                       mainImg.style.opacity = '1';
-                  }, 150);
+                  }, 250);
                   // Update thumbs states
                   Array.from(thumbContainer.children).forEach((el, i) => {
                       el.classList.toggle('active', i === idx);
@@ -703,17 +729,16 @@
                   }
               });
               
-              // Populate thumbs limit max 5 visually depending on rules
-              thumbContainer.innerHTML = ''; swipeContainer.innerHTML = '';
-              imagesArray.forEach((url, i) => {
-                  // Desktop thumb
-                  const tn = document.createElement('img');
-                  tn.src = clThumb(url); tn.className = `thumb ${i===0?'active':''}`; tn.onclick = () => updateMain(i);
-                  thumbContainer.appendChild(tn);
-                  
-                  // Mobile Swipe
-                  swipeContainer.insertAdjacentHTML('beforeend', `<div class="mobile-swipe-item"><img src="${clThumb(url)}" loading="lazy"></div>`);
-              });
+              thumbContainer.innerHTML = '';
+              if (imagesArray.length > 1) {
+                  imagesArray.forEach((url, i) => {
+                      const tn = document.createElement('img');
+                      tn.src = clThumb(url);
+                      tn.className = `thumb ${i===0?'active':''}`;
+                      tn.onclick = () => updateMain(i);
+                      thumbContainer.appendChild(tn);
+                  });
+              }
               
               updateMain(0);
           }

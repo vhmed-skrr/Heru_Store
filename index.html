@@ -207,16 +207,32 @@
     
     /* Category Card Details */
     .cat-item {
-        width: 140px;
-        height: 140px;
+        min-width: 140px;
+        padding: 20px;
+        border-radius: 16px;
         text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        color: var(--text-primary);
+        text-decoration: none;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        flex-shrink: 0;
+        background-color: var(--bg-elevated); /* default */
+    }
+    .cat-item:hover {
+        transform: scale(1.03);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
     .cat-item span:first-child {
-        font-size: var(--text-3xl);
+        font-size: 2rem;
+        line-height: 1;
     }
     .cat-item span:last-child {
         font-weight: 700;
-        font-size: var(--text-sm);
+        font-size: var(--text-base);
     }
     
     /* Editorial Section */
@@ -288,30 +304,6 @@
       font-size: var(--text-sm);
       padding-top: var(--space-8);
       border-top: 1px solid var(--border);
-    }
-    
-    /* Product Image Helper */
-    .product-img {
-      width: 100%;
-      aspect-ratio: 1/1;
-      object-fit: cover;
-      border-bottom: 1px solid var(--border);
-    }
-    .product-info {
-      padding: var(--space-4);
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-2);
-    }
-    .product-title {
-      font-weight: 700;
-      margin: 0;
-      font-size: var(--text-base);
-    }
-    .product-price {
-      color: var(--text-secondary);
-      font-weight: 600;
-      font-family: var(--font-number);
     }
     
     /* Templates visibility */
@@ -658,8 +650,12 @@
   <!-- HTML Templates for dynamic rendering -->
   <template id="tpl-product">
     <a href="./product?id={id}" class="card-product">
-      <img src="{image}" alt="{name} - متجر هيرو" width="400" height="400" class="product-img" loading="lazy">
+      <div class="prod-img-container">
+        <img src="{image}" alt="{name} - متجر هيرو" width="400" height="400" class="product-img" loading="lazy">
+        <div class="prod-overlay">عرض سريع</div>
+      </div>
       <div class="product-info">
+        <div class="product-cat">شحن مجاني</div>
         <h3 class="product-title">{name}</h3>
         <div class="product-price">{price} ج.م</div>
       </div>
@@ -667,7 +663,7 @@
   </template>
 
   <template id="tpl-category">
-    <a href="./shop?category={id}" class="card-category cat-item">
+    <a href="./shop?category={id}" class="cat-item" style="background-color: {color};">
       {visual}
       <span>{name}</span>
     </a>
@@ -789,27 +785,33 @@
                   const container = document.getElementById('categories-slider');
                   if(supabaseClient) {
                       const { data, error } = await supabaseClient
-                          .from('categories').select('id, name_ar, color, icon, sort_order, image_url, display_type')
-                          .eq('active', true).order('sort_order', { ascending: true }).limit(8);
+                          .from('categories').select('*')
+                          .eq('active', true).order('sort_order', { ascending: true });
+                          
+                      console.log('Categories fetched on load:', data, error);
                       
-                      if(!error && data) {
-                          container.innerHTML = '';
+                      container.innerHTML = '';
+                      
+                      if (error || !data || data.length === 0) {
+                          container.innerHTML = emptyStateHTML('لا توجد تصنيفات حالياً');
+                      } else {
                           const tpl = document.getElementById('tpl-category').innerHTML;
                           data.forEach(c => {
-                              let visual = '';
-                              if (c.display_type === 'image' && c.image_url) {
-                                visual = `<img src="${c.image_url}" alt="${c.name_ar}" loading="lazy" style="width:100%; height:100%; object-fit:cover; border-radius:inherit;">`;
-                              } else if (c.display_type === 'color') {
-                                visual = `<span style="font-size:2rem;">${c.icon || '📦'}</span>`;
-                              } else {
-                                visual = `<span style="font-size:2rem;">${c.icon || '📦'}</span>`;
-                              }
-                              let html = tpl.replace(/{id}/g, c.id).replace(/{name}/g, c.name_ar).replace('{visual}', visual);
+                              let visual = `<span style="font-size:2rem; display:block;">${c.icon || '📦'}</span>`;
+                              let bgColor = c.color || 'var(--bg-elevated)';
+                              let html = tpl.replace(/{id}/g, c.id)
+                                            .replace(/{name}/g, c.name_ar)
+                                            .replace('{visual}', visual)
+                                            .replace('{color}', bgColor);
                               container.insertAdjacentHTML('beforeend', html);
                           });
                       }
                   }
-              } catch (err) {}
+              } catch (err) {
+                  console.error('Error rendering categories:', err);
+                  const container = document.getElementById('categories-slider');
+                  if(container) container.innerHTML = emptyStateHTML('لا توجد تصنيفات حالياً');
+              }
 
               // Load Store Reviews
               try {

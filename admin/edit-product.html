@@ -62,6 +62,49 @@
                  margin-bottom: 16px; }
     .section-divider { border: none; border-top: 1px solid var(--border);
                        margin: 24px 0; }
+    /* Dropzone CSS */
+    .dropzone {
+      border: 2px dashed var(--border-strong); border-radius: var(--radius-md);
+      padding: 32px; text-align: center; cursor: pointer; transition: all 0.2s;
+      background: var(--bg-elevated); margin-bottom: 16px;
+    }
+    .dropzone:hover { border-color: var(--accent); background: var(--bg-card); }
+    .dropzone.dragover { border-color: var(--accent); background: rgba(34, 197, 94, 0.1); }
+    
+    .preview-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+    }
+    @media (max-width: 640px) {
+      .preview-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    .preview-item {
+      position: relative; aspect-ratio: 1; border-radius: 8px; overflow: hidden;
+      border: 1px solid var(--border); background: var(--bg-card);
+    }
+    .preview-item img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .preview-item .delete-btn {
+      position: absolute; top: 4px; right: 4px; width: 24px; height: 24px;
+      border-radius: 50%; background: rgba(0,0,0,0.6); color: white;
+      border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      font-size: 16px; padding: 0; line-height: 1; margin: 0;
+    }
+    .preview-item .delete-btn:hover { background: #EF4444; }
+    .preview-item .featured-badge {
+      position: absolute; bottom: 4px; right: 4px; left: 4px;
+      background: var(--accent); color: var(--text-inverse); text-align: center;
+      font-size: 11px; padding: 2px 0; border-radius: 4px; font-weight: 700;
+    }
+    .preview-item.loading {
+      display: flex; align-items: center; justify-content: center;
+    }
+    .loader-spinner {
+      width: 24px; height: 24px; border: 3px solid var(--border);
+      border-top-color: var(--accent); border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
@@ -147,16 +190,21 @@
 
       <hr class="section-divider">
 
-      <!-- الصورة -->
+      <!-- الصور -->
       <div class="form-group">
-        <label class="form-label">رابط صورة المنتج</label>
-        <input type="url" id="image-url" class="input-field"
-               placeholder="https://res.cloudinary.com/di5ihjlkh/..."
-               dir="ltr">
-        <small style="color: var(--text-muted); font-size: 12px;
-                       display: block; margin-top: 6px;">
-          ارفع الصورة على Cloudinary أولاً ثم ضع الرابط هنا
-        </small>
+        <label class="form-label">صور المنتج (حد أقصى 8)</label>
+        
+        <div id="image-dropzone" class="dropzone">
+          <svg style="width: 32px; height: 32px; color: var(--text-muted); margin-bottom: 8px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+          <div style="color: var(--text-secondary); font-size: 14px;">اسحب الصور هنا أو اضغط للاختيار</div>
+          <input type="file" id="image-input" multiple accept="image/jpeg, image/png, image/webp" style="display: none;">
+        </div>
+
+        <div id="image-error" class="error-box" style="display: none; margin-top: 12px; margin-bottom: 0;"></div>
+
+        <div id="preview-grid" class="preview-grid">
+          <!-- Previews inserted here -->
+        </div>
       </div>
 
       <hr class="section-divider">
@@ -217,7 +265,12 @@ async function loadProduct() {
   document.getElementById('description').value = data.description_ar || '';
   document.getElementById('price').value      = data.price || '';
   document.getElementById('stock').value      = data.stock || '';
-  document.getElementById('image-url').value  = (data.images && data.images[0]) || '';
+  
+  if (data.images && Array.isArray(data.images) && data.images.length > 0) {
+      uploadedImages = [...data.images];
+      updatePreviewGrid();
+  }
+  
   document.getElementById('is-featured').checked = data.featured || false;
   document.getElementById('is-active').checked   = data.active !== false;
   
@@ -260,8 +313,6 @@ document.getElementById('add-product-form').addEventListener('submit', async fun
   if (!nameAr) { errorBox.textContent = '⚠️ اسم المنتج مطلوب'; errorBox.style.display = 'block'; return; }
   if (isNaN(price)) { errorBox.textContent = '⚠️ أدخل سعراً صحيحاً'; errorBox.style.display = 'block'; return; }
   
-  const imageUrl = document.getElementById('image-url').value.trim();
-  
   const productData = {
     name_ar:        nameAr,
     name_en:        document.getElementById('name-en').value.trim() || null,
@@ -269,7 +320,7 @@ document.getElementById('add-product-form').addEventListener('submit', async fun
     price:          price,
     stock:          parseInt(document.getElementById('stock').value) || 0,
     category_id:    document.getElementById('category-id').value || null,
-    images:         imageUrl ? [imageUrl] : [],
+    images:         uploadedImages,
     featured:       document.getElementById('is-featured').checked,
     active:         document.getElementById('is-active').checked,
   };
@@ -300,6 +351,108 @@ async function deleteProduct() {
   if (error) { alert('فشل الحذف: ' + error.message); return; }
   
   window.location.href = '/admin';
+}
+
+// ══ Multi Image Uploader ══
+const CLOUDINARY_CLOUD_NAME = 'di5ihjlkh';
+const CLOUDINARY_UPLOAD_PRESET = 'heru_products';
+
+let uploadedImages = [];
+
+const dropzone = document.getElementById('image-dropzone');
+const imageInput = document.getElementById('image-input');
+const previewGrid = document.getElementById('preview-grid');
+const imageError = document.getElementById('image-error');
+
+dropzone.addEventListener('click', () => imageInput.click());
+
+dropzone.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  dropzone.classList.add('dragover');
+});
+
+dropzone.addEventListener('dragleave', () => {
+  dropzone.classList.remove('dragover');
+});
+
+dropzone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  dropzone.classList.remove('dragover');
+  handleFiles(e.dataTransfer.files);
+});
+
+imageInput.addEventListener('change', (e) => {
+  handleFiles(e.target.files);
+  imageInput.value = '';
+});
+
+async function handleFiles(files) {
+  const newFiles = Array.from(files).filter(file => file.type.match(/image\/(jpeg|png|webp)/));
+  
+  if (uploadedImages.length + newFiles.length > 8) {
+    imageError.textContent = 'الحد الأقصى 8 صور فقط';
+    imageError.style.display = 'block';
+    return;
+  }
+  imageError.style.display = 'none';
+
+  for (const file of newFiles) {
+    const id = Date.now() + Math.random().toString(36).substr(2, 9);
+    renderPreviewStub(id);
+    await uploadToCloudinary(file, id);
+  }
+}
+
+async function uploadToCloudinary(file, stubId) {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+
+  try {
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+      method: 'POST',
+      body: formData
+    });
+    const data = await res.json();
+    if (data.secure_url) {
+      uploadedImages.push(data.secure_url);
+      updatePreviewGrid();
+    } else {
+      throw new Error('Upload failed');
+    }
+  } catch (err) {
+    imageError.textContent = 'حدث خطأ أثناء رفع إحدى الصور';
+    imageError.style.display = 'block';
+    const stub = document.getElementById(`stub-${stubId}`);
+    if (stub) stub.remove();
+  }
+}
+
+function renderPreviewStub(id) {
+  const div = document.createElement('div');
+  div.className = 'preview-item loading';
+  div.id = `stub-${id}`;
+  div.innerHTML = `<div class="loader-spinner"></div>`;
+  previewGrid.appendChild(div);
+}
+
+function updatePreviewGrid() {
+  previewGrid.innerHTML = '';
+  uploadedImages.forEach((url, i) => {
+    const div = document.createElement('div');
+    div.className = 'preview-item';
+    div.innerHTML = `
+      <img src="${url}" alt="Preview">
+      <button type="button" class="delete-btn" onclick="removeImage(${i})">×</button>
+      ${i === 0 ? '<div class="featured-badge">رئيسية</div>' : ''}
+    `;
+    previewGrid.appendChild(div);
+  });
+}
+
+function removeImage(index) {
+  uploadedImages.splice(index, 1);
+  updatePreviewGrid();
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
