@@ -1,5 +1,7 @@
+const { createClient } = supabase;
+
 // Create or import supabase client
-// Assuming supabase-js is loaded via CDN in index.html (e.g., window.supabase)
+// Assuming supabase-js is loaded locally in index.html (e.g., window.supabase)
 
 const supabaseUrl = 'https://yynewmzzurjvghicerby.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5bmV3bXp6dXJqdmdoaWNlcmJ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU4NjI2NTIsImV4cCI6MjA5MTQzODY1Mn0.vov2TwtQAOyNMJshx5YZEWms8LvXdlCQ5U7VOJU71H8';
@@ -7,8 +9,8 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 export const CLOUDINARY_CLOUD_NAME = 'di5ihjlkh';
 export const CLOUDINARY_UPLOAD_PRESET = 'heru_products';
 
-export const supabaseClient = typeof supabase !== 'undefined' 
-  ? supabase.createClient(supabaseUrl, supabaseKey) 
+export const supabaseClient = typeof createClient !== 'undefined' 
+  ? createClient(supabaseUrl, supabaseKey) 
   : null;
 
 export async function checkConnection() {
