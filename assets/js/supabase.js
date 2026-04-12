@@ -15,9 +15,17 @@ if (typeof window !== 'undefined') {
 }
 
 // Export for use in other files
+export { supabaseClient };
 window.supabaseClient = supabaseClient;
 window.SUPABASE_URL = SUPABASE_URL;
 window.SUPABASE_ANON_KEY = SUPABASE_ANON_KEY;
+window.SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_N-0Aad1WcYdS3p6qx74y3Q_b-7SVLgs';
+export const SUPABASE_PUBLISHABLE_KEY = window.SUPABASE_PUBLISHABLE_KEY;
+
+export const CLOUDINARY_CLOUD_NAME = 'di5ihjlkh';
+export const CLOUDINARY_UPLOAD_PRESET = 'heru_products';
+window.CLOUDINARY_CLOUD_NAME = CLOUDINARY_CLOUD_NAME;
+window.CLOUDINARY_UPLOAD_PRESET = CLOUDINARY_UPLOAD_PRESET;
 
 async function checkSupabaseConnection() {
   try {

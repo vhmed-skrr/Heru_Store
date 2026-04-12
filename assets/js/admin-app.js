@@ -344,7 +344,8 @@ function setupCloudinaryUploader() {
         if(cachedProductsImages.length + files.length > 5) { window.showToast('خطأ: 5 صور كحد أقصى مسموح بها', 'error'); return; }
         
         // You should define VITE_CLOUDINARY_CLOUD_NAME config or fetch from Settings DB
-        let clName = 'demo', clPreset = 'unsigned_preset_heru';
+        let clName = window.CLOUDINARY_CLOUD_NAME || 'di5ihjlkh';
+        let clPreset = window.CLOUDINARY_UPLOAD_PRESET || 'heru_products';
         // Check settings table via global caching if available. Using fallbacks.
         
         for (let file of files) {
