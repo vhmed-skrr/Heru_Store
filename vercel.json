@@ -23,7 +23,11 @@
     { "source": "/privacy", "destination": "/privacy.html" },
     { "source": "/terms", "destination": "/terms.html" },
     { "source": "/admin", "destination": "/admin/index.html" },
-    { "source": "/admin/login", "destination": "/admin/login.html" }
+    { "source": "/admin/login", "destination": "/admin/login.html" },
+    { "source": "/admin/add-product", "destination": "/admin/add-product.html" },
+    { "source": "/admin/edit-product", "destination": "/admin/edit-product.html" },
+    { "source": "/admin/add-category", "destination": "/admin/add-category.html" },
+    { "source": "/admin/edit-category", "destination": "/admin/edit-category.html" }
   ],
   "routes": [
     { "handle": "filesystem" },

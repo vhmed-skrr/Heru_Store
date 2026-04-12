@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>اقترح تصميمك | Heru</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <link rel="stylesheet" href="./assets/css/tokens.css">
+  <link rel="stylesheet" href="./assets/css/base.css">
+  <link rel="stylesheet" href="./assets/css/components.css">
+  
+  <style>
+    .container { max-width: 800px; margin: 0 auto; padding: 0 var(--space-4); }
+    .hero-small {
+        text-align: center;
+        padding: var(--space-12) 0 var(--space-8) 0;
+    }
+    .hero-title {
+        font-family: var(--font-display);
+        font-size: var(--text-4xl);
+        margin-block-end: var(--space-4);
+    }
+    .hero-desc {
+        color: var(--text-secondary);
+        font-size: var(--text-lg);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .form-wrapper {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: var(--space-8);
+        margin-block-end: var(--space-16);
+        box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+    }
+    
+    .upload-box {
+        border: 2px dashed var(--border-strong);
+        border-radius: var(--radius-md);
+        padding: var(--space-6);
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        background: var(--bg-elevated);
+    }
+    .upload-box:hover { border-color: var(--accent); background: rgba(240,235,225,0.02); }
+    .upload-box input[type="file"] { display: none; }
+    
+    .progress-bar-container {
+        width: 100%; height: 6px; background: var(--bg-elevated); border-radius: var(--radius-full); margin-top: var(--space-4); display: none; overflow: hidden;
+    }
+    .progress-bar-fill {
+        height: 100%; background: var(--accent); width: 0%; transition: width 0.2s;
+    }
+    
+    .success-msg {
+        display: none;
+        text-align: center;
+        padding: var(--space-12) var(--space-4);
+    }
+    .success-icon {
+        font-size: 64px;
+        margin-block-end: var(--space-6);
+        animation: float 2s infinite ease-in-out alternate;
+    }
+    @keyframes float { 0% {transform: translateY(0);} 100% {transform: translateY(-10px);} }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <header>
+  <nav class="navbar" aria-label="التنقل الرئيسي">
+      <a href="./" class="navbar-logo" data-setting="store_name">HERU</a>
+      <div class="navbar-links">
+          <a href="./">الرئيسية</a>
+          <a href="./shop">المتجر</a>
+          <a href="./suggest" style="color:var(--accent);">اقتراح تصميم</a>
+      </div>
+      <div class="navbar-actions">
+          <a href="./cart" class="cart-badge btn-ghost" data-count="0">🛒</a>
+      </div>
+  </nav>
+  </header>
+
+  <main class="container">
+      
+      <div class="hero-small" id="hero-sec">
+          <h1 class="hero-title">العب بلعبتك وصمم منتجك الخاص</h1>
+          <p class="hero-desc">هل لديك تصميم نوت بوك أحلامك، ستيكر بعبارة تخصك، أو لوحة لفنانك المفضل؟ شاركنا فكرتك وسنتولى طباعتها وتنفيذها خصيصاً لك!</p>
+      </div>
+
+      <div class="form-wrapper" id="form-view">
+          <form id="suggest-form" onsubmit="window.submitSuggestion(event)">
+              <div style="margin-block-end: var(--space-5);">
+                  <label class="form-label" for="inp-name">الاسم الكريم <span style="color:var(--error);">*</span></label>
+                          <input aria-describedby="inp-name-error" aria-required="true" type="text" id="inp-name" class="input-field" placeholder="كيف نحب أن نناديك؟" required>
+              </div>
+              
+              <div style="margin-block-end: var(--space-5);">
+                  <label class="form-label" for="inp-phone">رقم التواصل للواتساب <span style="color:var(--error);">*</span></label>
+                          <input aria-describedby="inp-phone-error" aria-required="true" type="tel" id="inp-phone" class="input-field font-num" placeholder="01XXXXXXXXX" dir="ltr" style="text-align:right;" required>
+                  <div class="form-error-message" id="err-phone" role="alert" aria-live="assertive"></div>
+              </div>
+              
+              <div style="margin-block-end: var(--space-5);">
+                  <label class="form-label" for="inp-product">المنتج المقترح <span style="color:var(--error);">*</span></label>
+                          <select aria-describedby="inp-product-error" aria-required="true" id="inp-product" class="select-field" required>
+                      <option value="">اختار الفئة المناسبة</option>
+                      <option value="نوت بوك">نوت بوك / كشكول</option>
+                      <option value="كاب">كاب / طاقية</option>
+                      <option value="جراب موبايل">جراب موبايل</option>
+                      <option value="ستيكر">ستيكرات</option>
+                      <option value="لوحة/بوستر">لوحة خشب / بوستر</option>
+                      <option value="أخرى">أخرى (مفاجأة)</option>
+                  </select>
+              </div>
+              
+              <div style="margin-block-end: var(--space-5);">
+                  <label class="form-label" for="inp-desc">اشرح لنا فكرتك بالتفصيل <span style="color:var(--error);">*</span></label>
+                          <textarea aria-describedby="inp-desc-error" aria-required="true" id="inp-desc" class="textarea-field" placeholder="أريد تصميم جراب موبايل باللون الأسود وعليه رسمة كذا..." style="min-height: 120px;" required></textarea>
+              </div>
+              
+              <div style="margin-block-end: var(--space-8);">
+                  <label class="form-label">عندك صورة توصل فكرتك أسرع؟ (اختياري)</label>
+                  <label class="upload-box" id="upload-box">
+                      <input type="file" id="inp-file" accept="image/jpeg, image/png">
+                      <div id="upload-text" style="color:var(--text-secondary);"><span style="font-size:24px;">📸</span><br>اضغط للرفع أو اسحب الصورة هنا (حد أقصى 5MB)</div>
+                  </label>
+                  <div class="progress-bar-container" id="progress-container"><div class="progress-bar-fill" id="progress-fill"></div></div>
+                  <div id="upload-feedback" style="font-size:12px; margin-top:8px; color:var(--text-muted);"></div>
+              </div>
+              
+              <button type="submit" class="btn btn-primary btn-full btn-lg" id="btn-submit">🚀 أرسل اقتراحك للحياة</button>
+          </form>
+      </div>
+      
+      <div class="success-msg" id="success-view">
+          <div class="success-icon">🙌</div>
+          <h2 class="hero-title" style="margin-block-end:var(--space-2);">وصلنا اقتراحك الرهيب!</h2>
+          <p style="color:var(--text-secondary); margin-block-end:var(--space-6); font-size:var(--text-lg);">سنقوم بدراسة الفكرة والرد عليك في أقرب وقت لترتيب التفاصيل وتجسيدها.</p>
+          <div style="display:flex; justify-content:center; gap:var(--space-4);">
+              <button class="btn btn-secondary" onclick="window.resetForm()">اقترح فكرة أخرى 💡</button>
+              <button class="btn btn-primary" onclick="window.location.href='/shop'">تسوّق الآن</button>
+          </div>
+      </div>
+
+  </main>
+  
+  <div id="toast-container" class="toast-container"></div>
+
+  <script type="module">
+      import { supabaseClient } from '/assets/js/supabase.js';
+
+      document.addEventListener('DOMContentLoaded', () => {
+
+          // Basic checks limits
+          const $ = id => document.getElementById(id);
+          const iFile = $('inp-file');
+          const box = $('upload-box');
+          const txt = $('upload-text');
+          const prgCont = $('progress-container');
+          const prgFill = $('progress-fill');
+          let uploadedUrl = null;
+
+          window.showToast = (msg, type='info') => {
+              const c = document.getElementById('toast-container');
+              if(!c) return;
+              const t = document.createElement('div'); t.className = `toast toast-${type}`; t.innerText = msg;
+              c.appendChild(t); setTimeout(()=>t.remove(), 4000);
+          };
+
+          // File Handling / Cloudinary upload logic with real feedback
+          iFile.addEventListener('change', async (e) => {
+              const file = e.target.files[0];
+              if(!file) return;
+
+              // Validate
+              if(file.size > 5 * 1024 * 1024) { window.showToast('عفواً، حجم الصورة يجب ألا يتعدى 5 ميجابايت', 'error'); return; }
+              if(!['image/jpeg', 'image/png'].includes(file.type)) { window.showToast('نقبل صور JPG و PNG فقط', 'error'); return; }
+
+              // Prepare upload
+              const formData = new FormData();
+              formData.append('file', file);
+              
+              // Hardcoding cloud details if env is missing for seamless flow. 
+              // Usually comes from ENV. Replace with exact presets.
+              const cloudName = window.ENV?.CLOUDINARY_CLOUD_NAME || 'demo'; // demo won't work perfectly without preset
+              const uploadPreset = window.ENV?.CLOUDINARY_UPLOAD_PRESET || 'unsigned_preset_heru';
+              
+              formData.append('upload_preset', uploadPreset);
+              
+              prgCont.style.display = 'block';
+              txt.innerHTML = `جاري رفع <b>${file.name}</b>...`;
+
+              // XHR for progress bar
+              const xhr = new XMLHttpRequest();
+              xhr.open('POST', `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, true);
+              
+              xhr.upload.onprogress = (ev) => {
+                  if(ev.lengthComputable) {
+                      const percent = (ev.loaded / ev.total) * 100;
+                      prgFill.style.width = percent + '%';
+                  }
+              };
+              
+              xhr.onload = () => {
+                  if(xhr.status === 200) {
+                      const res = JSON.parse(xhr.responseText);
+                      uploadedUrl = res.secure_url;
+                      txt.innerHTML = `<span style="color:var(--success);">تم الرفع بنجاح ✓</span><br><img src="${uploadedUrl}" style="max-height:80px; margin-top:8px; border-radius:4px; border:1px solid var(--border);">`;
+                      $('upload-feedback').innerText = 'يمكنك إرسال الاقتراح الآن بكل أمان.';
+                  } else {
+                      window.showToast('فشل في رفع الصورة، تحقق من الرابط الخاص بـ Cloudinary', 'error');
+                      txt.innerHTML = `حدث خطأ بالرفع. حاول مرة أخرى.`;
+                      prgCont.style.display = 'none';
+                  }
+              };
+              
+              xhr.onerror = () => { window.showToast('حدث خطأ بالاتصال.', 'error'); };
+              xhr.send(formData);
+          });
+
+          // Submission Validate & Insert
+          window.submitSuggestion = async (e) => {
+              e.preventDefault();
+              
+              const phone = $('inp-phone');
+              const phoneRegex = /^01[0125][0-9]{8}$/;
+              if(!phoneRegex.test(phone.value.trim())) {
+                  $('err-phone').innerText = '* رقم الهاتف المصري المدخل غير صالح.';
+                  phone.classList.add('input-error');
+                  return;
+              } else {
+                  $('err-phone').innerText = ''; phone.classList.remove('input-error');
+              }
+              
+              const btn = $('btn-submit');
+              btn.classList.add('btn-loading');
+              
+              const payload = {
+                  name: $('inp-name').value.trim(),
+                  phone: phone.value.trim(),
+                  description: `الفئة: ${$('inp-product').value}\n${$('inp-desc').value.trim()}`, // Concatenated for schema fit or added to description
+                  image_url: uploadedUrl,
+                  status: 'new'
+              };
+
+              try {
+                  const { error } = await supabaseClient.from('suggestions').insert([payload]);
+                  if(error) throw error;
+                  
+                  $('hero-sec').style.display = 'none';
+                  $('form-view').style.display = 'none';
+                  $('success-view').style.display = 'block';
+                  window.scrollTo({top:0, behavior:'smooth'});
+                  
+              } catch(err) {
+                  window.showToast('عفواً حدث خطأ في إرسال المقترح. حاول لاحقاً', 'error');
+              } finally {
+                  btn.classList.remove('btn-loading');
+              }
+          };
+
+          window.resetForm = () => {
+              $('suggest-form').reset();
+              uploadedUrl = null;
+              txt.innerHTML = `<span style="font-size:24px;">📸</span><br>اضغط للرفع أو اسحب الصورة هنا (حد أقصى 5MB)`;
+              prgCont.style.display = 'none'; prgFill.style.width = '0%';
+              $('upload-feedback').innerText = '';
+              
+              $('hero-sec').style.display = 'block';
+              $('form-view').style.display = 'block';
+              $('success-view').style.display = 'none';
+              window.scrollTo({top:0, behavior:'smooth'});
+          };
+      });
+  </script>
+
+<script>
+document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape') {
+        document.querySelectorAll('.mobile-menu.open, .filter-overlay.open, .filters-wrapper.open, .modal-overlay.open').forEach(el => el.classList.remove('open'));
+    }
+});
+</script>
+
+<!-- Cookie Notice -->
+<style>
+  #cookie-notice {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background: var(--bg-elevated);
+    border-top: 1px solid var(--border);
+    padding: var(--space-4) var(--space-6);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-4);
+    z-index: 9999;
+    box-shadow: 0 -4px 24px rgba(0,0,0,0.6);
+    transform: translateY(100%);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  #cookie-notice.visible { transform: translateY(0); }
+  .cookie-text { font-size: var(--text-sm); color: var(--text-secondary); flex: 1; }
+  .cookie-actions { display: flex; gap: var(--space-3); flex-shrink:0; }
+  @media(max-width: 600px) {
+    #cookie-notice { flex-direction: column; text-align: center; padding: var(--space-4); margin-bottom:-1px;}
+    .cookie-actions { width: 100%; }
+    .cookie-actions button { flex: 1; padding: var(--space-3); }
+  }
+</style>
+<div id="cookie-notice" role="dialog" aria-live="polite" aria-label="إشعار الخصوصية">
+    <div class="cookie-text">
+        نستخدم تقنية <strong>LocalStorage</strong> لحفظ سلة التسوق وتفضيلاتك. نحن لا نستخدم ملفات تعريف الارتباط (Cookies) للتتبع. يمكنك الاطلاع على <a href="./privacy" style="color:var(--accent); text-decoration:underline;">سياسة الخصوصية</a> لمزيد من التفاصيل.
+    </div>
+    <div class="cookie-actions">
+        <button class="btn btn-primary" id="btn-accept-cookie" aria-label="موافق ومتابعة">موافق</button>
+    </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+     if(!localStorage.getItem('heru_cookie_accepted')) {
+         setTimeout(() => { const c = document.getElementById('cookie-notice'); if(c) c.classList.add('visible'); }, 800);
+     }
+     const btnC = document.getElementById('btn-accept-cookie');
+     if(btnC) {
+         btnC.addEventListener('click', () => {
+             localStorage.setItem('heru_cookie_accepted', 'yes');
+             document.getElementById('cookie-notice').classList.remove('visible');
+         });
+     }
+  });
+</script>
+
+
+<!-- Vercel Performance & Reliability -->
+<script defer src="./_vercel/speed-insights/script.js"></script>
+<script defer src="./_vercel/insights/script.js"></script>
+<script>
+  window.addEventListener('error', (e) => {
+      // Prevent verbose console if handled, silent UX failure mode
+      if(window.showToast) window.showToast('حدث خطأ غير متوقع — حاول مرة أخرى', 'error');
+  });
+  window.addEventListener('unhandledrejection', (e) => {
+      if(window.showToast) window.showToast('تم رفض الاتصال بالخادم — يرجى التواصل عبر الواتساب بدلاً من ذلك.', 'error');
+  });
+</script>
+
+</body>
+</html>
