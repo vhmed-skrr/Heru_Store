@@ -36,7 +36,7 @@
     .radio-card input { position: absolute; visibility: hidden; }
     .radio-content { border: 2px solid var(--border-strong); border-radius: var(--radius-md); padding: var(--space-4); transition: all 0.2s; background:var(--bg-elevated); display: flex; flex-direction:column;}
     .radio-card:hover .radio-content { border-color: var(--text-muted); }
-    .radio-card input:checked + .radio-content { border-color: var(--accent); background: rgba(240,235,225,0.02); }
+    .radio-card input:checked + .radio-content { border-color: var(--text-inverse); background: rgba(240,235,225,0.02); }
     .radio-extra { display: none; padding-block-start: var(--space-4); border-top: 1px dashed var(--border-accent); margin-block-start: var(--space-3); font-size: var(--text-sm); line-height:1.6; }
     .radio-card input:checked + .radio-content .radio-extra { display: block; animation: openFade 0.3s forwards; }
     
@@ -49,7 +49,7 @@
     .summary-row { display: flex; justify-content: space-between; margin-block-end: var(--space-3); font-weight: 600; color:var(--text-secondary);}
     .summary-row span:last-child { color: var(--text-primary); font-family: var(--font-number); }
     .summary-total { font-size: var(--text-2xl); font-weight: 700; color: var(--text-primary); border-top: 1px solid var(--border); padding-block-start: var(--space-4); margin-block-start: var(--space-2); }
-    .summary-total span:last-child { color: var(--accent); }
+    .summary-total span:last-child { color: var(--text-inverse); }
     
     /* MODS FOR INPUTS GRID */
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
@@ -59,8 +59,7 @@
   <link rel="stylesheet" href="./assets/css/responsive.css">
   <script src="./assets/js/nav.js" defer></script>
   <link rel="stylesheet" href="./assets/css/themes.css">
-  <script src="./assets/js/theme.js" defer></script>
-</head>
+  </head>
 <body>
 
   <!-- Navbar Simple For checkout to keep focus -->
@@ -71,24 +70,24 @@
   <main class="container section">
       
       <div class="progress-bar">
-          <div class="progress-step active"><div class="circle-idx">1</div> <span data-i18n="checkout.prog1">البيانات والدفع</span></div>
-          <div class="progress-step"><div class="circle-idx" style="background:var(--bg-card); border:1px solid var(--border);">2</div> <span data-i18n="checkout.prog2">تأكيد الطلب</span></div>
+          <div class="progress-step active"><div class="circle-idx">1</div> البيانات والدفع</div>
+          <div class="progress-step"><div class="circle-idx" style="background:var(--bg-card); border:1px solid var(--border);">2</div> تأكيد الطلب</div>
       </div>
       
       <div class="checkout-layout">
           <div>
               <!-- STEP 1: Delivery Data -->
               <div class="checkout-box">
-                  <h2 class="step-title"><span class="circle-idx">1</span> <span data-i18n="checkout.step1">بيانات التوصيل الشخصية</span></h2>
+                  <h2 class="step-title"><span class="circle-idx">1</span> بيانات التوصيل الشخصية</h2>
                   
                   <div class="form-grid">
                       <div style="margin-block-end: var(--space-4);">
-                          <label class="form-label" for="chk-name"><span data-i18n="checkout.lbl_name">الاسم بالكامل (رُباعي أو ثُلاثي)</span> <span style="color:var(--error);">*</span></label>
-                          <input aria-describedby="chk-name-error" aria-required="true" type="text" id="chk-name" class="input-field" placeholder="مثال: أحمد محمد محمود" data-i18n-placeholder="checkout.place_name" required>
+                          <label class="form-label" for="chk-name">الاسم بالكامل (رُباعي أو ثُلاثي) <span style="color:var(--error);">*</span></label>
+                          <input aria-describedby="chk-name-error" aria-required="true" type="text" id="chk-name" class="input-field" placeholder="مثال: أحمد محمد محمود" required>
                           <div class="form-error-message" id="chk-name-error" role="alert" aria-live="assertive"></div>
                       </div>
                       <div style="margin-block-end: var(--space-4);">
-                          <label class="form-label" for="chk-phone"><span data-i18n="checkout.lbl_phone">رقم الهاتف الأساسي</span> <span style="color:var(--error);">*</span></label>
+                          <label class="form-label" for="chk-phone">رقم الهاتف الأساسي <span style="color:var(--error);">*</span></label>
                           <input aria-describedby="chk-phone-error" aria-required="true" type="tel" id="chk-phone" class="input-field font-num" placeholder="01X-XXXX-XXXX" required dir="ltr">
                           <div class="form-error-message" id="chk-phone-error" role="alert" aria-live="assertive"></div>
                       </div>
@@ -96,52 +95,52 @@
                   
                   <div class="form-grid">
                       <div style="margin-block-end: var(--space-4);">
-                          <label class="form-label" for="chk-gov"><span data-i18n="checkout.lbl_gov">المحافظة</span> <span style="color:var(--error);">*</span></label>
+                          <label class="form-label" for="chk-gov">المحافظة <span style="color:var(--error);">*</span></label>
                           <select aria-describedby="chk-gov-error" aria-required="true" id="chk-gov" class="select-field" required>
-                              <option value="" data-i18n="checkout.lbl_gov_def">اختر المحافظة...</option>
+                              <option value="">اختر المحافظة...</option>
                               <option value="القاهرة">القاهرة</option><option value="الجيزة">الجيزة</option><option value="الإسكندرية">الإسكندرية</option><option value="الدقهلية">الدقهلية</option><option value="البحر الأحمر">البحر الأحمر</option><option value="البحيرة">البحيرة</option><option value="الفيوم">الفيوم</option><option value="الغربية">الغربية</option><option value="الإسماعيلية">الإسماعيلية</option><option value="المنوفية">المنوفية</option><option value="المنيا">المنيا</option><option value="القليوبية">القليوبية</option><option value="الوادي الجديد">الوادي الجديد</option><option value="السويس">السويس</option><option value="أسوان">أسوان</option><option value="أسيوط">أسيوط</option><option value="بني سويف">بني سويف</option><option value="بورسعيد">بورسعيد</option><option value="دمياط">دمياط</option><option value="الشرقية">الشرقية</option><option value="جنوب سيناء">جنوب سيناء</option><option value="كفر الشيخ">كفر الشيخ</option><option value="مطروح">مطروح</option><option value="الأقصر">الأقصر</option><option value="قنا">قنا</option><option value="شمال سيناء">شمال سيناء</option><option value="سوهاج">سوهاج</option>
                           </select>
                           <div class="form-error-message" id="chk-gov-error" role="alert" aria-live="assertive"></div>
                       </div>
                       <div style="margin-block-end: var(--space-4);">
-                          <label class="form-label" for="chk-city"><span data-i18n="checkout.lbl_city">المنطقة / تفاصيل المدينة</span> <span style="color:var(--error);">*</span></label>
-                          <input aria-describedby="chk-city-error" aria-required="true" type="text" id="chk-city" class="input-field" placeholder="مثال: مدينة نصر، شارع مكرم عبيد" data-i18n-placeholder="checkout.place_city" required>
+                          <label class="form-label" for="chk-city">المنطقة / تفاصيل المدينة <span style="color:var(--error);">*</span></label>
+                          <input aria-describedby="chk-city-error" aria-required="true" type="text" id="chk-city" class="input-field" placeholder="مثال: مدينة نصر، شارع مكرم عبيد" required>
                           <div class="form-error-message" id="chk-city-error" role="alert" aria-live="assertive"></div>
                       </div>
                   </div>
                   
                   <div style="margin-block-end: var(--space-4);">
-                      <label class="form-label" for="chk-address"><span data-i18n="checkout.lbl_address">العنوان بالتفصيل الدقيق</span> <span style="color:var(--error);">*</span></label>
-                          <textarea aria-describedby="chk-address-error" aria-required="true" id="chk-address" class="textarea-field" placeholder="رقم العمارة، الدور، رقم الشقة أو علامة مميزة..." data-i18n-placeholder="checkout.place_address" style="min-height:80px;" required></textarea>
+                      <label class="form-label" for="chk-address">العنوان بالتفصيل الدقيق <span style="color:var(--error);">*</span></label>
+                          <textarea aria-describedby="chk-address-error" aria-required="true" id="chk-address" class="textarea-field" placeholder="رقم العمارة، الدور، رقم الشقة أو علامة مميزة..." style="min-height:80px;" required></textarea>
                       <div class="form-error-message" id="chk-address-error" role="alert" aria-live="assertive"></div>
                   </div>
                   
                   <div>
-                      <label class="form-label" for="chk-notes"><span data-i18n="checkout.lbl_notes">ملاحظات الطلب (اختياري)</span></label>
-                          <textarea aria-describedby="chk-notes-error" id="chk-notes" class="textarea-field" placeholder="أية ملاحظات إضافية بخصوص موعد التسليم أو التصميم..." data-i18n-placeholder="checkout.place_notes" style="min-height:80px;"></textarea>
+                      <label class="form-label" for="chk-notes">ملاحظات الطلب (اختياري)</label>
+                          <textarea aria-describedby="chk-notes-error" id="chk-notes" class="textarea-field" placeholder="أية ملاحظات إضافية بخصوص موعد التسليم أو التصميم..." style="min-height:80px;"></textarea>
                   </div>
               </div>
               
               <!-- STEP 2: Payment Data -->
               <div class="checkout-box">
-                  <h2 class="step-title"><span class="circle-idx">2</span> <span data-i18n="checkout.step2">اختار طريقة الدفع المريحة ليك</span></h2>
+                  <h2 class="step-title"><span class="circle-idx">2</span> اختار طريقة الدفع المريحة ليك</h2>
                   
                   <label class="radio-card">
                      <input type="radio" name="payment" value="cash" checked>
                      <div class="radio-content">
-                         <div style="font-weight:700; font-size:var(--text-lg); display:flex; align-items:center; gap:8px;">💵 <span data-i18n="checkout.pay_cash">الدفع كاش عند الاستلام</span></div>
-                         <div class="radio-desc"><span data-i18n="checkout.pay_cash_desc">قم بالدفع لمندوب التوصيل يدوياً وقت استلامك للطلب بأمان تام — بدون أي رسوم وعمولات مخفية.</span></div>
+                         <div style="font-weight:700; font-size:var(--text-lg); display:flex; align-items:center; gap:8px;">💵 الدفع كاش عند الاستلام</div>
+                         <div class="radio-desc">قم بالدفع لمندوب التوصيل يدوياً وقت استلامك للطلب بأمان تام — بدون أي رسوم وعمولات مخفية.</div>
                      </div>
                   </label>
 
                   <label class="radio-card">
                      <input type="radio" name="payment" value="instapay">
                      <div class="radio-content">
-                         <div style="font-weight:700; font-size:var(--text-lg); display:flex; align-items:center; gap:8px;">📱 <span data-i18n="checkout.pay_insta">محفظة InstaPay (انستاباي)</span></div>
-                         <div class="radio-desc"><span data-i18n="checkout.pay_insta_desc">سهولة وسرعة وموثوقية في الدفع المباشر من الموبايل.</span></div>
+                         <div style="font-weight:700; font-size:var(--text-lg); display:flex; align-items:center; gap:8px;">📱 محفظة InstaPay (انستاباي)</div>
+                         <div class="radio-desc">سهولة وسرعة وموثوقية في الدفع المباشر من الموبايل.</div>
                          <div class="radio-extra bg-overlay p-4 rounded" style="background: rgba(0,0,0,0.2); padding:12px; border-radius: var(--radius-md);">
                               الرجاء تحويل قيمة الطلب النهائية بالجنيه المصري إلى الرقم المعتمد:
-                              <div class="font-num" style="color:var(--accent); font-size:var(--text-xl); font-weight:700; margin: 4px 0;">01124519232</div>
+                              <div class="font-num" style="color: var(--text-inverse); font-size:var(--text-xl); font-weight:700; margin: 4px 0;">01124519232</div>
                               سنقوم ببدء ترتيب طلبك فوراً بمجرد أن تقوم بإرسال <b>إيصال عملية التحويل</b> لممثلنا على الواتساب.
                          </div>
                      </div>
@@ -150,8 +149,8 @@
                   <label class="radio-card">
                      <input type="radio" name="payment" value="fawry">
                      <div class="radio-content">
-                         <div style="font-weight:700; font-size:var(--text-lg); display:flex; align-items:center; gap:8px;">🏧 <span data-i18n="checkout.pay_fawry">ماكينات Fawry للمدفوعات</span></div>
-                         <div class="radio-desc"><span data-i18n="checkout.pay_fawry_desc">ادفع كاش من أقرب ماركت، أو صيدلية بها ماكينة فوري بمنتهى السرعة.</span></div>
+                         <div style="font-weight:700; font-size:var(--text-lg); display:flex; align-items:center; gap:8px;">🏧 ماكينات Fawry للمدفوعات</div>
+                         <div class="radio-desc">ادفع كاش من أقرب ماركت، أو صيدلية بها ماكينة فوري بمنتهى السرعة.</div>
                          <div class="radio-extra font-num" style="background: rgba(0,0,0,0.2); padding:12px; border-radius: var(--radius-md);">
                               شكرًا لاختيارك فوري. نظراً لكونه نظام أوتوماتيكي سيتم توليد وتخصيص <b>رقم فوري مرجعي</b> لدفعك وإرساله من خلال ممثلنا على رسائل الواتساب بمجرد إصدار فاتورتك! 
                          </div>
@@ -163,20 +162,20 @@
           <!-- SUMMARY VIEW SIDEBAR -->
           <div>
               <div class="checkout-box summary-box">
-                  <h3 style="margin: 0 0 var(--space-4) 0;"><span data-i18n="checkout.review">مراجعة الطلب النهائي</span></h3>
+                  <h3 style="margin: 0 0 var(--space-4) 0;">مراجعة الطلب النهائي</h3>
                   
                   <div id="checkout-items" style="border-bottom:1px solid var(--border); padding-bottom:var(--space-4); margin-bottom:var(--space-4);">
                       <!-- Items from cart populated here -->
                   </div>
                   
-                  <div class="summary-row"><span><span data-i18n="checkout.summ_items">مجموع المنتجات:</span></span><span id="summ-sub">0 ج.م</span></div>
-                  <div class="summary-row" id="summ-disc-row" style="display:none;"><span><span data-i18n="checkout.summ_disc">الخصم المستحق:</span></span><span style="color:var(--success);" id="summ-disc">0 ج.م -</span></div>
-                  <div class="summary-row"><span><span data-i18n="checkout.summ_shipping">الشحن للمحافظة:</span></span><span style="color:var(--success);"><span data-i18n="checkout.summ_free">مجاني بالكامل!</span></span></div>
+                  <div class="summary-row"><span>مجموع المنتجات:</span><span id="summ-sub">0 ج.م</span></div>
+                  <div class="summary-row" id="summ-disc-row" style="display:none;"><span>الخصم المستحق:</span><span style="color:var(--success);" id="summ-disc">0 ج.م -</span></div>
+                  <div class="summary-row"><span>الشحن للمحافظة:</span><span style="color:var(--success);">مجاني بالكامل!</span></div>
                   
-                  <div class="summary-total summary-row"><span><span data-i18n="checkout.summ_total">الإجمالي المضاف:</span></span><span id="summ-total">0 ج.م</span></div>
+                  <div class="summary-total summary-row"><span>الإجمالي المضاف:</span><span id="summ-total">0 ج.م</span></div>
                   
-                  <button class="btn btn-primary btn-lg btn-full" style="margin-block-start: var(--space-8); height: 64px; font-size: var(--text-2xl);" id="btn-submit-order" onclick="window.submitOrder()"><span data-i18n="checkout.submit">تأكيد وإتمام الطلب الآن</span></button>
-                  <div style="font-size:12px; color:var(--text-muted); text-align:center; margin-top:12px;"><span data-i18n="checkout.agree">بالنقر هنا أنت توافق ضمنياً على شروط متجر هيرو.</span></div>
+                  <button class="btn btn-primary btn-lg btn-full" style="margin-block-start: var(--space-8); height: 64px; font-size: var(--text-2xl);" id="btn-submit-order" onclick="window.submitOrder()">تأكيد وإتمام الطلب الآن</button>
+                  <div style="font-size:12px; color:var(--text-muted); text-align:center; margin-top:12px;">بالنقر هنا أنت توافق ضمنياً على شروط متجر هيرو.</div>
               </div>
           </div>
       </div>
@@ -388,10 +387,10 @@ document.addEventListener('keydown', (e) => {
 </style>
 <div id="cookie-notice" role="dialog" aria-live="polite" aria-label="إشعار الخصوصية">
     <div class="cookie-text">
-        <span data-i18n-html="cart.cookie_notice">نستخدم تقنية <strong>LocalStorage</strong> لحفظ سلة التسوق وتفضيلاتك. نحن لا نستخدم ملفات تعريف الارتباط (Cookies) للتتبع. يمكنك الاطلاع على <a href="./privacy" style="color:var(--accent); text-decoration:underline;">سياسة الخصوصية</a> لمزيد من التفاصيل.</span>
+        نستخدم تقنية <strong>LocalStorage</strong> لحفظ سلة التسوق وتفضيلاتك. نحن لا نستخدم ملفات تعريف الارتباط (Cookies) للتتبع. يمكنك الاطلاع على <a href="./privacy" style="color: var(--text-inverse); text-decoration:underline;">سياسة الخصوصية</a> لمزيد من التفاصيل.
     </div>
     <div class="cookie-actions">
-        <button class="btn btn-primary" id="btn-accept-cookie" aria-label="موافق ومتابعة"><span data-i18n="cart.cookie_btn">موافق</span></button>
+        <button class="btn btn-primary" id="btn-accept-cookie" aria-label="موافق ومتابعة">موافق</button>
     </div>
 </div>
 <script>

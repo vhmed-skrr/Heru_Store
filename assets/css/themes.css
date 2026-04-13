@@ -17,7 +17,7 @@
   --border-strong: rgba(240, 235, 225, 0.18);
   --border-accent: rgba(240, 235, 225, 0.35);
 
-  --accent: #F0EBE1; 
+  --accent: #F0EBE1;
   --accent-hover: #FFFFFF;
   --accent-dim: rgba(240, 235, 225, 0.08);
   --accent-medium: rgba(240, 235, 225, 0.15);
@@ -36,14 +36,15 @@
   --text-primary: #111111;
   --text-secondary: #555555;
   --text-muted: #888888;
-  --text-inverse: #FAFAFA; 
+  --text-inverse: #FAFAFA;
 
   --border: rgba(17, 17, 17, 0.1);
   --border-strong: rgba(17, 17, 17, 0.2);
   --border-accent: rgba(17, 17, 17, 0.35);
 
-  --accent: #1A1A1A; 
+  --accent: #1A1A1A;
   --accent-hover: #333333;
-  --accent-dim: rgba(26, 26, 26, 0.05); /* Match accent dark */
+  --accent-dim: rgba(26, 26, 26, 0.05);
+  /* Match accent dark */
   --accent-medium: rgba(26, 26, 26, 0.1);
 }

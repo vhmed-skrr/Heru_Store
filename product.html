@@ -47,7 +47,7 @@
       gap: 8px;
     }
     .breadcrumb a { color: var(--text-primary); transition: color 0.2s; }
-    .breadcrumb a:hover { color: var(--accent); }
+    .breadcrumb a:hover { color: var(--text-inverse); }
     .breadcrumb span { color: var(--text-muted); }
 
     /* PRODUCT GRID */
@@ -95,7 +95,7 @@
       opacity: 0.8;
     }
     .thumb.active {
-      border-color: var(--accent);
+      border-color: var(--text-inverse);
       opacity: 1;
     }
     
@@ -221,7 +221,7 @@
       font-family: var(--font-number);
       font-weight: 700;
       margin-block-end: var(--space-6);
-      color: var(--accent);
+      color: var(--text-inverse);
     }
     .stock-status {
       display: inline-flex;
@@ -309,7 +309,7 @@
       border-bottom: 2px solid transparent;
       white-space: nowrap;
     }
-    .tab-btn.active { color: var(--accent); border-color: var(--accent); }
+    .tab-btn.active { color: var(--text-inverse); border-color: var(--text-inverse); }
     .tab-pane { display: none; animation: fadeInsta 0.3s; }
     .tab-pane.active { display: block; }
     @keyframes fadeInsta { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -355,33 +355,30 @@
   <link rel="stylesheet" href="./assets/css/responsive.css">
   <script src="./assets/js/nav.js" defer></script>
   <link rel="stylesheet" href="./assets/css/themes.css">
-  <script src="./assets/js/theme.js" defer></script>
-</head>
+  </head>
 <body>
 
   <header>
   <nav class="navbar" aria-label="التنقل الرئيسي">
       <a href="./" class="navbar-logo" data-setting="store_name">HERU</a>
       <div class="navbar-links">
-          <a href="./"><span data-i18n="nav.home">الرئيسية</span></a>
-          <a href="./shop"><span data-i18n="nav.shop">المتجر</span></a>
-          <a href="./suggest"><span data-i18n="nav.suggest">اقتراح تصميم</span></a>
+          <a href="./">الرئيسية</a>
+          <a href="./shop">المتجر</a>
+          <a href="./suggest">اقتراح تصميم</a>
       </div>
       <div class="navbar-actions">
           <a href="./cart" class="cart-badge btn-ghost" data-count="0" aria-label="سلة التسوق" style="font-size: var(--text-xl);">🛒</a>
           
-          <button data-lang-toggle onclick="window.toggleLanguage()" class="btn-ghost font-display" aria-label="تغيير اللغة" style="font-weight: 700;">EN</button>
-          <button class="theme-toggle btn-ghost" aria-label="تغيير المظهر" style="font-size: var(--text-xl);">☀️</button>
-              <button class="mobile-menu-toggle" aria-label="فتح القائمة الرئيسية" aria-expanded="false">☰</button>
+          <button class="mobile-menu-toggle" aria-label="فتح القائمة الرئيسية" aria-expanded="false">☰</button>
       </div>
   </nav>
   </header>
 
   <div class="mobile-menu">
       <button class="mobile-menu-toggle open font-display" onclick="document.querySelector('.mobile-menu').classList.remove('open')" style="align-self: flex-end; font-size: 24px; display: block;" aria-label="إغلاق">✕</button>
-      <a href="./" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);"><span data-i18n="nav.home">الرئيسية</span></a>
-      <a href="./shop" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);"><span data-i18n="nav.shop">المتجر</span></a>
-      <a href="./suggest" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);"><span data-i18n="nav.suggest">اقتراح تصميم</span></a>
+      <a href="./" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);">الرئيسية</a>
+      <a href="./shop" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);">المتجر</a>
+      <a href="./suggest" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);">اقتراح تصميم</a>
   </div>
 
   <main class="container section">
@@ -409,13 +406,13 @@
               
               <div class="reviews-summary" id="lbl-reviews-summary">
                   <div class="stars">★★★★★</div>
-                  <span style="color:var(--text-muted);">(<span data-i18n="product.no_reviews">لا توجد تقييمات</span>)</span>
+                  <span style="color:var(--text-muted);">(لا توجد تقييمات)</span>
               </div>
               
               <div class="product-price" id="lbl-price">0.00 ج.م</div>
               
               <div class="stock-status stock-ok" id="lbl-stock">
-                  <span style="font-size:18px;">⌛</span> <span><span data-i18n="product.check_stock">التحقق من المخزون...</span></span>
+                  <span style="font-size:18px;">⌛</span> <span>التحقق من المخزون...</span>
               </div>
               
               <div class="divider"></div>
@@ -425,7 +422,7 @@
               </div>
               
               <div class="quantity-row">
-                  <div style="font-weight:600; width: 100%; margin-block-end: -10px;"><span data-i18n="product.qty">الكمية:</span></div>
+                  <div style="font-weight:600; width: 100%; margin-block-end: -10px;">الكمية:</div>
                   <div class="quantity-selector">
                       <button class="quantity-btn" onclick="window.changeQuantity(-1)">−</button>
                       <input type="number" id="inp-qty" class="quantity-input" value="1" min="1" max="10" readonly>
@@ -434,13 +431,13 @@
               </div>
               
               <div class="actions-group">
-                  <button class="btn btn-primary btn-lg btn-full" id="btn-add-cart" onclick="window.addToCartAction()"><span data-i18n="product.add_to_cart">أضف للسلة الآن</span></button>
-                  <button class="btn btn-whatsapp btn-lg btn-full" id="btn-whatsapp" onclick="window.orderWhatsApp()"><span data-i18n="product.whatsapp">اطلب وتواصل واتساب</span></button>
+                  <button class="btn btn-primary btn-lg btn-full" id="btn-add-cart" onclick="window.addToCartAction()">أضف للسلة الآن</button>
+                  <button class="btn btn-whatsapp btn-lg btn-full" id="btn-whatsapp" onclick="window.orderWhatsApp()">اطلب وتواصل واتساب</button>
               </div>
               
               <div class="share-row">
-                  <button class="btn btn-ghost" onclick="window.shareWhatsApp()"><span data-i18n="product.share">مشاركة 💬</span></button>
-                  <button class="btn btn-ghost" onclick="window.shareCopy()"><span data-i18n="product.copy_link">نسخ الرابط 🔗</span></button>
+                  <button class="btn btn-ghost" onclick="window.shareWhatsApp()">مشاركة 💬</button>
+                  <button class="btn btn-ghost" onclick="window.shareCopy()">نسخ الرابط 🔗</button>
               </div>
           </div>
       </div>
@@ -448,9 +445,9 @@
       <!-- Tabs Section -->
       <div class="tabs-section" style="margin-block-start: var(--space-8);">
           <div class="tabs-header" id="tabs-header">
-              <button class="tab-btn active" data-target="tab-desc"><span data-i18n="product.tab_desc">تفاصيل المنتج</span></button>
-              <button class="tab-btn" data-target="tab-reviews"><span data-i18n="product.tab_reviews">التقييمات والآراء</span></button>
-              <button class="tab-btn" data-target="tab-related"><span data-i18n="product.tab_related">منتجات مشابهة</span></button>
+              <button class="tab-btn active" data-target="tab-desc">تفاصيل المنتج</button>
+              <button class="tab-btn" data-target="tab-reviews">التقييمات والآراء</button>
+              <button class="tab-btn" data-target="tab-related">منتجات مشابهة</button>
           </div>
           
           <div class="tab-content">
@@ -464,30 +461,30 @@
                   <div id="reviews-list" style="display:flex; flex-direction:column; gap:var(--space-4);"></div>
                   
                   <form id="review-form" class="review-form" onsubmit="window.submitReviewLogic(event)">
-                       <div style="font-size: var(--text-2xl); font-weight:700; margin-block-end:var(--space-4);"><span data-i18n="product.add_review">أضف تقييمك الخاص</span></div>
+                       <div style="font-size: var(--text-2xl); font-weight:700; margin-block-end:var(--space-4);">أضف تقييمك الخاص</div>
                        <div style="margin-block-end:var(--space-4);">
-                           <label class="form-label"><span data-i18n="product.rev_name">الاسم</span></label>
+                           <label class="form-label">الاسم</label>
                            <input type="text" id="rev-name" class="input-field" required>
                        </div>
                        <div style="margin-block-end:var(--space-4);">
-                           <label class="form-label"><span data-i18n="product.rev_rating">التقييم (من 1 لـ 5 نجوم)</span></label>
+                           <label class="form-label">التقييم (من 1 لـ 5 نجوم)</label>
                            <select id="rev-rating" class="select-field">
-                              <option value="5" data-i18n="product.rev_5_stars">⭐⭐⭐⭐⭐ ممتاز جداً</option>
-                              <option value="4" data-i18n="product.rev_4_stars">⭐⭐⭐⭐ عظيم</option>
-                              <option value="3" data-i18n="product.rev_3_stars">⭐⭐⭐ جيد كفاية</option>
-                              <option value="2" data-i18n="product.rev_2_stars">⭐⭐ مش أحسن حاجة</option>
-                              <option value="1" data-i18n="product.rev_1_stars">⭐ سيء</option>
+                              <option value="5">⭐⭐⭐⭐⭐ ممتاز جداً</option>
+                              <option value="4">⭐⭐⭐⭐ عظيم</option>
+                              <option value="3">⭐⭐⭐ جيد كفاية</option>
+                              <option value="2">⭐⭐ مش أحسن حاجة</option>
+                              <option value="1">⭐ سيء</option>
                            </select>
                        </div>
                        <div style="margin-block-end:var(--space-4);">
-                           <label class="form-label"><span data-i18n="product.rev_comment">تعليقك (اختياري)</span></label>
+                           <label class="form-label">تعليقك (اختياري)</label>
                            <textarea id="rev-comment" class="textarea-field"></textarea>
                        </div>
-                       <button type="submit" class="btn btn-primary" id="btn-submit-review"><span data-i18n="product.rev_submit">إرسال للتقييم</span></button>
-                       <p style="font-size:12px; color:var(--text-muted); margin-block-start:8px;"><span data-i18n="product.rev_note">* التقييم سيظهر للمستخدمين بمجرد مراجعته من الإدارة لضمان الجدية.</span></p>
+                       <button type="submit" class="btn btn-primary" id="btn-submit-review">إرسال للتقييم</button>
+                       <p style="font-size:12px; color:var(--text-muted); margin-block-start:8px;">* التقييم سيظهر للمستخدمين بمجرد مراجعته من الإدارة لضمان الجدية.</p>
                   </form>
                   <div id="review-thanks" style="display:none; padding:var(--space-6); background:rgba(34, 197, 94, 0.1); color:var(--success); border: 1px solid var(--success); border-radius:var(--radius-md); margin-block-start:var(--space-8); font-weight:600; text-align:center;">
-                       <span data-i18n="product.rev_thanks">شكرًا لتقييمك! سيظهر للجميع فور اعتماده وتقييمه عبر فريقنا.</span>
+                       شكرًا لتقييمك! سيظهر للجميع فور اعتماده وتقييمه عبر فريقنا.
                   </div>
               </div>
               
@@ -504,10 +501,10 @@
   <!-- Sticky Mobile Cart -->
   <div class="mobile-sticky-bar" id="mobile-sticky">
        <div>
-           <div style="font-weight:700; font-size:var(--text-sm);" id="sticky-title"><span id="sticky-title-i18n" data-i18n="product.sticky_title">المنتج</span></div>
-           <div style="color:var(--accent); font-weight:700;" id="sticky-price">0 ج.م</div>
+           <div style="font-weight:700; font-size:var(--text-sm);" id="sticky-title"><span id="sticky-title-i18n">المنتج</span></div>
+           <div style="color: var(--text-inverse); font-weight:700;" id="sticky-price">0 ج.م</div>
        </div>
-       <button class="btn btn-primary" onclick="window.addToCartAction()"><span data-i18n="product.sticky_add">أضف للسلة</span></button>
+       <button class="btn btn-primary" onclick="window.addToCartAction()">أضف للسلة</button>
   </div>
 
   <!-- Lightbox -->
@@ -533,7 +530,7 @@
       <div class="product-info">
         <div class="product-cat">هيرو المميزة</div>
         <h3 class="product-title">{name}</h3>
-        <div class="product-price">{price} <span data-i18n="card.currency">ج.م</span></div>
+        <div class="product-price">{price} ج.م</div>
       </div>
     </a>
   </template>
@@ -608,7 +605,7 @@
               
               // Structural Updates
               document.getElementById('breadcrumb-container').innerHTML = `
-                  <a href="./"><span data-i18n="nav.home">الرئيسية</span></a> <span>/</span> <a href="./shop"><span data-i18n="nav.shop">المتجر</span></a> <span>/</span> 
+                  <a href="./">الرئيسية</a> <span>/</span> <a href="./shop">المتجر</a> <span>/</span> 
                   <a href="./shop?category=${product.category_id || 'all'}">${catName}</a> <span>/</span> <span style="font-weight:600; color:var(--text-primary);">${prodName}</span>
               `;
               
@@ -945,14 +942,56 @@
           });
 
           // Mobile Menu
-          const menuToggle = document.querySelector('.mobile-menu-toggle');
-          if(menuToggle) {
-              menuToggle.addEventListener('click', () => {
-                  document.querySelector('.mobile-menu').classList.toggle('open');
-              });
-          }
+          
+const menuToggles = document.querySelectorAll('.mobile-menu-toggle');
+const mobileMenu = document.querySelector('.mobile-menu');
 
-          // Sticky Button Observer Helper Logic
+// Create backdrop if it doesn't exist
+let backdrop = document.querySelector('.mobile-menu-backdrop');
+if (!backdrop) {
+  backdrop = document.createElement('div');
+  backdrop.className = 'mobile-menu-backdrop';
+  document.body.appendChild(backdrop);
+}
+
+function openMobileMenu() {
+  if (mobileMenu) mobileMenu.classList.add('open');
+  if (backdrop) backdrop.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeMobileMenu() {
+  if (mobileMenu) mobileMenu.classList.remove('open');
+  if (backdrop) backdrop.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+menuToggles.forEach(btn => {
+  // The open button (hamburger ☰)
+  if (!btn.classList.contains('open')) {
+    btn.addEventListener('click', openMobileMenu);
+  }
+});
+
+// Close button inside menu (the ✕ button)
+const closeMenuBtn = mobileMenu ? mobileMenu.querySelector('.mobile-menu-toggle.open') : null;
+if (closeMenuBtn) {
+  closeMenuBtn.onclick = closeMobileMenu;
+}
+
+// Close on backdrop click
+if (backdrop) {
+  backdrop.addEventListener('click', closeMobileMenu);
+}
+
+// Close on Escape key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && mobileMenu && mobileMenu.classList.contains('open')) {
+    closeMobileMenu();
+  }
+});
+
+// Sticky Button Observer Helper Logic
           function observeStickyAddCart() {
               const trigger = document.getElementById('btn-add-cart');
               const sticky = document.getElementById('mobile-sticky');
@@ -999,7 +1038,7 @@
 </style>
 <div id="cookie-notice" role="dialog" aria-live="polite" aria-label="إشعار الخصوصية">
     <div class="cookie-text">
-        نستخدم تقنية <strong>LocalStorage</strong> لحفظ سلة التسوق وتفضيلاتك. نحن لا نستخدم ملفات تعريف الارتباط (Cookies) للتتبع. يمكنك الاطلاع على <a href="./privacy" style="color:var(--accent); text-decoration:underline;">سياسة الخصوصية</a> لمزيد من التفاصيل.
+        نستخدم تقنية <strong>LocalStorage</strong> لحفظ سلة التسوق وتفضيلاتك. نحن لا نستخدم ملفات تعريف الارتباط (Cookies) للتتبع. يمكنك الاطلاع على <a href="./privacy" style="color: var(--text-inverse); text-decoration:underline;">سياسة الخصوصية</a> لمزيد من التفاصيل.
     </div>
     <div class="cookie-actions">
         <button class="btn btn-primary" id="btn-accept-cookie" aria-label="موافق ومتابعة">موافق</button>

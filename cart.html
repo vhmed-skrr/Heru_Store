@@ -19,7 +19,7 @@
     
     .breadcrumb { color: var(--text-secondary); font-size: var(--text-sm); margin-block-end: var(--space-6); display: flex; gap: 8px; }
     .breadcrumb a { color: var(--text-primary); transition: color 0.2s; }
-    .breadcrumb a:hover { color: var(--accent); }
+    .breadcrumb a:hover { color: var(--text-inverse); }
     .breadcrumb span { color: var(--text-muted); }
     .page-title { font-size: var(--text-4xl); font-family: var(--font-display); margin: 0 0 var(--space-8) 0; }
     
@@ -109,7 +109,7 @@
       font-size: var(--text-2xl); font-weight: 700; color: var(--text-primary);
       border-top: 1px solid var(--border); padding-block-start: var(--space-5); margin-block-start: var(--space-2);
     }
-    .summary-total span:last-child { color: var(--accent); }
+    .summary-total span:last-child { color: var(--text-inverse); }
     
     .coupon-section {
       display: flex; gap: var(--space-2); margin-block-start: var(--space-6); margin-block-end: var(--space-2);
@@ -123,8 +123,7 @@
   <link rel="stylesheet" href="./assets/css/responsive.css">
   <script src="./assets/js/nav.js" defer></script>
   <link rel="stylesheet" href="./assets/css/themes.css">
-  <script src="./assets/js/theme.js" defer></script>
-</head>
+  </head>
 <body>
 
   <header>
@@ -132,32 +131,30 @@
   <nav class="navbar" aria-label="التنقل الرئيسي">
       <a href="./" class="navbar-logo" data-setting="store_name">HERU</a>
       <div class="navbar-links">
-          <a href="./"><span data-i18n="nav.home">الرئيسية</span></a>
-          <a href="./shop"><span data-i18n="nav.shop">المتجر</span></a>
-          <a href="./suggest"><span data-i18n="nav.suggest">اقتراح تصميم</span></a>
+          <a href="./">الرئيسية</a>
+          <a href="./shop">المتجر</a>
+          <a href="./suggest">اقتراح تصميم</a>
       </div>
       <div class="navbar-actions">
           <a href="./cart" class="cart-badge btn-ghost" data-count="0" aria-label="سلة التسوق" style="font-size: var(--text-xl);">🛒</a>
           
-          <button data-lang-toggle onclick="window.toggleLanguage()" class="btn-ghost font-display" aria-label="تغيير اللغة" style="font-weight: 700;">EN</button>
-          <button class="theme-toggle btn-ghost" aria-label="تغيير المظهر" style="font-size: var(--text-xl);">☀️</button>
-              <button class="mobile-menu-toggle" aria-label="فتح القائمة الرئيسية" aria-expanded="false">☰</button>
+          <button class="mobile-menu-toggle" aria-label="فتح القائمة الرئيسية" aria-expanded="false">☰</button>
       </div>
   </nav>
   </header>
 
   <div class="mobile-menu">
       <button class="mobile-menu-toggle open font-display" onclick="document.querySelector('.mobile-menu').classList.remove('open')" style="align-self: flex-end; font-size: 24px;">✕</button>
-      <a href="./" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);"><span data-i18n="nav.home">الرئيسية</span></a>
-      <a href="./shop" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);"><span data-i18n="nav.shop">المتجر</span></a>
-      <a href="./suggest" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);"><span data-i18n="nav.suggest">اقتراح تصميم</span></a>
+      <a href="./" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);">الرئيسية</a>
+      <a href="./shop" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);">المتجر</a>
+      <a href="./suggest" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);">اقتراح تصميم</a>
   </div>
 
   <main class="container section">
       <div class="breadcrumb">
-          <a href="./">الرئيسية</a> <span>/</span> <span style="font-weight:600; color:var(--text-primary);"><span data-i18n="cart.breadcrumb">سلة المشتريات</span></span>
+          <a href="./">الرئيسية</a> <span>/</span> <span style="font-weight:600; color:var(--text-primary);">سلة المشتريات</span>
       </div>
-      <h1 class="page-title"><span data-i18n="cart.title">عناصر السلة</span></h1>
+      <h1 class="page-title">عناصر السلة</h1>
 
       <div class="cart-layout" id="main-layout" style="display:none;">
           <div class="cart-items-wrapper" id="cart-container">
@@ -165,28 +162,28 @@
           </div>
           
           <div class="cart-summary-wrapper">
-              <h3 style="margin: 0 0 var(--space-6) 0;"><span data-i18n="cart.summary_title">ملخص الطلب الأساسي</span></h3>
-              <div class="summary-row"><span><span data-i18n="cart.subtotal">المجموع الفرعي:</span></span><span id="summ-sub">0 ج.م</span></div>
-              <div class="summary-row" id="summ-disc-row" style="display:none;"><span><span data-i18n="cart.discount">الخصم (كوبون):</span></span><span style="color:var(--success);" id="summ-disc">0 ج.م -</span></div>
-              <div class="summary-row"><span><span data-i18n="cart.shipping">رسوم الشحن التوصيل:</span></span><span style="color:var(--success);"><span data-i18n="cart.free_shipping">مجاني بالكامل!</span></span></div>
-              <div class="summary-total summary-row"><span><span data-i18n="cart.total">الإجمالي:</span></span><span id="summ-total">0 ج.م</span></div>
+              <h3 style="margin: 0 0 var(--space-6) 0;">ملخص الطلب الأساسي</h3>
+              <div class="summary-row"><span>المجموع الفرعي:</span><span id="summ-sub">0 ج.م</span></div>
+              <div class="summary-row" id="summ-disc-row" style="display:none;"><span>الخصم (كوبون):</span><span style="color:var(--success);" id="summ-disc">0 ج.م -</span></div>
+              <div class="summary-row"><span>رسوم الشحن التوصيل:</span><span style="color:var(--success);">مجاني بالكامل!</span></div>
+              <div class="summary-total summary-row"><span>الإجمالي:</span><span id="summ-total">0 ج.م</span></div>
               
               <div class="coupon-section">
-                  <input type="text" id="inp-coupon" class="input-field" placeholder="لديك كود خصم؟" data-i18n-placeholder="cart.coupon_placeholder" style="text-transform:uppercase;">
-                  <button class="btn btn-secondary" onclick="window.applyCoupon()" id="btn-coupon"><span data-i18n="cart.coupon_apply">تطبيق</span></button>
+                  <input type="text" id="inp-coupon" class="input-field" placeholder="لديك كود خصم؟" style="text-transform:uppercase;">
+                  <button class="btn btn-secondary" onclick="window.applyCoupon()" id="btn-coupon">تطبيق</button>
               </div>
               <div id="lbl-coupon-msg" style="font-size:13px; font-weight:600; margin-block-end:var(--space-6);"></div>
               
-              <button class="btn btn-primary btn-full btn-lg" onclick="window.location.href='/checkout'" id="btn-checkout" style="font-size:var(--text-xl);"><span data-i18n="cart.checkout_btn">بدء إتمام الطلب الآن</span></button>
+              <button class="btn btn-primary btn-full btn-lg" onclick="window.location.href='/checkout'" id="btn-checkout" style="font-size:var(--text-xl);">بدء إتمام الطلب الآن</button>
           </div>
       </div>
       
       <!-- Empty State -->
       <div id="empty-state" class="empty-state" style="display:none;">
           <span style="font-size:80px; opacity:0.3;">🛍️</span>
-          <h2 style="font-family:var(--font-display); font-size:var(--text-3xl); margin-block-end:var(--space-2);"><span data-i18n="cart.empty_title">سلتك فارغة، أضف السعادة فيها!</span></h2>
-          <p style="color:var(--text-secondary); margin-block-end:var(--space-6);"><span data-i18n="cart.empty_desc">لم تقم بشراء أي منتجات حتى الآن.</span></p>
-          <button class="btn btn-primary btn-lg" onclick="window.location.href='/shop'"><span data-i18n="cart.shop_now">تسوّق أحدث المنتجات</span></button>
+          <h2 style="font-family:var(--font-display); font-size:var(--text-3xl); margin-block-end:var(--space-2);">سلتك فارغة، أضف السعادة فيها!</h2>
+          <p style="color:var(--text-secondary); margin-block-end:var(--space-6);">لم تقم بشراء أي منتجات حتى الآن.</p>
+          <button class="btn btn-primary btn-lg" onclick="window.location.href='/shop'">تسوّق أحدث المنتجات</button>
       </div>
 
   </main>
@@ -406,10 +403,10 @@ document.addEventListener('keydown', (e) => {
 </style>
 <div id="cookie-notice" role="dialog" aria-live="polite" aria-label="إشعار الخصوصية">
     <div class="cookie-text">
-        <span data-i18n-html="cart.cookie_notice">نستخدم تقنية <strong>LocalStorage</strong> لحفظ سلة التسوق وتفضيلاتك. نحن لا نستخدم ملفات تعريف الارتباط (Cookies) للتتبع. يمكنك الاطلاع على <a href="./privacy" style="color:var(--accent); text-decoration:underline;">سياسة الخصوصية</a> لمزيد من التفاصيل.</span>
+        نستخدم تقنية <strong>LocalStorage</strong> لحفظ سلة التسوق وتفضيلاتك. نحن لا نستخدم ملفات تعريف الارتباط (Cookies) للتتبع. يمكنك الاطلاع على <a href="./privacy" style="color: var(--text-inverse); text-decoration:underline;">سياسة الخصوصية</a> لمزيد من التفاصيل.
     </div>
     <div class="cookie-actions">
-        <button class="btn btn-primary" id="btn-accept-cookie" aria-label="موافق ومتابعة"><span data-i18n="cart.cookie_btn">موافق</span></button>
+        <button class="btn btn-primary" id="btn-accept-cookie" aria-label="موافق ومتابعة">موافق</button>
     </div>
 </div>
 <script>

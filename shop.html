@@ -149,9 +149,9 @@
       color: var(--text-primary);
     }
     .chip.active {
-      background-color: var(--accent);
+      background-color: var(--text-inverse);
       color: var(--bg-primary);
-      border-color: var(--accent);
+      border-color: var(--text-inverse);
     }
     .options-group {
       display: flex;
@@ -213,7 +213,7 @@
       gap: 6px;
       border: 1px solid var(--border);
     }
-    .compare-checkbox input { accent-color: var(--accent); cursor: pointer; }
+    .compare-checkbox input { accent-color: var(--text-inverse); cursor: pointer; }
     .compare-checkbox label { color: var(--text-primary); font-size: 11px; cursor: pointer; }
     
     /* COMPARE BAR & MODAL */
@@ -261,8 +261,7 @@
   <link rel="stylesheet" href="./assets/css/responsive.css">
   <script src="./assets/js/nav.js" defer></script>
   <link rel="stylesheet" href="./assets/css/themes.css">
-  <script src="./assets/js/theme.js" defer></script>
-</head>
+  </head>
 <body>
 
   <header>
@@ -270,24 +269,22 @@
   <nav class="navbar" aria-label="التنقل الرئيسي">
       <a href="./" class="navbar-logo" data-setting="store_name">HERU</a>
       <div class="navbar-links">
-          <a href="./"><span data-i18n="nav.home">الرئيسية</span></a>
-          <a href="./shop" style="color: var(--accent);"><span data-i18n="nav.shop"><span data-i18n="nav.shop">المتجر</span></span></a>
-          <a href="./suggest"><span data-i18n="nav.suggest">اقتراح تصميم</span></a>
+          <a href="./">الرئيسية</a>
+          <a href="./shop" style="color: var(--text-inverse);"><span>المتجر</span></a>
+          <a href="./suggest">اقتراح تصميم</a>
       </div>
       <div class="navbar-actions">
           <a href="./cart" class="cart-badge btn-ghost" data-count="0" aria-label="سلة التسوق" style="font-size: var(--text-xl);">🛒</a>
-          <button data-lang-toggle onclick="window.toggleLanguage()" class="btn-ghost font-display" aria-label="تغيير اللغة" style="font-weight: 700;">EN</button>
-          <button class="theme-toggle btn-ghost" aria-label="تغيير المظهر" style="font-size: var(--text-xl);">☀️</button>
-              <button class="mobile-menu-toggle" aria-label="فتح القائمة الرئيسية" aria-expanded="false">☰</button>
+          <button class="mobile-menu-toggle" aria-label="فتح القائمة الرئيسية" aria-expanded="false">☰</button>
       </div>
   </nav>
   </header>
 
   <div class="mobile-menu">
       <button class="mobile-menu-toggle open font-display" onclick="document.querySelector('.mobile-menu').classList.remove('open')" style="align-self: flex-end; font-size: 24px; display: block;" aria-label="إغلاق">✕</button>
-      <a href="./" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);"><span data-i18n="nav.home">الرئيسية</span></a>
-      <a href="./shop" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);"><span data-i18n="nav.shop">المتجر</span></a>
-      <a href="./suggest" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);"><span data-i18n="nav.suggest">اقتراح تصميم</span></a>
+      <a href="./" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);">الرئيسية</a>
+      <a href="./shop" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);">المتجر</a>
+      <a href="./suggest" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);">اقتراح تصميم</a>
   </div>
 
   <main class="container section">
@@ -298,7 +295,7 @@
               <a href="./">الرئيسية</a> &nbsp; / &nbsp; <span>المتجر</span>
           </div>
           <div class="page-title-row">
-              <h1 class="page-title"><span data-i18n="nav.shop">المتجر</span></h1>
+              <h1 class="page-title">المتجر</h1>
               <span class="products-count" id="total-count">0 منتج</span>
           </div>
       </header>
@@ -306,14 +303,14 @@
       <!-- Search Bar -->
       <div class="search-bar" id="search-container">
           <span class="search-icon">🔍</span>
-          <input type="text" id="search-input" placeholder="ابحث عن منتج، تصنيف..." data-i18n-placeholder="nav.search_placeholder">
+          <input type="text" id="search-input" placeholder="ابحث عن منتج، تصنيف...">
           <button class="clear-btn" id="search-clear" title="مسح النص">✕</button>
       </div>
 
       <!-- Mobile Filters Trigger -->
       <button class="btn btn-secondary filter-mobile-btn" onclick="toggleDrawer()">
-          <span style="font-size:18px;">⧸⧹</span> <span data-i18n="shop.filters">فلترة</span> 
-          <span class="badge-new" id="filter-badge" style="display:none; position:static; margin-inline-start:6px; background-color: var(--accent); color: var(--bg-primary);">0</span>
+          <span style="font-size:18px;">⧸⧹</span> فلترة 
+          <span class="badge-new" id="filter-badge" style="display:none; position:static; margin-inline-start:6px; background-color: var(--text-inverse); color: var(--bg-primary);">0</span>
       </button>
       
       <!-- Overlay for mobile drawer -->
@@ -322,12 +319,12 @@
       <!-- Filters Wrapper -->
       <div class="filters-wrapper" id="filters-drawer">
           <div class="drawer-header-mobile">
-              <h3 style="margin:0;"><span data-i18n="shop.filters_title">الفلاتر والتصنيف</span></h3>
+              <h3 style="margin:0;">الفلاتر والتصنيف</h3>
               <button class="btn-ghost" onclick="toggleDrawer()" style="font-size:24px;">✕</button>
           </div>
           
           <div class="categories-chips" id="categories-chips">
-              <button class="chip active" data-id="all"><span data-i18n="shop.filter_all">الكل</span></button>
+              <button class="chip active" data-id="all">الكل</button>
               <!-- Skeletons briefly -->
               <span class="chip skeleton" style="width:60px;"></span>
               <span class="chip skeleton" style="width:80px;"></span>
@@ -336,19 +333,19 @@
           
           <div class="options-group">
               <select id="sort-select" class="select-field" style="max-height: 44px;">
-                  <option value="newest" data-i18n="shop.sort_newest">الترتيب: الأحدث</option>
-                  <option value="rating" data-i18n="shop.sort_rating">الأعلى تقييماً</option>
-                  <option value="price_asc" data-i18n="shop.sort_price_asc">السعر: من الأرخص للأغلى</option>
-                  <option value="price_desc" data-i18n="shop.sort_price_desc">السعر: من الأغلى للأرخص</option>
+                  <option value="newest">الترتيب: الأحدث</option>
+                  <option value="rating">الأعلى تقييماً</option>
+                  <option value="price_asc">السعر: من الأرخص للأغلى</option>
+                  <option value="price_desc">السعر: من الأغلى للأرخص</option>
               </select>
               
               <select id="status-select" class="select-field" style="max-height: 44px;">
-                  <option value="all" data-i18n="shop.status_all">الحالة: الكل</option>
-                  <option value="available" data-i18n="shop.status_available">متوفر فقط</option>
-                  <option value="out" data-i18n="shop.status_out">نفذ من المخزون</option>
+                  <option value="all">الحالة: الكل</option>
+                  <option value="available">متوفر فقط</option>
+                  <option value="out">نفذ من المخزون</option>
               </select>
               
-              <button class="btn btn-ghost" id="clear-filters-btn" style="display:none; white-space:nowrap;"><span data-i18n="shop.clear_filters">مسح الفلاتر</span></button>
+              <button class="btn btn-ghost" id="clear-filters-btn" style="display:none; white-space:nowrap;">مسح الفلاتر</button>
           </div>
       </div>
 
@@ -367,7 +364,7 @@
       
       <!-- Load More / Pagination -->
       <div style="text-align: center; margin-block-start: var(--space-12);" id="load-more-container">
-          <button class="btn btn-secondary btn-lg" id="load-more-btn" style="display:none;"><span data-i18n="shop.load_more">تحميل المزيد</span></button>
+          <button class="btn btn-secondary btn-lg" id="load-more-btn" style="display:none;">تحميل المزيد</button>
       </div>
 
   </main>
@@ -375,11 +372,11 @@
   <!-- Bottom Compare Bar -->
   <div class="compare-bar" id="compare-bar">
       <div>
-          <strong id="compare-text" data-i18n="shop.compare_text">تقارن المنتجات</strong>
+          <strong id="compare-text">تقارن المنتجات</strong>
       </div>
       <div style="display: flex; gap: var(--space-3);">
-          <button class="btn btn-ghost" onclick="clearCompare()"><span data-i18n="shop.compare_cancel">إلغاء</span></button>
-          <button class="btn btn-primary" onclick="openCompareModal()"><span data-i18n="shop.compare_now">قارن الآن</span></button>
+          <button class="btn btn-ghost" onclick="clearCompare()">إلغاء</button>
+          <button class="btn btn-primary" onclick="openCompareModal()">قارن الآن</button>
       </div>
   </div>
 
@@ -387,7 +384,7 @@
   <div class="modal-overlay" id="compare-modal" role="dialog" aria-modal="true" aria-label="نافذة منبثقة">
       <div class="modal-container" style="max-width: 800px; width: 95%;">
           <div class="modal-header">
-              <h3><span data-i18n="shop.compare_modal_title">مقارنة المنتجات</span></h3>
+              <h3>مقارنة المنتجات</h3>
               <button class="btn-ghost" onclick="document.getElementById('compare-modal').classList.remove('open')">✕</button>
           </div>
           <div class="modal-body">
@@ -408,7 +405,7 @@
     <div class="card-product">
       <div class="compare-checkbox" title="أضف للمقارنة">
         <input type="checkbox" class="compare-cb" id="cmp_{id}" data-id="{id}">
-        <label for="cmp_{id}"><span data-i18n="shop.compare">قارن</span></label>
+        <label for="cmp_{id}">قارن</label>
       </div>
       <a href="./product?id={id}" class="prod-img-container prod-link">
         {statusBadge}
@@ -421,7 +418,7 @@
       <div class="product-info">
         <div class="product-cat">{catName}</div>
         <h3 class="product-title">{name}</h3>
-        <div class="product-price">{price} <span data-i18n="card.currency">ج.م</span></div>
+        <div class="product-price">{price} ج.م</div>
       </div>
     </div>
   </template>
@@ -845,13 +842,56 @@
           await fetchAllProducts();
           
           // Mobile navbar script mapping
-          const menuToggle = document.querySelector('.mobile-menu-toggle');
-          if(menuToggle) {
-              menuToggle.addEventListener('click', () => {
-                  document.querySelector('.mobile-menu').classList.toggle('open');
-              });
-          }
-      });
+          
+const menuToggles = document.querySelectorAll('.mobile-menu-toggle');
+const mobileMenu = document.querySelector('.mobile-menu');
+
+// Create backdrop if it doesn't exist
+let backdrop = document.querySelector('.mobile-menu-backdrop');
+if (!backdrop) {
+  backdrop = document.createElement('div');
+  backdrop.className = 'mobile-menu-backdrop';
+  document.body.appendChild(backdrop);
+}
+
+function openMobileMenu() {
+  if (mobileMenu) mobileMenu.classList.add('open');
+  if (backdrop) backdrop.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeMobileMenu() {
+  if (mobileMenu) mobileMenu.classList.remove('open');
+  if (backdrop) backdrop.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+menuToggles.forEach(btn => {
+  // The open button (hamburger ☰)
+  if (!btn.classList.contains('open')) {
+    btn.addEventListener('click', openMobileMenu);
+  }
+});
+
+// Close button inside menu (the ✕ button)
+const closeMenuBtn = mobileMenu ? mobileMenu.querySelector('.mobile-menu-toggle.open') : null;
+if (closeMenuBtn) {
+  closeMenuBtn.onclick = closeMobileMenu;
+}
+
+// Close on backdrop click
+if (backdrop) {
+  backdrop.addEventListener('click', closeMobileMenu);
+}
+
+// Close on Escape key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && mobileMenu && mobileMenu.classList.contains('open')) {
+    closeMobileMenu();
+  }
+});
+
+
   </script>
 
 <script>
@@ -893,7 +933,7 @@ document.addEventListener('keydown', (e) => {
 </style>
 <div id="cookie-notice" role="dialog" aria-live="polite" aria-label="إشعار الخصوصية">
     <div class="cookie-text">
-        نستخدم تقنية <strong>LocalStorage</strong> لحفظ سلة التسوق وتفضيلاتك. نحن لا نستخدم ملفات تعريف الارتباط (Cookies) للتتبع. يمكنك الاطلاع على <a href="./privacy" style="color:var(--accent); text-decoration:underline;">سياسة الخصوصية</a> لمزيد من التفاصيل.
+        نستخدم تقنية <strong>LocalStorage</strong> لحفظ سلة التسوق وتفضيلاتك. نحن لا نستخدم ملفات تعريف الارتباط (Cookies) للتتبع. يمكنك الاطلاع على <a href="./privacy" style="color: var(--text-inverse); text-decoration:underline;">سياسة الخصوصية</a> لمزيد من التفاصيل.
     </div>
     <div class="cookie-actions">
         <button class="btn btn-primary" id="btn-accept-cookie" aria-label="موافق ومتابعة">موافق</button>

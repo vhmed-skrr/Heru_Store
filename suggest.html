@@ -96,25 +96,25 @@
   <main class="container">
       
       <div class="hero-small" id="hero-sec">
-          <h1 class="hero-title"><span data-i18n="suggest.title">العب بلعبتك وصمم منتجك الخاص</span></h1>
+          <h1 class="hero-title">العب بلعبتك وصمم منتجك الخاص</h1>
           <p class="hero-desc">هل لديك تصميم نوت بوك أحلامك، ستيكر بعبارة تخصك، أو لوحة لفنانك المفضل؟ شاركنا فكرتك وسنتولى طباعتها وتنفيذها خصيصاً لك!</p>
       </div>
 
       <div class="form-wrapper" id="form-view">
           <form id="suggest-form" onsubmit="window.submitSuggestion(event)">
               <div style="margin-block-end: var(--space-5);">
-                  <label class="form-label" for="inp-name"><span data-i18n="suggest.lbl_name">الاسم الكريم</span> <span style="color:var(--error);">*</span></label>
-                          <input aria-describedby="inp-name-error" aria-required="true" type="text" id="inp-name" class="input-field" placeholder="كيف نحب أن نناديك؟" data-i18n-placeholder="suggest.place_name" required>
+                  <label class="form-label" for="inp-name">الاسم الكريم <span style="color:var(--error);">*</span></label>
+                          <input aria-describedby="inp-name-error" aria-required="true" type="text" id="inp-name" class="input-field" placeholder="كيف نحب أن نناديك؟" required>
               </div>
               
               <div style="margin-block-end: var(--space-5);">
-                  <label class="form-label" for="inp-phone"><span data-i18n="suggest.lbl_phone">رقم التواصل للواتساب</span> <span style="color:var(--error);">*</span></label>
+                  <label class="form-label" for="inp-phone">رقم التواصل للواتساب <span style="color:var(--error);">*</span></label>
                           <input aria-describedby="inp-phone-error" aria-required="true" type="tel" id="inp-phone" class="input-field font-num" placeholder="01XXXXXXXXX" dir="ltr" style="text-align:right;" required>
                   <div class="form-error-message" id="err-phone" role="alert" aria-live="assertive"></div>
               </div>
               
               <div style="margin-block-end: var(--space-5);">
-                  <label class="form-label" for="inp-product"><span data-i18n="suggest.lbl_product">المنتج المقترح</span> <span style="color:var(--error);">*</span></label>
+                  <label class="form-label" for="inp-product">المنتج المقترح <span style="color:var(--error);">*</span></label>
                           <select aria-describedby="inp-product-error" aria-required="true" id="inp-product" class="select-field" required>
                       <option value="">اختار الفئة المناسبة</option>
                       <option value="نوت بوك">نوت بوك / كشكول</option>
@@ -127,12 +127,12 @@
               </div>
               
               <div style="margin-block-end: var(--space-5);">
-                  <label class="form-label" for="inp-desc"><span data-i18n="suggest.lbl_desc">اشرح لنا فكرتك بالتفصيل</span> <span style="color:var(--error);">*</span></label>
-                          <textarea aria-describedby="inp-desc-error" aria-required="true" id="inp-desc" class="textarea-field" placeholder="أريد تصميم جراب موبايل باللون الأسود وعليه رسمة كذا..." data-i18n-placeholder="suggest.place_desc" style="min-height: 120px;" required></textarea>
+                  <label class="form-label" for="inp-desc">اشرح لنا فكرتك بالتفصيل <span style="color:var(--error);">*</span></label>
+                          <textarea aria-describedby="inp-desc-error" aria-required="true" id="inp-desc" class="textarea-field" placeholder="أريد تصميم جراب موبايل باللون الأسود وعليه رسمة كذا..." style="min-height: 120px;" required></textarea>
               </div>
               
               <div style="margin-block-end: var(--space-8);">
-                  <label class="form-label"><span data-i18n="suggest.lbl_img">عندك صورة توصل فكرتك أسرع؟ (اختياري)</span></label>
+                  <label class="form-label">عندك صورة توصل فكرتك أسرع؟ (اختياري)</label>
                   <label class="upload-box" id="upload-box">
                       <input type="file" id="inp-file" accept="image/jpeg, image/png">
                       <div id="upload-text" style="color:var(--text-secondary);"><span style="font-size:24px;">📸</span><br>اضغط للرفع أو اسحب الصورة هنا (حد أقصى 5MB)</div>
@@ -141,17 +141,17 @@
                   <div id="upload-feedback" style="font-size:12px; margin-top:8px; color:var(--text-muted);"></div>
               </div>
               
-              <button type="submit" class="btn btn-primary btn-full btn-lg" id="btn-submit"><span data-i18n="suggest.btn_submit">🚀 أرسل اقتراحك للحياة</span></button>
+              <button type="submit" class="btn btn-primary btn-full btn-lg" id="btn-submit">🚀 أرسل اقتراحك للحياة</button>
           </form>
       </div>
       
       <div class="success-msg" id="success-view">
           <div class="success-icon">🙌</div>
-          <h2 class="hero-title" style="margin-block-end:var(--space-2);"><span data-i18n="suggest.success_title">وصلنا اقتراحك الرهيب!</span></h2>
+          <h2 class="hero-title" style="margin-block-end:var(--space-2);">وصلنا اقتراحك الرهيب!</h2>
           <p style="color:var(--text-secondary); margin-block-end:var(--space-6); font-size:var(--text-lg);">سنقوم بدراسة الفكرة والرد عليك في أقرب وقت لترتيب التفاصيل وتجسيدها.</p>
           <div style="display:flex; justify-content:center; gap:var(--space-4);">
-              <button class="btn btn-secondary" onclick="window.resetForm()"><span data-i18n="suggest.btn_reset">اقترح فكرة أخرى 💡</span></button>
-              <button class="btn btn-primary" onclick="window.location.href='/shop'"><span data-i18n="suggest.btn_shop">تسوّق الآن</span></button>
+              <button class="btn btn-secondary" onclick="window.resetForm()">اقترح فكرة أخرى 💡</button>
+              <button class="btn btn-primary" onclick="window.location.href='/shop'">تسوّق الآن</button>
           </div>
       </div>
 
@@ -326,10 +326,10 @@ document.addEventListener('keydown', (e) => {
 </style>
 <div id="cookie-notice" role="dialog" aria-live="polite" aria-label="إشعار الخصوصية">
     <div class="cookie-text">
-        <span data-i18n-html="cart.cookie_notice">نستخدم تقنية <strong>LocalStorage</strong> لحفظ سلة التسوق وتفضيلاتك. نحن لا نستخدم ملفات تعريف الارتباط (Cookies) للتتبع. يمكنك الاطلاع على <a href="./privacy" style="color:var(--accent); text-decoration:underline;">سياسة الخصوصية</a> لمزيد من التفاصيل.</span>
+        نستخدم تقنية <strong>LocalStorage</strong> لحفظ سلة التسوق وتفضيلاتك. نحن لا نستخدم ملفات تعريف الارتباط (Cookies) للتتبع. يمكنك الاطلاع على <a href="./privacy" style="color:var(--accent); text-decoration:underline;">سياسة الخصوصية</a> لمزيد من التفاصيل.
     </div>
     <div class="cookie-actions">
-        <button class="btn btn-primary" id="btn-accept-cookie" aria-label="موافق ومتابعة"><span data-i18n="cart.cookie_btn">موافق</span></button>
+        <button class="btn btn-primary" id="btn-accept-cookie" aria-label="موافق ومتابعة">موافق</button>
     </div>
 </div>
 <script>

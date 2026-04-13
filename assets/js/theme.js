@@ -1,46 +1,14 @@
 /**
- * theme.js - Dark/Light Theme Switching Logic
+ * theme.js - DISABLED
+ * Dark/Light mode system removed. Site is light mode only.
+ * File kept to prevent 404 errors.
  */
 
-document.addEventListener('DOMContentLoaded', () => {
-  const STORE_KEY = 'heru-theme';
-  
-  // 1. Initialize Theme on Load (Defaults to Dark)
-  function initTheme() {
-    const savedTheme = localStorage.getItem(STORE_KEY) || 'dark';
-    document.documentElement.setAttribute('data-theme', savedTheme);
-    updateThemeUI(savedTheme);
-  }
+// Stub to prevent errors from any remaining references
+window.toggleTheme = function() { /* disabled */ };
 
-  // 2. Toggle Theme
-  function toggleTheme() {
-    const currentTheme = document.documentElement.getAttribute('data-theme');
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    
-    document.documentElement.setAttribute('data-theme', newTheme);
-    localStorage.setItem(STORE_KEY, newTheme);
-    updateThemeUI(newTheme);
-  }
+// Remove data-theme attribute if it exists (cleanup from old system)
+document.documentElement.removeAttribute('data-theme');
 
-  // 3. Update Toggle Buttons UI
-  function updateThemeUI(theme) {
-    const toggleBtns = document.querySelectorAll('.theme-toggle');
-    toggleBtns.forEach(btn => {
-      // ☀️ for dark mode (click to light), 🌙 for light mode (click to dark)
-      btn.textContent = theme === 'dark' ? '☀️' : '🌙';
-      btn.setAttribute('aria-label', theme === 'dark' ? 'تفعيل المظهر النهاري' : 'تفعيل المظهر الليلي');
-    });
-  }
-
-  // Bind to global for inline usage if needed
-  window.toggleTheme = toggleTheme;
-
-  // Bind existing buttons
-  const themeToggles = document.querySelectorAll('.theme-toggle');
-  themeToggles.forEach(btn => {
-    btn.addEventListener('click', toggleTheme);
-  });
-
-  // Run initialization
-  initTheme();
-});
+// Remove from localStorage if saved
+localStorage.removeItem('heru-theme');

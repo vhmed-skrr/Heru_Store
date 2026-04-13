@@ -319,7 +319,7 @@
 
     /* CTA Section */
     .cta-section {
-      background-color: var(--accent);
+      background-color: var(--text-inverse);
       color: var(--text-inverse);
       text-align: center;
       padding: var(--space-24) var(--space-4);
@@ -376,7 +376,7 @@
     }
 
     .footer-links a:hover {
-      color: var(--accent);
+      color: var(--text-inverse);
     }
 
     .copyright {
@@ -463,9 +463,7 @@
   <link rel="stylesheet" href="./assets/css/responsive.css">
   <script src="./assets/js/nav.js" defer></script>
   <link rel="stylesheet" href="./assets/css/themes.css">
-  <script src="./assets/js/theme.js" defer></script>
-  <script src="./assets/js/i18n.js"></script>
-</head>
+  </head>
 
 <body>
 
@@ -473,8 +471,8 @@
     <!-- Announcement Bar -->
     <div class="marquee-bar bg-accent text-inverse" role="marquee" data-setting="announcement_bar">
       <div class="marquee-content" aria-hidden="true">
-        <span data-i18n-html="anno.text">🔥 شحن مجاني على كل الطلبات &nbsp;&nbsp;|&nbsp;&nbsp; تصاميم شبابية حصرية
-          &nbsp;&nbsp;|&nbsp;&nbsp; اقترح تصميمك لطباعته</span>
+        🔥 شحن مجاني على كل الطلبات &nbsp;&nbsp;|&nbsp;&nbsp; تصاميم شبابية حصرية
+          &nbsp;&nbsp;|&nbsp;&nbsp; اقترح تصميمك لطباعته
       </div>
     </div>
 
@@ -483,9 +481,9 @@
       <a href="./" class="navbar-logo" aria-label="الصفحة الرئيسية" data-setting="store_name">HERU</a>
 
       <ul class="navbar-links" style="list-style: none; margin: 0; padding: 0;">
-        <li><a href="./"><span data-i18n="nav.home">الرئيسية</span></a></li>
-        <li><a href="./shop"><span data-i18n="nav.shop">المتجر</span></a></li>
-        <li><a href="./suggest"><span data-i18n="nav.suggest">اقتراح تصميم</span></a></li>
+        <li><a href="./">الرئيسية</a></li>
+        <li><a href="./shop">المتجر</a></li>
+        <li><a href="./suggest">اقتراح تصميم</a></li>
       </ul>
 
       <div class="navbar-actions">
@@ -498,7 +496,7 @@
               <circle cx="11" cy="11" r="8" />
               <path d="m21 21-4.35-4.35" />
             </svg>
-            <span class="nav-search__hint" aria-hidden="true"><span data-i18n="nav.search_aria">ابحث</span></span>
+            <span class="nav-search__hint" aria-hidden="true">ابحث</span>
           </button>
 
           <!-- الحالة المفتوحة: Input موسّع -->
@@ -508,8 +506,7 @@
               <circle cx="11" cy="11" r="8" />
               <path d="m21 21-4.35-4.35" />
             </svg>
-            <input type="search" id="nav-search-input" class="nav-search__input" placeholder="ابحث عن منتج..."
-              data-i18n-placeholder="nav.search_placeholder" autocomplete="off" aria-label="البحث في المتجر" dir="rtl">
+            <input type="search" id="nav-search-input" class="nav-search__input" placeholder="ابحث عن منتج..." autocomplete="off" aria-label="البحث في المتجر" dir="rtl">
             <button class="nav-search__close" id="search-close" aria-label="إغلاق البحث" type="button">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                 stroke-linecap="round">
@@ -520,9 +517,6 @@
         </div>
         <a href="./cart" class="cart-badge btn-ghost" data-count="0" aria-label="سلة التسوق"
           style="font-size: var(--text-xl);">🛒</a>
-        <button data-lang-toggle onclick="window.toggleLanguage()" class="btn-ghost font-display"
-          aria-label="تغيير اللغة" style="font-weight: 700;">EN</button>
-        <button class="theme-toggle btn-ghost" aria-label="تغيير المظهر" style="font-size: var(--text-xl);">☀️</button>
         <button class="mobile-menu-toggle" aria-label="فتح القائمة الرئيسية" aria-expanded="false">☰</button>
       </div>
     </nav>
@@ -533,12 +527,9 @@
     <button class="mobile-menu-toggle open font-display"
       onclick="document.querySelector('.mobile-menu').classList.remove('open')"
       style="align-self: flex-end; font-size: 24px; display: block;" aria-label="إغلاق">✕</button>
-    <a href="./" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);"><span
-        data-i18n="nav.home">الرئيسية</span></a>
-    <a href="./shop" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);"><span
-        data-i18n="nav.shop">المتجر</span></a>
-    <a href="./suggest" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);"><span
-        data-i18n="nav.suggest">اقتراح تصميم</span></a>
+    <a href="./" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);">الرئيسية</a>
+    <a href="./shop" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);">المتجر</a>
+    <a href="./suggest" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);">اقتراح تصميم</a>
   </div>
 
   <!-- Hero Section -->
@@ -548,14 +539,13 @@
       <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?q=80&w=2000&auto=format&fit=crop"
         alt="صورة ترويجية لمتجر Heru" class="hero-image" loading="eager">
       <div class="hero-content">
-        <h1 class="hero-title" data-setting="hero_title"><span data-i18n="hero.title">صمّم بصمتك</span></h1>
-        <p class="hero-subtitle" data-setting="hero_subtitle"><span data-i18n="hero.subtitle">منتجات شبابية بتصاميم
-            مختلفة — فقط في هيرو</span></p>
+        <h1 class="hero-title" data-setting="hero_title">صمّم بصمتك</h1>
+        <p class="hero-subtitle" data-setting="hero_subtitle">منتجات شبابية بتصاميم
+            مختلفة — فقط في هيرو</p>
         <div class="hero-actions">
-          <a href="./shop" class="btn btn-primary btn-lg" data-setting="hero_cta_primary"><span
-              data-i18n="hero.btn_primary">تسوّق الآن</span></a>
+          <a href="./shop" class="btn btn-primary btn-lg" data-setting="hero_cta_primary">تسوّق الآن</a>
           <a href="./suggest" class="btn btn-secondary btn-lg" style="background-color: var(--bg-overlay)"
-            data-setting="hero_cta_secondary"><span data-i18n="hero.btn_secondary">اقترح تصميم</span></a>
+            data-setting="hero_cta_secondary">اقترح تصميم</a>
         </div>
       </div>
       <div class="scroll-indicator">⬇</div>
@@ -563,17 +553,17 @@
 
     <!-- Trust Bar -->
     <div class="trust-bar">
-      <div class="trust-item"><span>🚚</span> <span data-i18n="trust.shipping">شحن مجاني</span></div>
-      <div class="trust-item"><span>✅</span> <span data-i18n="trust.quality">جودة مضمونة</span></div>
-      <div class="trust-item"><span>💬</span> <span data-i18n="trust.support">دعم واتساب</span></div>
-      <div class="trust-item"><span>🎨</span> <span data-i18n="trust.designs">تصاميم حصرية</span></div>
+      <div class="trust-item"><span>🚚</span> شحن مجاني</div>
+      <div class="trust-item"><span>✅</span> جودة مضمونة</div>
+      <div class="trust-item"><span>💬</span> دعم واتساب</div>
+      <div class="trust-item"><span>🎨</span> تصاميم حصرية</div>
     </div>
 
 
     <!-- Categories Carousel -->
     <section class="section container">
-      <h2 class="section-title" style="margin-block-end: var(--space-8)"><span data-i18n="home.categories_title">تسوّق
-          حسب الفئة</span></h2>
+      <h2 class="section-title" style="margin-block-end: var(--space-8)">تسوّق
+          حسب الفئة</h2>
       <div class="home-categories-grid" id="categories-slider">
         <!-- Skeletons Loader -->
         <div class="cat-card-new skeleton"></div>
@@ -588,8 +578,8 @@
     <!-- Featured Products -->
     <section class="section container">
       <div class="section-header">
-        <h2 class="section-title"><span data-i18n="home.featured_title">الأكثر طلباً</span></h2>
-        <a href="./shop" class="btn btn-ghost"><span data-i18n="home.featured_btn">عرض الكل ←</span></a>
+        <h2 class="section-title">الأكثر طلباً</h2>
+        <a href="./shop" class="btn btn-ghost">عرض الكل ←</a>
       </div>
       <div class="grid-4" id="featured-grid">
         <!-- Skeletons Loader -->
@@ -672,7 +662,7 @@
     <!-- Reviews Slider -->
     <section class="section container">
       <div class="section-header">
-        <h2 class="section-title"><span data-i18n="home.reviews_title">إيه رأي عملاءنا</span></h2>
+        <h2 class="section-title">إيه رأي عملاءنا</h2>
         <a href="./review" class="btn btn-secondary">أضف تقييمك</a>
       </div>
       <div class="drag-scroll" id="reviews-slider">
@@ -685,8 +675,8 @@
     <!-- CTA Section -->
     <section class="cta-section">
       <div class="container">
-        <h2 style="font-size: var(--text-5xl); margin-block-end: var(--space-8);"><span data-i18n="home.cta_title">عندك
-            تصميم في بالك؟</span></h2>
+        <h2 style="font-size: var(--text-5xl); margin-block-end: var(--space-8);">عندك
+            تصميم في بالك؟</h2>
         <a href="./suggest" class="btn btn-lg"
           style="background-color: var(--bg-primary); color: var(--text-primary); font-size: var(--text-xl); padding: var(--space-4) var(--space-12);">اقترح
           الآن</a>
@@ -701,11 +691,10 @@
       <div class="footer-grid">
         <div class="footer-col">
           <h4 class="font-display"
-            style="font-weight: 900; font-size: var(--text-3xl); color: var(--accent); letter-spacing: 2px;"
+            style="font-weight: 900; font-size: var(--text-3xl); color: var(--text-inverse); letter-spacing: 2px;"
             data-setting="store_name">HERU</h4>
-          <p style="color: var(--text-secondary); margin-block-end: var(--space-4);" data-setting="footer_tagline"><span
-              data-i18n="footer.desc">متجر هيرو للمنتجات الشبابية. بنقدم لك منتجات بتعبر عن أسلوب حياتك وروحك
-              المختلفة.</span></p>
+          <p style="color: var(--text-secondary); margin-block-end: var(--space-4);" data-setting="footer_tagline">متجر هيرو للمنتجات الشبابية. بنقدم لك منتجات بتعبر عن أسلوب حياتك وروحك
+              المختلفة.</p>
           <div class="social-links" id="footer-social">
             <!-- Instagram -->
             <a href="#" class="social-link" data-social="instagram" target="_blank" rel="noopener noreferrer"
@@ -750,19 +739,19 @@
         <div class="footer-col">
           <h4>المتجر</h4>
           <div class="footer-links">
-            <a href="./shop"><span data-i18n="footer.all_products">كل المنتجات</span></a>
-            <a href="./shop?category=caps"><span data-i18n="footer.caps">كابات</span></a>
-            <a href="./shop?filter=new"><span data-i18n="footer.new">الجديد</span></a>
-            <a href="./shop?filter=best"><span data-i18n="footer.best">الأكثر مبيعاً</span></a>
+            <a href="./shop">كل المنتجات</a>
+            <a href="./shop?category=caps">كابات</a>
+            <a href="./shop?filter=new">الجديد</a>
+            <a href="./shop?filter=best">الأكثر مبيعاً</a>
           </div>
         </div>
         <div class="footer-col">
           <h4>الدعم</h4>
           <div class="footer-links">
-            <a href="./track-order"><span data-i18n="footer.track">تتبع الطلب</span></a>
+            <a href="./track-order">تتبع الطلب</a>
             <a href="./suggest">اقتراح تصميم</a>
-            <a href="./privacy"><span data-i18n="footer.privacy">سياسة الخصوصية</span></a>
-            <a href="./terms"><span data-i18n="footer.terms">شروط الاستخدام</span></a>
+            <a href="./privacy">سياسة الخصوصية</a>
+            <a href="./terms">شروط الاستخدام</a>
           </div>
         </div>
         <div class="footer-col">
@@ -773,8 +762,8 @@
         </div>
       </div>
       <div class="copyright">
-        &copy; <span class="font-num">2026</span> <span data-i18n="footer.copyright">Heru Store. كافة الحقوق
-          محفوظة.</span>
+        &copy; <span class="font-num">2026</span> Heru Store. كافة الحقوق
+          محفوظة.
       </div>
     </div>
   </footer>
@@ -811,7 +800,7 @@
     <div class="card-review" style="min-width: 320px; max-width: 320px;">
       <div style="color: var(--warning); letter-spacing: 2px;">{stars}</div>
       <p style="font-style: italic; margin-block-end: var(--space-2);">"{comment}"</p>
-      <div style="font-weight: 700; font-size: var(--text-sm); color: var(--accent);">- {name}</div>
+      <div style="font-weight: 700; font-size: var(--text-sm); color: var(--text-inverse);">- {name}</div>
     </div>
   </template>
 
@@ -1071,15 +1060,57 @@
         }
       });
 
-      // 6. Mobile Menu Logic
-      const menuToggles = document.querySelectorAll('.mobile-menu-toggle');
-      const mobileMenu = document.querySelector('.mobile-menu');
-      menuToggles.forEach(btn => {
-        btn.addEventListener('click', () => {
-          if (mobileMenu) mobileMenu.classList.toggle('open');
-        });
-      });
-    });
+      // Mobile Menu Logic
+
+const menuToggles = document.querySelectorAll('.mobile-menu-toggle');
+const mobileMenu = document.querySelector('.mobile-menu');
+
+// Create backdrop if it doesn't exist
+let backdrop = document.querySelector('.mobile-menu-backdrop');
+if (!backdrop) {
+  backdrop = document.createElement('div');
+  backdrop.className = 'mobile-menu-backdrop';
+  document.body.appendChild(backdrop);
+}
+
+function openMobileMenu() {
+  if (mobileMenu) mobileMenu.classList.add('open');
+  if (backdrop) backdrop.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeMobileMenu() {
+  if (mobileMenu) mobileMenu.classList.remove('open');
+  if (backdrop) backdrop.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+menuToggles.forEach(btn => {
+  // The open button (hamburger ☰)
+  if (!btn.classList.contains('open')) {
+    btn.addEventListener('click', openMobileMenu);
+  }
+});
+
+// Close button inside menu (the ✕ button)
+const closeMenuBtn = mobileMenu ? mobileMenu.querySelector('.mobile-menu-toggle.open') : null;
+if (closeMenuBtn) {
+  closeMenuBtn.onclick = closeMobileMenu;
+}
+
+// Close on backdrop click
+if (backdrop) {
+  backdrop.addEventListener('click', closeMobileMenu);
+}
+
+// Close on Escape key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && mobileMenu && mobileMenu.classList.contains('open')) {
+    closeMobileMenu();
+  }
+});
+
+
   </script>
 
   <script>
@@ -1148,7 +1179,7 @@
   <div id="cookie-notice" role="dialog" aria-live="polite" aria-label="إشعار الخصوصية">
     <div class="cookie-text">
       نستخدم تقنية <strong>LocalStorage</strong> لحفظ سلة التسوق وتفضيلاتك. نحن لا نستخدم ملفات تعريف الارتباط (Cookies)
-      للتتبع. يمكنك الاطلاع على <a href="./privacy" style="color:var(--accent); text-decoration:underline;">سياسة
+      للتتبع. يمكنك الاطلاع على <a href="./privacy" style="color: var(--text-inverse); text-decoration:underline;">سياسة
         الخصوصية</a> لمزيد من التفاصيل.
     </div>
     <div class="cookie-actions">
