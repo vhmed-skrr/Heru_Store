@@ -1,0 +1,49 @@
+/* 
+ * DEFAULT THEME (DARK) - Matches original tokens
+ */
+:root[data-theme="dark"] {
+  --bg-primary: #080808;
+  --bg-secondary: #0D0D0D;
+  --bg-card: #141414;
+  --bg-elevated: #1C1C1C;
+  --bg-overlay: rgba(8, 8, 8, 0.92);
+
+  --text-primary: #F0EBE1;
+  --text-secondary: #A8A8A8;
+  --text-muted: #484848;
+  --text-inverse: #080808;
+
+  --border: rgba(240, 235, 225, 0.08);
+  --border-strong: rgba(240, 235, 225, 0.18);
+  --border-accent: rgba(240, 235, 225, 0.35);
+
+  --accent: #F0EBE1; 
+  --accent-hover: #FFFFFF;
+  --accent-dim: rgba(240, 235, 225, 0.08);
+  --accent-medium: rgba(240, 235, 225, 0.15);
+}
+
+/* 
+ * LIGHT THEME
+ */
+:root[data-theme="light"] {
+  --bg-primary: #FAFAFA;
+  --bg-secondary: #F0F0F0;
+  --bg-card: #FFFFFF;
+  --bg-elevated: #E5E5E5;
+  --bg-overlay: rgba(250, 250, 250, 0.92);
+
+  --text-primary: #111111;
+  --text-secondary: #555555;
+  --text-muted: #888888;
+  --text-inverse: #FAFAFA; 
+
+  --border: rgba(17, 17, 17, 0.1);
+  --border-strong: rgba(17, 17, 17, 0.2);
+  --border-accent: rgba(17, 17, 17, 0.35);
+
+  --accent: #1A1A1A; 
+  --accent-hover: #333333;
+  --accent-dim: rgba(26, 26, 26, 0.05); /* Match accent dark */
+  --accent-medium: rgba(26, 26, 26, 0.1);
+}

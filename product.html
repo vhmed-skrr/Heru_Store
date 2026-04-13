@@ -352,6 +352,10 @@
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="./assets/css/responsive.css">
+  <script src="./assets/js/nav.js" defer></script>
+  <link rel="stylesheet" href="./assets/css/themes.css">
+  <script src="./assets/js/theme.js" defer></script>
 </head>
 <body>
 
@@ -359,24 +363,25 @@
   <nav class="navbar" aria-label="التنقل الرئيسي">
       <a href="./" class="navbar-logo" data-setting="store_name">HERU</a>
       <div class="navbar-links">
-          <a href="./">الرئيسية</a>
-          <a href="./shop">المتجر</a>
-          <a href="./suggest">اقتراح تصميم</a>
+          <a href="./"><span data-i18n="nav.home">الرئيسية</span></a>
+          <a href="./shop"><span data-i18n="nav.shop">المتجر</span></a>
+          <a href="./suggest"><span data-i18n="nav.suggest">اقتراح تصميم</span></a>
       </div>
       <div class="navbar-actions">
           <a href="./cart" class="cart-badge btn-ghost" data-count="0" aria-label="سلة التسوق" style="font-size: var(--text-xl);">🛒</a>
           
           <button data-lang-toggle onclick="window.toggleLanguage()" class="btn-ghost font-display" aria-label="تغيير اللغة" style="font-weight: 700;">EN</button>
-          <button class="mobile-menu-toggle" aria-label="فتح القائمة الرئيسية" aria-expanded="false">☰</button>
+          <button class="theme-toggle btn-ghost" aria-label="تغيير المظهر" style="font-size: var(--text-xl);">☀️</button>
+              <button class="mobile-menu-toggle" aria-label="فتح القائمة الرئيسية" aria-expanded="false">☰</button>
       </div>
   </nav>
   </header>
 
   <div class="mobile-menu">
       <button class="mobile-menu-toggle open font-display" onclick="document.querySelector('.mobile-menu').classList.remove('open')" style="align-self: flex-end; font-size: 24px; display: block;" aria-label="إغلاق">✕</button>
-      <a href="./" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);">الرئيسية</a>
-      <a href="./shop" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);">المتجر</a>
-      <a href="./suggest" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);">اقتراح تصميم</a>
+      <a href="./" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);"><span data-i18n="nav.home">الرئيسية</span></a>
+      <a href="./shop" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);"><span data-i18n="nav.shop">المتجر</span></a>
+      <a href="./suggest" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);"><span data-i18n="nav.suggest">اقتراح تصميم</span></a>
   </div>
 
   <main class="container section">
@@ -404,13 +409,13 @@
               
               <div class="reviews-summary" id="lbl-reviews-summary">
                   <div class="stars">★★★★★</div>
-                  <span style="color:var(--text-muted);">(لا توجد تقييمات)</span>
+                  <span style="color:var(--text-muted);">(<span data-i18n="product.no_reviews">لا توجد تقييمات</span>)</span>
               </div>
               
               <div class="product-price" id="lbl-price">0.00 ج.م</div>
               
               <div class="stock-status stock-ok" id="lbl-stock">
-                  <span style="font-size:18px;">⌛</span> <span>التحقق من المخزون...</span>
+                  <span style="font-size:18px;">⌛</span> <span><span data-i18n="product.check_stock">التحقق من المخزون...</span></span>
               </div>
               
               <div class="divider"></div>
@@ -420,7 +425,7 @@
               </div>
               
               <div class="quantity-row">
-                  <div style="font-weight:600; width: 100%; margin-block-end: -10px;">الكمية:</div>
+                  <div style="font-weight:600; width: 100%; margin-block-end: -10px;"><span data-i18n="product.qty">الكمية:</span></div>
                   <div class="quantity-selector">
                       <button class="quantity-btn" onclick="window.changeQuantity(-1)">−</button>
                       <input type="number" id="inp-qty" class="quantity-input" value="1" min="1" max="10" readonly>
@@ -429,13 +434,13 @@
               </div>
               
               <div class="actions-group">
-                  <button class="btn btn-primary btn-lg btn-full" id="btn-add-cart" onclick="window.addToCartAction()">أضف للسلة الآن</button>
-                  <button class="btn btn-whatsapp btn-lg btn-full" id="btn-whatsapp" onclick="window.orderWhatsApp()">اطلب وتواصل واتساب</button>
+                  <button class="btn btn-primary btn-lg btn-full" id="btn-add-cart" onclick="window.addToCartAction()"><span data-i18n="product.add_to_cart">أضف للسلة الآن</span></button>
+                  <button class="btn btn-whatsapp btn-lg btn-full" id="btn-whatsapp" onclick="window.orderWhatsApp()"><span data-i18n="product.whatsapp">اطلب وتواصل واتساب</span></button>
               </div>
               
               <div class="share-row">
-                  <button class="btn btn-ghost" onclick="window.shareWhatsApp()">مشاركة 💬</button>
-                  <button class="btn btn-ghost" onclick="window.shareCopy()">نسخ الرابط 🔗</button>
+                  <button class="btn btn-ghost" onclick="window.shareWhatsApp()"><span data-i18n="product.share">مشاركة 💬</span></button>
+                  <button class="btn btn-ghost" onclick="window.shareCopy()"><span data-i18n="product.copy_link">نسخ الرابط 🔗</span></button>
               </div>
           </div>
       </div>
@@ -443,9 +448,9 @@
       <!-- Tabs Section -->
       <div class="tabs-section" style="margin-block-start: var(--space-8);">
           <div class="tabs-header" id="tabs-header">
-              <button class="tab-btn active" data-target="tab-desc">تفاصيل المنتج</button>
-              <button class="tab-btn" data-target="tab-reviews">التقييمات والآراء</button>
-              <button class="tab-btn" data-target="tab-related">منتجات مشابهة</button>
+              <button class="tab-btn active" data-target="tab-desc"><span data-i18n="product.tab_desc">تفاصيل المنتج</span></button>
+              <button class="tab-btn" data-target="tab-reviews"><span data-i18n="product.tab_reviews">التقييمات والآراء</span></button>
+              <button class="tab-btn" data-target="tab-related"><span data-i18n="product.tab_related">منتجات مشابهة</span></button>
           </div>
           
           <div class="tab-content">
@@ -459,30 +464,30 @@
                   <div id="reviews-list" style="display:flex; flex-direction:column; gap:var(--space-4);"></div>
                   
                   <form id="review-form" class="review-form" onsubmit="window.submitReviewLogic(event)">
-                       <div style="font-size: var(--text-2xl); font-weight:700; margin-block-end:var(--space-4);">أضف تقييمك الخاص</div>
+                       <div style="font-size: var(--text-2xl); font-weight:700; margin-block-end:var(--space-4);"><span data-i18n="product.add_review">أضف تقييمك الخاص</span></div>
                        <div style="margin-block-end:var(--space-4);">
-                           <label class="form-label">الاسم</label>
+                           <label class="form-label"><span data-i18n="product.rev_name">الاسم</span></label>
                            <input type="text" id="rev-name" class="input-field" required>
                        </div>
                        <div style="margin-block-end:var(--space-4);">
-                           <label class="form-label">التقييم (من 1 لـ 5 نجوم)</label>
+                           <label class="form-label"><span data-i18n="product.rev_rating">التقييم (من 1 لـ 5 نجوم)</span></label>
                            <select id="rev-rating" class="select-field">
-                              <option value="5">⭐⭐⭐⭐⭐ ممتاز جداً</option>
-                              <option value="4">⭐⭐⭐⭐ عظيم</option>
-                              <option value="3">⭐⭐⭐ جيد كفاية</option>
-                              <option value="2">⭐⭐ مش أحسن حاجة</option>
-                              <option value="1">⭐ سيء</option>
+                              <option value="5" data-i18n="product.rev_5_stars">⭐⭐⭐⭐⭐ ممتاز جداً</option>
+                              <option value="4" data-i18n="product.rev_4_stars">⭐⭐⭐⭐ عظيم</option>
+                              <option value="3" data-i18n="product.rev_3_stars">⭐⭐⭐ جيد كفاية</option>
+                              <option value="2" data-i18n="product.rev_2_stars">⭐⭐ مش أحسن حاجة</option>
+                              <option value="1" data-i18n="product.rev_1_stars">⭐ سيء</option>
                            </select>
                        </div>
                        <div style="margin-block-end:var(--space-4);">
-                           <label class="form-label">تعليقك (اختياري)</label>
+                           <label class="form-label"><span data-i18n="product.rev_comment">تعليقك (اختياري)</span></label>
                            <textarea id="rev-comment" class="textarea-field"></textarea>
                        </div>
-                       <button type="submit" class="btn btn-primary" id="btn-submit-review">إرسال للتقييم</button>
-                       <p style="font-size:12px; color:var(--text-muted); margin-block-start:8px;">* التقييم سيظهر للمستخدمين بمجرد مراجعته من الإدارة لضمان الجدية.</p>
+                       <button type="submit" class="btn btn-primary" id="btn-submit-review"><span data-i18n="product.rev_submit">إرسال للتقييم</span></button>
+                       <p style="font-size:12px; color:var(--text-muted); margin-block-start:8px;"><span data-i18n="product.rev_note">* التقييم سيظهر للمستخدمين بمجرد مراجعته من الإدارة لضمان الجدية.</span></p>
                   </form>
                   <div id="review-thanks" style="display:none; padding:var(--space-6); background:rgba(34, 197, 94, 0.1); color:var(--success); border: 1px solid var(--success); border-radius:var(--radius-md); margin-block-start:var(--space-8); font-weight:600; text-align:center;">
-                       شكرًا لتقييمك! سيظهر للجميع فور اعتماده وتقييمه عبر فريقنا.
+                       <span data-i18n="product.rev_thanks">شكرًا لتقييمك! سيظهر للجميع فور اعتماده وتقييمه عبر فريقنا.</span>
                   </div>
               </div>
               
@@ -499,10 +504,10 @@
   <!-- Sticky Mobile Cart -->
   <div class="mobile-sticky-bar" id="mobile-sticky">
        <div>
-           <div style="font-weight:700; font-size:var(--text-sm);" id="sticky-title">المنتج</div>
+           <div style="font-weight:700; font-size:var(--text-sm);" id="sticky-title"><span id="sticky-title-i18n" data-i18n="product.sticky_title">المنتج</span></div>
            <div style="color:var(--accent); font-weight:700;" id="sticky-price">0 ج.م</div>
        </div>
-       <button class="btn btn-primary" onclick="window.addToCartAction()">أضف للسلة</button>
+       <button class="btn btn-primary" onclick="window.addToCartAction()"><span data-i18n="product.sticky_add">أضف للسلة</span></button>
   </div>
 
   <!-- Lightbox -->
@@ -520,12 +525,15 @@
     <a href="./product?id={id}" class="card-product">
       <div class="prod-img-container">
         <img src="{image}" alt="{name}" class="product-img" width="400" height="400" loading="lazy">
-        <div class="prod-overlay">عرض سريع</div>
+        {dots_html}
+        <button type="button" class="quick-add-btn" aria-label="أضف إلى السلة" onclick="window.quickAddToCart(event, '{id}', '{product_data}', this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        </button>
       </div>
       <div class="product-info">
         <div class="product-cat">هيرو المميزة</div>
         <h3 class="product-title">{name}</h3>
-        <div class="product-price">{price} ج.م</div>
+        <div class="product-price">{price} <span data-i18n="card.currency">ج.م</span></div>
       </div>
     </a>
   </template>
@@ -578,7 +586,7 @@
               
               // Fetch explicitly category details
               if(p.category_id) {
-                  const { data: c } = await supabaseClient.from('categories').select('*').eq('id', p.category_id).single();
+                  const { data: c } = await supabaseClient.from('categories').select('id, name_ar, name_en, color').eq('id', p.category_id).single();
                   if(c) category = c;
               }
               
@@ -592,13 +600,16 @@
 
           // Initializers and UI Rendering
           function initUI() {
-              const catName = category ? category.name_ar : 'عام';
+              const currentLang = typeof window !== 'undefined' ? (window.localStorage.getItem('heru-lang') || 'ar') : 'ar';
+              const catNameAr = category ? category.name_ar : 'عام';
+              const catNameEn = category ? (category.name_en || category.name_ar) : 'General';
+              const catName = currentLang === 'en' ? catNameEn : catNameAr;
               const catColor = category ? (category.color || 'var(--accent)') : 'var(--text-muted)';
               
               // Structural Updates
               document.getElementById('breadcrumb-container').innerHTML = `
-                  <a href="./">الرئيسية</a> <span>/</span> <a href="./shop">المتجر</a> <span>/</span> 
-                  <a href="./shop?category=${product.category_id || 'all'}">${catName}</a> <span>/</span> <span style="font-weight:600; color:var(--text-primary);">${product.name_ar}</span>
+                  <a href="./"><span data-i18n="nav.home">الرئيسية</span></a> <span>/</span> <a href="./shop"><span data-i18n="nav.shop">المتجر</span></a> <span>/</span> 
+                  <a href="./shop?category=${product.category_id || 'all'}">${catName}</a> <span>/</span> <span style="font-weight:600; color:var(--text-primary);">${prodName}</span>
               `;
               
               const lblCat = document.getElementById('lbl-cat');
@@ -606,7 +617,8 @@
               lblCat.style.backgroundColor = catColor;
               lblCat.style.color = '#000'; // Make assuming category colors are light hexes for contrast
               
-              document.getElementById('lbl-name').innerText = product.name_ar;
+              const prodName = (currentLang === 'en' && product.name_en) ? product.name_en : product.name_ar;
+              document.getElementById('lbl-name').innerText = prodName;
               document.getElementById('lbl-price').innerText = `${product.price} ج.م`;
               
               // Handle Images
@@ -620,34 +632,41 @@
               document.getElementById('inp-qty').max = maxStock > 0 ? maxStock : 1;
               if (maxStock <= 0) {
                   stockEl.className = 'stock-status stock-out';
-                  stockEl.innerHTML = `<span>✗</span> <span>نفذ المخزون تماماً</span>`;
+                  const msgOut = currentLang === 'en' ? 'Out of stock completely' : 'نفذ المخزون تماماً';
+                  stockEl.innerHTML = `<span>✗</span> <span>${msgOut}</span>`;
                   document.getElementById('btn-add-cart').disabled = true;
-                  document.getElementById('btn-add-cart').innerText = 'المخزون نفذ';
+                  document.getElementById('btn-add-cart').innerText = currentLang === 'en' ? 'Sold Out' : 'المخزون نفذ';
               } else if (maxStock < 5) {
                   stockEl.className = 'stock-status stock-low';
-                  stockEl.innerHTML = `<span>⚠️</span> <span>كمية محدودة جداً (${maxStock} متبقي)</span>`;
+                  const msgLow = currentLang === 'en' ? `Very low stock (${maxStock} left)` : `كمية محدودة جداً (${maxStock} متبقي)`;
+                  stockEl.innerHTML = `<span>⚠️</span> <span>${msgLow}</span>`;
               } else {
                   stockEl.className = 'stock-status stock-ok';
-                  stockEl.innerHTML = `<span>✓</span> <span>متوفر في المخزون</span>`;
+                  const msgOk = currentLang === 'en' ? 'Available in stock' : 'متوفر في المخزون';
+                  stockEl.innerHTML = `<span>✓</span> <span>${msgOk}</span>`;
               }
               
               // Handle Attributes Array / Map
               const attrEl = document.getElementById('lbl-attr');
-              if(product.attributes && Object.keys(product.attributes).length > 0) {
+              const attrs = (currentLang === 'en' && product.attributes_en) ? product.attributes_en : product.attributes;
+              if(attrs && Object.keys(attrs).length > 0) {
                   let h = '';
-                  for (const [k, v] of Object.entries(product.attributes)) {
+                  for (const [k, v] of Object.entries(attrs)) {
                       h += `<div class="attr-item"><div class="attr-key">${k}</div><div class="attr-val">${v}</div></div>`;
                   }
                   attrEl.innerHTML = h;
               } else {
-                  attrEl.innerHTML = `<span style="color:var(--text-muted); font-size:13px;">لا توجد تفاصيل إضافية لهذا المنتج.</span>`;
+                  const attrMsg = currentLang === 'en' ? 'No additional details available.' : 'لا توجد تفاصيل إضافية لهذا المنتج.';
+                  attrEl.innerHTML = `<span style="color:var(--text-muted); font-size:13px;">${attrMsg}</span>`;
               }
               
               // Tabs text setup
-              document.getElementById('tab-desc').innerHTML = `<div style="white-space:pre-wrap;">${product.description_ar || 'تفاصيل المنتج غير متوفرة حالياً.'}</div>`;
+              const descEmptyMsg = currentLang === 'en' ? 'Product details not available here.' : 'تفاصيل المنتج غير متوفرة حالياً.';
+              const prodDesc = (currentLang === 'en' && product.description_en) ? product.description_en : (product.description_ar || descEmptyMsg);
+              document.getElementById('tab-desc').innerHTML = `<div style="white-space:pre-wrap;">${prodDesc}</div>`;
               
               // Sticky Mappings
-              document.getElementById('sticky-title').innerText = product.name_ar.length > 20 ? product.name_ar.substring(0, 18) + '...' : product.name_ar;
+              document.getElementById('sticky-title').innerText = prodName.length > 20 ? prodName.substring(0, 18) + '...' : prodName;
               document.getElementById('sticky-price').innerText = `${product.price} ج.م`;
 
               // Generate Metadata JS dynamically Output
@@ -754,7 +773,18 @@
                       let h = '';
                       data.forEach(p => {
                           const img = (p.images && p.images.length>0) ? clThumb(p.images[0]) : '';
-                          h += tpl.replace(/{id}/g, p.id).replace(/{name}/g, p.name_ar).replace(/{price}/g, p.price).replace(/{image}/g, img);
+                          const pDataStr = encodeURIComponent(JSON.stringify(p));
+                          let dotsHtml = '';
+                          if (p.images && p.images.length > 1) {
+                              dotsHtml = '<div class="multi-img-dots" onmousedown="event.preventDefault(); event.stopPropagation();" onclick="event.preventDefault(); event.stopPropagation();">';
+                              const maxDots = Math.min(p.images.length, 5);
+                              for (let i = 0; i < maxDots; i++) {
+                                  const dotImg = clThumb ? clThumb(p.images[i]) : p.images[i];
+                                  dotsHtml += `<button type="button" class="multi-image-dot ${i===0?'active':''}" aria-label="صورة ${i+1}" onclick="window.switchProductCardImage(event, '${dotImg}', this)"></button>`;
+                              }
+                              dotsHtml += '</div>';
+                          }
+                          h += tpl.replace(/{id}/g, p.id).replace(/{name}/g, p.name_ar).replace(/{price}/g, p.price).replace(/{image}/g, img).replace('{dots_html}', dotsHtml).replace('{product_data}', pDataStr);
                       });
                       cont.innerHTML = h;
                   } else {
@@ -1002,6 +1032,217 @@
   window.addEventListener('unhandledrejection', (e) => {
       if(window.showToast) window.showToast('تم رفض الاتصال بالخادم — يرجى التواصل عبر الواتساب بدلاً من ذلك.', 'error');
   });
+</script>
+
+
+
+<!-- WhatsApp FAB -->
+<style id="wa-fab-styles">
+  .wa-fab-wrapper {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    z-index: 9999;
+    font-family: var(--font-display, inherit);
+    direction: rtl;
+  }
+  .wa-fab-btn {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: #25D366;
+    color: white;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s;
+  }
+  .wa-fab-btn:hover {
+    transform: scale(1.05);
+  }
+  .wa-fab-btn svg {
+    width: 32px;
+    height: 32px;
+    fill: currentColor;
+  }
+  .wa-panel {
+    position: absolute;
+    bottom: 70px;
+    left: 0;
+    width: 300px;
+    height: 380px;
+    background-color: var(--bg-secondary, #ffffff);
+    border: 1px solid var(--border, #e5e5e5);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  .wa-panel.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+  .wa-panel-header {
+    background-color: #25D366;
+    padding: 16px;
+    color: white;
+    position: relative;
+    text-align: right;
+  }
+  .wa-panel-header h3 {
+    margin: 0 0 4px 0;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  .wa-panel-header p {
+    margin: 0;
+    font-size: 12px;
+    opacity: 0.9;
+  }
+  .wa-panel-close {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 20px;
+    line-height: 1;
+  }
+  .wa-panel-body {
+    flex: 1;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-primary, #f9f9f9);
+  }
+  .wa-panel-body textarea {
+    flex: 1;
+    resize: none;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border, #ccc);
+    font-family: inherit;
+    background-color: var(--bg-card, #fff);
+    color: var(--text-primary, #000);
+    outline: none;
+  }
+  .wa-panel-body textarea:focus {
+    border-color: #25D366;
+  }
+  .wa-panel-footer {
+    padding: 12px;
+    background-color: var(--bg-secondary, #fff);
+    border-top: 1px solid var(--border, #eee);
+  }
+  .wa-send-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #25D366;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background-color 0.2s;
+  }
+  .wa-send-btn:hover {
+    background-color: #20BA56;
+  }
+  [dir="ltr"] .wa-panel {
+    left: 0;
+  }
+  [dir="ltr"] .wa-panel-header {
+    text-align: left;
+  }
+  [dir="ltr"] .wa-panel-close {
+    left: auto;
+    right: 16px;
+  }
+</style>
+
+<div class="wa-fab-wrapper" id="wa-fab-wrapper">
+  <div class="wa-panel" id="wa-panel">
+    <div class="wa-panel-header">
+      <button class="wa-panel-close" id="wa-panel-close" aria-label="إغلاق">&times;</button>
+      <h3 data-ar="تحدث معنا 👋" data-en="Chat with us 👋">تحدث معنا 👋</h3>
+      <p data-ar="سنرد عليك في أقرب وقت" data-en="We will reply as soon as possible">سنرد عليك في أقرب وقت</p>
+    </div>
+    <div class="wa-panel-body">
+      <textarea id="wa-message" placeholder="اكتب سؤالك أو استفسارك..."></textarea>
+    </div>
+    <div class="wa-panel-footer">
+      <button class="wa-send-btn" id="wa-send-btn" data-ar="إرسال عبر واتساب" data-en="Send via WhatsApp">إرسال عبر واتساب</button>
+    </div>
+  </div>
+  <button class="wa-fab-btn" id="wa-fab-btn" aria-label="مراسلة عبر واتساب">
+    <svg viewBox="0 0 24 24">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+    </svg>
+  </button>
+</div>
+
+<script>
+  (function() {
+    const fabBtn = document.getElementById('wa-fab-btn');
+    const panel = document.getElementById('wa-panel');
+    const closeBtn = document.getElementById('wa-panel-close');
+    const sendBtn = document.getElementById('wa-send-btn');
+    const msgInput = document.getElementById('wa-message');
+    const wrapper = document.getElementById('wa-fab-wrapper');
+
+    if (!fabBtn || !panel || !closeBtn || !sendBtn || !msgInput || !wrapper) return;
+
+    fabBtn.addEventListener('click', () => {
+      panel.classList.toggle('open');
+      if (panel.classList.contains('open')) {
+        msgInput.focus();
+      }
+    });
+
+    closeBtn.addEventListener('click', () => {
+      panel.classList.remove('open');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!wrapper.contains(e.target) && panel.classList.contains('open')) {
+        panel.classList.remove('open');
+      }
+    });
+
+    sendBtn.addEventListener('click', () => {
+      let msg = msgInput.value.trim();
+      let url = 'https://wa.me/201124519232';
+      if (msg) {
+        url += '?text=' + encodeURIComponent(msg);
+      }
+      window.open(url, '_blank');
+      panel.classList.remove('open');
+      msgInput.value = '';
+    });
+    
+    // Check language to update placeholder dynamically across pages
+    setInterval(() => {
+      const currentLang = localStorage.getItem('heru-lang') || 'ar';
+      if(currentLang === 'en' && msgInput.placeholder !== 'Type your message...') {
+         msgInput.placeholder = 'Type your message...';
+      } else if (currentLang === 'ar' && msgInput.placeholder !== 'اكتب سؤالك أو استفسارك...') {
+         msgInput.placeholder = 'اكتب سؤالك أو استفسارك...';
+      }
+    }, 500);
+
+  })();
 </script>
 
 </body>

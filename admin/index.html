@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="../assets/css/components.css">
   
   <style>
-    body { background-color: #030303; margin: 0; padding: 0; overflow: hidden; }
+    body { background-color: var(--bg-primary); margin: 0; padding: 0; overflow: hidden; }
     
     .admin-layout { display: flex; height: 100vh; width: 100vw; }
     
@@ -81,6 +81,8 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="../assets/js/supabase.js"></script>
+  <link rel="stylesheet" href="../assets/css/responsive.css">
+  <script src="../assets/js/nav.js" defer></script>
 </head>
 <body>
 
@@ -257,6 +259,62 @@
                           <label class="form-label">رقم العمل المسجل (WhatsApp)</label>
                           <input type="text" id="whatsapp" class="input-field" dir="ltr">
                       </div>
+                  </fieldset>
+
+                  <fieldset style="border:1px solid var(--border); padding:16px; border-radius:8px; margin-top:16px;">
+                    <legend style="color:var(--accent); padding:0 8px;">إعدادات التنقل (NavBar)</legend>
+                    
+                    <div style="margin-bottom:16px;">
+                        <label class="form-label" style="display:block; margin-bottom:8px;">نوع الشعار</label>
+                        <div style="display:flex; gap:16px;">
+                            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+                                <input type="radio" name="logo_type" id="logo-type-text" value="text" checked> نص
+                            </label>
+                            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+                                <input type="radio" name="logo_type" id="logo-type-image" value="image"> صورة
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom:16px;" id="wrapper-logo-text">
+                        <label class="form-label">الاسم التجاري (Logo Text)</label>
+                        <input type="text" id="logo-value-text" class="input-field" placeholder="Heru">
+                    </div>
+
+                    <div style="margin-bottom:16px; display:none;" id="wrapper-logo-image">
+                        <label class="form-label">صورة الشعار (Logo Image)</label>
+                        <div style="display:flex; gap:8px;">
+                            <input type="text" id="logo-value-image" class="input-field" placeholder="رابط الصورة..." style="flex:1;" dir="ltr">
+                            <input type="file" id="logo-file-upload" accept="image/*" style="display:none;">
+                            <button type="button" class="btn btn-secondary" onclick="document.getElementById('logo-file-upload').click()" id="btn-logo-upload">رفع ملف</button>
+                        </div>
+                        <img id="logo-preview" src="" style="max-height:60px; margin-top:10px; display:none; border-radius:4px; max-width:100%; border: 1px solid var(--border);">
+                    </div>
+
+                    <div style="margin-bottom:24px;">
+                        <label class="form-label">ارتفاع الشعار (px)</label>
+                        <input type="number" id="logo-height" class="input-field" placeholder="40" min="20" max="150" value="40">
+                    </div>
+
+                    <div style="border-top:1px solid var(--border); padding-top:16px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                            <label class="form-label" style="margin:0;">روابط التنقل</label>
+                            <button type="button" class="btn btn-secondary btn-sm" id="btn-add-nav-link">+ إضافة رابط</button>
+                        </div>
+                        
+                        <div style="display:grid; grid-template-columns: 2fr 2fr 3fr 1fr 1fr; gap:8px; margin-bottom:8px; padding-bottom:8px; border-bottom:1px solid var(--border-strong); color:var(--text-muted); font-size:12px;">
+                            <div>نص الرابط (AR)</div>
+                            <div>نص الرابط (EN)</div>
+                            <div>URL مسار الرابط</div>
+                            <div style="text-align:center;">مرئي؟</div>
+                            <div style="text-align:center;">إجراء</div>
+                        </div>
+                        
+                        <div id="nav-links-container" style="display:flex; flex-direction:column; gap:12px;">
+                            <!-- Dynamic Links Here -->
+                        </div>
+                        <input type="hidden" id="nav-links-json">
+                    </div>
                   </fieldset>
 
                   <fieldset style="border:1px solid var(--border); padding:16px; border-radius:8px; margin-top:16px;">
@@ -552,6 +610,19 @@
         </div>
 
         <div class="form-group">
+          <label class="form-label">صورة التصنيف (اختياري)</label>
+          <div style="display:flex; gap:8px;">
+            <input type="url" id="category-image" class="input-field" 
+                   placeholder="https://res.cloudinary.com/..." style="flex:1;" dir="ltr">
+            <input type="file" id="cat-logo-file-upload" accept="image/*" style="display:none;">
+            <button type="button" class="btn btn-secondary" onclick="document.getElementById('cat-logo-file-upload').click()" id="btn-cat-logo-upload" title="الرفع على Cloudinary">رفع للصورة</button>
+          </div>
+          <small style="color:var(--text-muted);font-size:12px;margin-top:4px;display:block;">
+            إذا تُركت فارغة سيتم عرض لون التصنيف والأيقونة كبديل
+          </small>
+        </div>
+
+        <div class="form-group">
           <label class="form-label">الترتيب (رقم)</label>
           <input type="number" id="category-sort" class="input-field"
                  min="0" placeholder="0">
@@ -797,6 +868,7 @@
       document.getElementById('category-color').value = '#F0EBE1';
       document.getElementById('category-color-text').value = '#F0EBE1';
       document.getElementById('category-sort').value = '0';
+      document.getElementById('category-image').value = '';
       document.getElementById('category-active').checked = true;
 
       const modal = document.getElementById('category-modal');
@@ -818,6 +890,7 @@
       document.getElementById('category-color').value = category.color || '#F0EBE1';
       document.getElementById('category-color-text').value = category.color || '#F0EBE1';
       document.getElementById('category-sort').value = category.sort_order || 0;
+      document.getElementById('category-image').value = category.image_url || '';
       document.getElementById('category-active').checked =
         category.active !== undefined ? category.active : true;
 
@@ -862,6 +935,7 @@
         icon: document.getElementById('category-icon').value.trim() || '📦',
         color: document.getElementById('category-color-text').value.trim() || '#F0EBE1',
         sort_order: parseInt(document.getElementById('category-sort').value) || 0,
+        image_url: document.getElementById('category-image').value.trim() || null,
         active: document.getElementById('category-active').checked,
       };
 
@@ -894,6 +968,64 @@
 
       document.querySelector('[data-target="categories"]')?.click();
     }
+
+    // ══ Upload Category Image to Cloudinary ══
+    document.getElementById('cat-logo-file-upload')?.addEventListener('change', async function(e) {
+      const file = e.target.files[0];
+      if(!file) return;
+      
+      // Cloudinary info is typically loaded in Settings, but we can read it if available.
+      // Easiest is to ask DB or rely on input if we have one. In admin we have #cloudinary-cloud-name 
+      // but it might not be populated if Settings wasn't loaded. 
+      // Luckily loadAllSettings populates them, BUT let's do a safe fetch if needed.
+      let cname = document.getElementById('cloudinary-cloud-name')?.value;
+      let cpreset = document.getElementById('cloudinary-upload-preset')?.value;
+      
+      const btn = document.getElementById('btn-cat-logo-upload');
+      const oText = btn.textContent;
+      btn.textContent = 'جاري الرفع...';
+      btn.disabled = true;
+
+      if(!cname || !cpreset) {
+         // Attempt fetch
+         const { data } = await supabaseClient.from('settings').select('key, value').in('key', ['cloudinary_cloud_name', 'cloudinary_upload_preset']);
+         if(data) {
+             const m = {}; data.forEach(d => m[d.key] = d.value);
+             cname = m.cloudinary_cloud_name; cpreset = m.cloudinary_upload_preset;
+         }
+      }
+
+      if(!cname || !cpreset) {
+        window.showToast?.('يجب إعداد Cloudinary Name & Preset أولاً في الإعدادات', 'warning');
+        btn.textContent = oText;
+        btn.disabled = false;
+        return;
+      }
+
+      const fd = new FormData();
+      fd.append('file', file);
+      fd.append('upload_preset', cpreset);
+
+      try {
+        const res = await fetch(`https://api.cloudinary.com/v1_1/${cname}/image/upload`, {
+          method: 'POST', body: fd
+        });
+        const d = await res.json();
+        if(d.secure_url) {
+          document.getElementById('category-image').value = d.secure_url;
+          window.showToast?.('تم رفع الصورة بنجاح', 'success');
+        } else {
+          window.showToast?.('فشل الرفع', 'error');
+        }
+      } catch(er) {
+        window.showToast?.('حدث خطأ أثناء الرفع', 'error');
+      } finally {
+        btn.textContent = oText;
+        btn.disabled = false;
+        e.target.value = '';
+      }
+    });
+
 
     // ══ دوال جلب البيانات للتعديل ══
     async function handleEditProduct(productId) {
@@ -932,6 +1064,157 @@
           closeCategoryModal();
         }
       }
+    });
+
+    // ══ Navigation Settings Handlers ══
+    document.getElementById('logo-type-text')?.addEventListener('change', function() {
+      if(this.checked) {
+        document.getElementById('wrapper-logo-text').style.display = 'block';
+        document.getElementById('wrapper-logo-image').style.display = 'none';
+      }
+    });
+    document.getElementById('logo-type-image')?.addEventListener('change', function() {
+      if(this.checked) {
+        document.getElementById('wrapper-logo-text').style.display = 'none';
+        document.getElementById('wrapper-logo-image').style.display = 'block';
+      }
+    });
+    
+    // Cloudinary Logo Upload
+    document.getElementById('logo-file-upload')?.addEventListener('change', async function(e) {
+      const file = e.target.files[0];
+      if(!file) return;
+      
+      const cname = document.getElementById('cloudinary-cloud-name')?.value;
+      const cpreset = document.getElementById('cloudinary-upload-preset')?.value;
+      if(!cname || !cpreset) {
+        window.showToast?.('يجب إعداد Cloudinary Name & Preset أولاً وحفظهما', 'warning');
+        return;
+      }
+
+      const btn = document.getElementById('btn-logo-upload');
+      const oText = btn.textContent;
+      btn.textContent = 'جاري الرفع...';
+      btn.disabled = true;
+
+      const fd = new FormData();
+      fd.append('file', file);
+      fd.append('upload_preset', cpreset);
+
+      try {
+        const res = await fetch(`https://api.cloudinary.com/v1_1/${cname}/image/upload`, {
+          method: 'POST',
+          body: fd
+        });
+        const d = await res.json();
+        if(d.secure_url) {
+          document.getElementById('logo-value-image').value = d.secure_url;
+          const prev = document.getElementById('logo-preview');
+          if(prev) { prev.src = d.secure_url; prev.style.display = 'block'; }
+          window.showToast?.('تم رفع الشعار بنجاح', 'success');
+        } else {
+          window.showToast?.('فشل الرفع', 'error');
+        }
+      } catch(er) {
+        window.showToast?.('حدث خطأ أثناء الرفع', 'error');
+      } finally {
+        btn.textContent = oText;
+        btn.disabled = false;
+        e.target.value = '';
+      }
+    });
+
+    // Nav Links Manager
+    window.renderNavLinksManager = function() {
+        const container = document.getElementById('nav-links-container');
+        const jsonInput = document.getElementById('nav-links-json');
+        if(!container || !jsonInput) return;
+        
+        let links = [];
+        try { links = JSON.parse(jsonInput.value || '[]'); } catch(e) {}
+        
+        container.innerHTML = '';
+        links.forEach((link, idx) => {
+            const row = document.createElement('div');
+            row.style.display = 'grid';
+            row.style.gridTemplateColumns = '2fr 2fr 3fr 1fr 1fr';
+            row.style.gap = '8px';
+            row.style.alignItems = 'center';
+            
+            row.innerHTML = `
+                <input type="text" class="input-field _link_ar" style="margin:0;" value="${link.label_ar || ''}" placeholder="عربي">
+                <input type="text" class="input-field _link_en" style="margin:0;" value="${link.label_en || ''}" placeholder="انجليزي" dir="ltr">
+                <input type="text" class="input-field _link_url" style="margin:0;" value="${link.url || ''}" placeholder="/page" dir="ltr">
+                <div style="text-align:center;">
+                   <input type="checkbox" class="_link_active" ${link.active !== false ? 'checked' : ''} style="cursor:pointer; width:18px; height:18px;">
+                </div>
+                <div style="display:flex; gap:4px; justify-content:center;">
+                    <button type="button" class="btn btn-ghost btn-sm" onclick="moveNavLinkUp(${idx})" aria-label="أعلى">↑</button>
+                    <button type="button" class="btn btn-ghost btn-sm" onclick="moveNavLinkDown(${idx})" aria-label="أسفل">↓</button>
+                    <button type="button" class="btn btn-ghost btn-sm" onclick="removeNavLink(${idx})" style="color:var(--error);" aria-label="حذف">×</button>
+                </div>
+            `;
+            container.appendChild(row);
+        });
+        
+        container.querySelectorAll('input').forEach(inp => {
+             inp.addEventListener('change', updateNavLinksJson);
+             inp.addEventListener('keyup', updateNavLinksJson);
+        });
+    }
+
+    function updateNavLinksJson() {
+        const container = document.getElementById('nav-links-container');
+        const rows = container.querySelectorAll('div[style*="grid-template-columns"]');
+        const links = [];
+        rows.forEach(row => {
+            links.push({
+                label_ar: row.querySelector('._link_ar').value,
+                label_en: row.querySelector('._link_en').value,
+                url: row.querySelector('._link_url').value,
+                active: row.querySelector('._link_active').checked
+            });
+        });
+        document.getElementById('nav-links-json').value = JSON.stringify(links);
+    }
+    window.updateNavLinksJson = updateNavLinksJson;
+
+    window.removeNavLink = function(idx) {
+        updateNavLinksJson();
+        let links = JSON.parse(document.getElementById('nav-links-json').value || '[]');
+        links.splice(idx, 1);
+        document.getElementById('nav-links-json').value = JSON.stringify(links);
+        renderNavLinksManager();
+    }
+
+    window.moveNavLinkUp = function(idx) {
+        if(idx === 0) return;
+        updateNavLinksJson();
+        let links = JSON.parse(document.getElementById('nav-links-json').value || '[]');
+        const temp = links[idx-1];
+        links[idx-1] = links[idx];
+        links[idx] = temp;
+        document.getElementById('nav-links-json').value = JSON.stringify(links);
+        renderNavLinksManager();
+    }
+
+    window.moveNavLinkDown = function(idx) {
+        updateNavLinksJson();
+        let links = JSON.parse(document.getElementById('nav-links-json').value || '[]');
+        if(idx >= links.length - 1) return;
+        const temp = links[idx+1];
+        links[idx+1] = links[idx];
+        links[idx] = temp;
+        document.getElementById('nav-links-json').value = JSON.stringify(links);
+        renderNavLinksManager();
+    }
+
+    document.getElementById('btn-add-nav-link')?.addEventListener('click', function() {
+        updateNavLinksJson();
+        let links = JSON.parse(document.getElementById('nav-links-json').value || '[]');
+        links.push({ label_ar: '', label_en: '', url: '', active: true });
+        document.getElementById('nav-links-json').value = JSON.stringify(links);
+        renderNavLinksManager();
     });
   </script>
 </body>

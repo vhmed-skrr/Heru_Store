@@ -1,61 +1,8 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>الصفحة غير موجودة | 404</title>
-  
-  <link rel="stylesheet" href="./assets/css/tokens.css">
-  <link rel="stylesheet" href="./assets/css/base.css">
-  <link rel="stylesheet" href="./assets/css/components.css">
-  
-  <style>
-    .not-found-container {
-        height: 100vh;
-        width: 100vw;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        background: var(--bg-primary);
-        padding: var(--space-4);
-    }
-    .glitch-text {
-        font-family: var(--font-display);
-        font-size: 15vw;
-        color: var(--accent);
-        line-height: 1;
-        margin: 0;
-        animation: glitch 1s linear infinite;
-        text-shadow: 2px 2px 0 var(--text-primary);
-    }
-    .msg-desc {
-        font-size: var(--text-2xl);
-        color: var(--text-secondary);
-        margin-block-end: var(--space-8);
-    }
-    .action-btns {
-        display: flex;
-        gap: var(--space-4);
-    }
-  </style>
-  <link rel="stylesheet" href="./assets/css/responsive.css">
-  <script src="./assets/js/nav.js" defer></script>
-  <link rel="stylesheet" href="./assets/css/themes.css">
-  <script src="./assets/js/theme.js" defer></script>
-</head>
-<body>
-    <div class="not-found-container">
-        <h1 class="glitch-text font-num">404</h1>
-        <h2 class="msg-desc">الصفحة دي مش موجودة 😅</h2>
-        <div class="action-btns">
-            <a href="./" class="btn btn-secondary btn-lg">العودة للرئيسية</a>
-            <a href="./shop" class="btn btn-primary btn-lg">تصفح المتجر</a>
-        </div>
-    </div>
+import fs from 'fs';
+import path from 'path';
 
-
+const files = fs.readdirSync('.').filter(f => f.endsWith('.html') && !f.includes('admin'));
+const widgetHTML = `
 <!-- WhatsApp FAB -->
 <style id="wa-fab-styles">
   .wa-fab-wrapper {
@@ -264,6 +211,19 @@
 
   })();
 </script>
+`;
 
-</body>
-</html>
+for (let file of files) {
+  let content = fs.readFileSync(file, 'utf8');
+  if (content.includes('wa-fab-wrapper')) continue;
+  
+  // also handle replacing contact in footers in ALL HTML files just in case
+  // find "💬 واتساب" and "⏰ ساعات الرد" section and replace
+  // Part A removal
+  content = content.replace(/<div class="footer-links"\s*>\s*<span data-i18n="footer\.whatsapp">💬 واتساب:<\/span>.*?<\/div>/gs, 
+    '<div class="footer-links" style="align-items: flex-start;">\n            <a href="https://wa.me/201124519232" class="btn btn-secondary" style="margin-top: 8px;">تواصل معنا عبر واتساب</a>\n          </div>');
+
+  content = content.replace('</body>', `\n${widgetHTML}\n</body>`);
+  fs.writeFileSync(file, content, 'utf8');
+}
+console.log('WhatsApp FAB injected and Part A applied to all HTML files successfully.');

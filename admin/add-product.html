@@ -100,6 +100,8 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
   </style>
+  <link rel="stylesheet" href="../assets/css/responsive.css">
+  <script src="../assets/js/nav.js" defer></script>
 </head>
 <body>
 
@@ -400,6 +402,13 @@ async function uploadToCloudinary(file, stubId) {
       method: 'POST',
       body: formData
     });
+    
+    if (!res.ok) {
+      const errData = await res.json();
+      console.error('Cloudinary error:', errData);
+      throw new Error('Upload failed');
+    }
+    
     const data = await res.json();
     if (data.secure_url) {
       uploadedImages.push(data.secure_url);

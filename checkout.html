@@ -56,6 +56,10 @@
     @media(max-width: 640px) { .form-grid { grid-template-columns: 1fr; } }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="./assets/css/responsive.css">
+  <script src="./assets/js/nav.js" defer></script>
+  <link rel="stylesheet" href="./assets/css/themes.css">
+  <script src="./assets/js/theme.js" defer></script>
 </head>
 <body>
 
@@ -67,24 +71,24 @@
   <main class="container section">
       
       <div class="progress-bar">
-          <div class="progress-step active"><div class="circle-idx">1</div> البيانات والدفع</div>
-          <div class="progress-step"><div class="circle-idx" style="background:var(--bg-card); border:1px solid var(--border);">2</div> تأكيد الطلب</div>
+          <div class="progress-step active"><div class="circle-idx">1</div> <span data-i18n="checkout.prog1">البيانات والدفع</span></div>
+          <div class="progress-step"><div class="circle-idx" style="background:var(--bg-card); border:1px solid var(--border);">2</div> <span data-i18n="checkout.prog2">تأكيد الطلب</span></div>
       </div>
       
       <div class="checkout-layout">
           <div>
               <!-- STEP 1: Delivery Data -->
               <div class="checkout-box">
-                  <h2 class="step-title"><span class="circle-idx">1</span> بيانات التوصيل الشخصية</h2>
+                  <h2 class="step-title"><span class="circle-idx">1</span> <span data-i18n="checkout.step1">بيانات التوصيل الشخصية</span></h2>
                   
                   <div class="form-grid">
                       <div style="margin-block-end: var(--space-4);">
-                          <label class="form-label" for="chk-name">الاسم بالكامل (رُباعي أو ثُلاثي) <span style="color:var(--error);">*</span></label>
-                          <input aria-describedby="chk-name-error" aria-required="true" type="text" id="chk-name" class="input-field" placeholder="مثال: أحمد محمد محمود" required>
+                          <label class="form-label" for="chk-name"><span data-i18n="checkout.lbl_name">الاسم بالكامل (رُباعي أو ثُلاثي)</span> <span style="color:var(--error);">*</span></label>
+                          <input aria-describedby="chk-name-error" aria-required="true" type="text" id="chk-name" class="input-field" placeholder="مثال: أحمد محمد محمود" data-i18n-placeholder="checkout.place_name" required>
                           <div class="form-error-message" id="chk-name-error" role="alert" aria-live="assertive"></div>
                       </div>
                       <div style="margin-block-end: var(--space-4);">
-                          <label class="form-label" for="chk-phone">رقم الهاتف الأساسي <span style="color:var(--error);">*</span></label>
+                          <label class="form-label" for="chk-phone"><span data-i18n="checkout.lbl_phone">رقم الهاتف الأساسي</span> <span style="color:var(--error);">*</span></label>
                           <input aria-describedby="chk-phone-error" aria-required="true" type="tel" id="chk-phone" class="input-field font-num" placeholder="01X-XXXX-XXXX" required dir="ltr">
                           <div class="form-error-message" id="chk-phone-error" role="alert" aria-live="assertive"></div>
                       </div>
@@ -92,49 +96,49 @@
                   
                   <div class="form-grid">
                       <div style="margin-block-end: var(--space-4);">
-                          <label class="form-label" for="chk-gov">المحافظة <span style="color:var(--error);">*</span></label>
+                          <label class="form-label" for="chk-gov"><span data-i18n="checkout.lbl_gov">المحافظة</span> <span style="color:var(--error);">*</span></label>
                           <select aria-describedby="chk-gov-error" aria-required="true" id="chk-gov" class="select-field" required>
-                              <option value="">اختر المحافظة...</option>
+                              <option value="" data-i18n="checkout.lbl_gov_def">اختر المحافظة...</option>
                               <option value="القاهرة">القاهرة</option><option value="الجيزة">الجيزة</option><option value="الإسكندرية">الإسكندرية</option><option value="الدقهلية">الدقهلية</option><option value="البحر الأحمر">البحر الأحمر</option><option value="البحيرة">البحيرة</option><option value="الفيوم">الفيوم</option><option value="الغربية">الغربية</option><option value="الإسماعيلية">الإسماعيلية</option><option value="المنوفية">المنوفية</option><option value="المنيا">المنيا</option><option value="القليوبية">القليوبية</option><option value="الوادي الجديد">الوادي الجديد</option><option value="السويس">السويس</option><option value="أسوان">أسوان</option><option value="أسيوط">أسيوط</option><option value="بني سويف">بني سويف</option><option value="بورسعيد">بورسعيد</option><option value="دمياط">دمياط</option><option value="الشرقية">الشرقية</option><option value="جنوب سيناء">جنوب سيناء</option><option value="كفر الشيخ">كفر الشيخ</option><option value="مطروح">مطروح</option><option value="الأقصر">الأقصر</option><option value="قنا">قنا</option><option value="شمال سيناء">شمال سيناء</option><option value="سوهاج">سوهاج</option>
                           </select>
                           <div class="form-error-message" id="chk-gov-error" role="alert" aria-live="assertive"></div>
                       </div>
                       <div style="margin-block-end: var(--space-4);">
-                          <label class="form-label" for="chk-city">المنطقة / تفاصيل المدينة <span style="color:var(--error);">*</span></label>
-                          <input aria-describedby="chk-city-error" aria-required="true" type="text" id="chk-city" class="input-field" placeholder="مثال: مدينة نصر، شارع مكرم عبيد" required>
+                          <label class="form-label" for="chk-city"><span data-i18n="checkout.lbl_city">المنطقة / تفاصيل المدينة</span> <span style="color:var(--error);">*</span></label>
+                          <input aria-describedby="chk-city-error" aria-required="true" type="text" id="chk-city" class="input-field" placeholder="مثال: مدينة نصر، شارع مكرم عبيد" data-i18n-placeholder="checkout.place_city" required>
                           <div class="form-error-message" id="chk-city-error" role="alert" aria-live="assertive"></div>
                       </div>
                   </div>
                   
                   <div style="margin-block-end: var(--space-4);">
-                      <label class="form-label" for="chk-address">العنوان بالتفصيل الدقيق <span style="color:var(--error);">*</span></label>
-                          <textarea aria-describedby="chk-address-error" aria-required="true" id="chk-address" class="textarea-field" placeholder="رقم العمارة، الدور، رقم الشقة أو علامة مميزة..." style="min-height:80px;" required></textarea>
+                      <label class="form-label" for="chk-address"><span data-i18n="checkout.lbl_address">العنوان بالتفصيل الدقيق</span> <span style="color:var(--error);">*</span></label>
+                          <textarea aria-describedby="chk-address-error" aria-required="true" id="chk-address" class="textarea-field" placeholder="رقم العمارة، الدور، رقم الشقة أو علامة مميزة..." data-i18n-placeholder="checkout.place_address" style="min-height:80px;" required></textarea>
                       <div class="form-error-message" id="chk-address-error" role="alert" aria-live="assertive"></div>
                   </div>
                   
                   <div>
-                      <label class="form-label" for="chk-notes">ملاحظات الطلب (اختياري)</label>
-                          <textarea aria-describedby="chk-notes-error" id="chk-notes" class="textarea-field" placeholder="أية ملاحظات إضافية بخصوص موعد التسليم أو التصميم..." style="min-height:80px;"></textarea>
+                      <label class="form-label" for="chk-notes"><span data-i18n="checkout.lbl_notes">ملاحظات الطلب (اختياري)</span></label>
+                          <textarea aria-describedby="chk-notes-error" id="chk-notes" class="textarea-field" placeholder="أية ملاحظات إضافية بخصوص موعد التسليم أو التصميم..." data-i18n-placeholder="checkout.place_notes" style="min-height:80px;"></textarea>
                   </div>
               </div>
               
               <!-- STEP 2: Payment Data -->
               <div class="checkout-box">
-                  <h2 class="step-title"><span class="circle-idx">2</span> اختار طريقة الدفع المريحة ليك</h2>
+                  <h2 class="step-title"><span class="circle-idx">2</span> <span data-i18n="checkout.step2">اختار طريقة الدفع المريحة ليك</span></h2>
                   
                   <label class="radio-card">
                      <input type="radio" name="payment" value="cash" checked>
                      <div class="radio-content">
-                         <div style="font-weight:700; font-size:var(--text-lg); display:flex; align-items:center; gap:8px;">💵 الدفع كاش عند الاستلام</div>
-                         <div class="radio-desc">قم بالدفع لمندوب التوصيل يدوياً وقت استلامك للطلب بأمان تام — بدون أي رسوم وعمولات مخفية.</div>
+                         <div style="font-weight:700; font-size:var(--text-lg); display:flex; align-items:center; gap:8px;">💵 <span data-i18n="checkout.pay_cash">الدفع كاش عند الاستلام</span></div>
+                         <div class="radio-desc"><span data-i18n="checkout.pay_cash_desc">قم بالدفع لمندوب التوصيل يدوياً وقت استلامك للطلب بأمان تام — بدون أي رسوم وعمولات مخفية.</span></div>
                      </div>
                   </label>
 
                   <label class="radio-card">
                      <input type="radio" name="payment" value="instapay">
                      <div class="radio-content">
-                         <div style="font-weight:700; font-size:var(--text-lg); display:flex; align-items:center; gap:8px;">📱 محفظة InstaPay (انستاباي)</div>
-                         <div class="radio-desc">سهولة وسرعة وموثوقية في الدفع المباشر من الموبايل.</div>
+                         <div style="font-weight:700; font-size:var(--text-lg); display:flex; align-items:center; gap:8px;">📱 <span data-i18n="checkout.pay_insta">محفظة InstaPay (انستاباي)</span></div>
+                         <div class="radio-desc"><span data-i18n="checkout.pay_insta_desc">سهولة وسرعة وموثوقية في الدفع المباشر من الموبايل.</span></div>
                          <div class="radio-extra bg-overlay p-4 rounded" style="background: rgba(0,0,0,0.2); padding:12px; border-radius: var(--radius-md);">
                               الرجاء تحويل قيمة الطلب النهائية بالجنيه المصري إلى الرقم المعتمد:
                               <div class="font-num" style="color:var(--accent); font-size:var(--text-xl); font-weight:700; margin: 4px 0;">01124519232</div>
@@ -146,8 +150,8 @@
                   <label class="radio-card">
                      <input type="radio" name="payment" value="fawry">
                      <div class="radio-content">
-                         <div style="font-weight:700; font-size:var(--text-lg); display:flex; align-items:center; gap:8px;">🏧 ماكينات Fawry للمدفوعات</div>
-                         <div class="radio-desc">ادفع كاش من أقرب ماركت، أو صيدلية بها ماكينة فوري بمنتهى السرعة.</div>
+                         <div style="font-weight:700; font-size:var(--text-lg); display:flex; align-items:center; gap:8px;">🏧 <span data-i18n="checkout.pay_fawry">ماكينات Fawry للمدفوعات</span></div>
+                         <div class="radio-desc"><span data-i18n="checkout.pay_fawry_desc">ادفع كاش من أقرب ماركت، أو صيدلية بها ماكينة فوري بمنتهى السرعة.</span></div>
                          <div class="radio-extra font-num" style="background: rgba(0,0,0,0.2); padding:12px; border-radius: var(--radius-md);">
                               شكرًا لاختيارك فوري. نظراً لكونه نظام أوتوماتيكي سيتم توليد وتخصيص <b>رقم فوري مرجعي</b> لدفعك وإرساله من خلال ممثلنا على رسائل الواتساب بمجرد إصدار فاتورتك! 
                          </div>
@@ -159,20 +163,20 @@
           <!-- SUMMARY VIEW SIDEBAR -->
           <div>
               <div class="checkout-box summary-box">
-                  <h3 style="margin: 0 0 var(--space-4) 0;">مراجعة الطلب النهائي</h3>
+                  <h3 style="margin: 0 0 var(--space-4) 0;"><span data-i18n="checkout.review">مراجعة الطلب النهائي</span></h3>
                   
                   <div id="checkout-items" style="border-bottom:1px solid var(--border); padding-bottom:var(--space-4); margin-bottom:var(--space-4);">
                       <!-- Items from cart populated here -->
                   </div>
                   
-                  <div class="summary-row"><span>مجموع المنتجات:</span><span id="summ-sub">0 ج.م</span></div>
-                  <div class="summary-row" id="summ-disc-row" style="display:none;"><span>الخصم المستحق:</span><span style="color:var(--success);" id="summ-disc">0 ج.م -</span></div>
-                  <div class="summary-row"><span>الشحن للمحافظة:</span><span style="color:var(--success);">مجاني بالكامل!</span></div>
+                  <div class="summary-row"><span><span data-i18n="checkout.summ_items">مجموع المنتجات:</span></span><span id="summ-sub">0 ج.م</span></div>
+                  <div class="summary-row" id="summ-disc-row" style="display:none;"><span><span data-i18n="checkout.summ_disc">الخصم المستحق:</span></span><span style="color:var(--success);" id="summ-disc">0 ج.م -</span></div>
+                  <div class="summary-row"><span><span data-i18n="checkout.summ_shipping">الشحن للمحافظة:</span></span><span style="color:var(--success);"><span data-i18n="checkout.summ_free">مجاني بالكامل!</span></span></div>
                   
-                  <div class="summary-total summary-row"><span>الإجمالي المضاف:</span><span id="summ-total">0 ج.م</span></div>
+                  <div class="summary-total summary-row"><span><span data-i18n="checkout.summ_total">الإجمالي المضاف:</span></span><span id="summ-total">0 ج.م</span></div>
                   
-                  <button class="btn btn-primary btn-lg btn-full" style="margin-block-start: var(--space-8); height: 64px; font-size: var(--text-2xl);" id="btn-submit-order" onclick="window.submitOrder()">تأكيد وإتمام الطلب الآن</button>
-                  <div style="font-size:12px; color:var(--text-muted); text-align:center; margin-top:12px;">بالنقر هنا أنت توافق ضمنياً على شروط متجر هيرو.</div>
+                  <button class="btn btn-primary btn-lg btn-full" style="margin-block-start: var(--space-8); height: 64px; font-size: var(--text-2xl);" id="btn-submit-order" onclick="window.submitOrder()"><span data-i18n="checkout.submit">تأكيد وإتمام الطلب الآن</span></button>
+                  <div style="font-size:12px; color:var(--text-muted); text-align:center; margin-top:12px;"><span data-i18n="checkout.agree">بالنقر هنا أنت توافق ضمنياً على شروط متجر هيرو.</span></div>
               </div>
           </div>
       </div>
@@ -251,11 +255,12 @@
           }
 
           // Blur Events bindings
-          iName.addEventListener('blur', () => checkField(iName, iName.value.trim().length > 2, '* يرجى إدخال اسمك بصيغة معبرة وصحيحة'));
-          iPhone.addEventListener('blur', () => checkField(iPhone, validateEgyptianPhone(iPhone.value.trim()), '* رقم هاتف مصري غير صالح (يجب أن يبدأ بـ 01)'));
-          iGov.addEventListener('change', () => checkField(iGov, iGov.value !== '', '* يرجى اختيار المحافظة لتسعير الشحن'));
-          iCity.addEventListener('blur', () => checkField(iCity, iCity.value.trim().length > 1, '* تفاصيل مدينتك/منطقتك هامة جداً'));
-          iAddr.addEventListener('blur', () => checkField(iAddr, iAddr.value.trim().length > 5, '* العنوان التفصيلي يجب ألا يكون فارغاً لأمان التوصيل'));
+          const currentLang = typeof window !== 'undefined' ? (window.localStorage.getItem('heru-lang') || 'ar') : 'ar';
+          iName.addEventListener('blur', () => checkField(iName, iName.value.trim().length > 2, currentLang==='en'?'* Please enter a valid name':'* يرجى إدخال اسمك بصيغة معبرة وصحيحة'));
+          iPhone.addEventListener('blur', () => checkField(iPhone, validateEgyptianPhone(iPhone.value.trim()), currentLang==='en'?'* Invalid Phone Number':'* رقم هاتف مصري غير صالح (يجب أن يبدأ بـ 01)'));
+          iGov.addEventListener('change', () => checkField(iGov, iGov.value !== '', currentLang==='en'?'* Required':'* يرجى اختيار المحافظة لتسعير الشحن'));
+          iCity.addEventListener('blur', () => checkField(iCity, iCity.value.trim().length > 1, currentLang==='en'?'* City is required':'* تفاصيل مدينتك/منطقتك هامة جداً'));
+          iAddr.addEventListener('blur', () => checkField(iAddr, iAddr.value.trim().length > 5, currentLang==='en'?'* Important detail missing':'* العنوان التفصيلي يجب ألا يكون فارغاً لأمان التوصيل'));
 
           // Order Generation Utils
           async function genOrdNum() {
@@ -269,14 +274,14 @@
           // Order Submission Processor
           window.submitOrder = async () => {
               // Forced Validation Pass
-              const v1 = checkField(iName, iName.value.trim().length > 2, '* يرجى إدخال البيانات المفقودة هنا بشكل سليم');
-              const v2 = checkField(iPhone, validateEgyptianPhone(iPhone.value.trim()), '* راجع رقم الهاتف');
-              const v3 = checkField(iGov, iGov.value !== '', '* يرجى المراجعة وتحديد الحقل أدناه');
-              const v4 = checkField(iCity, iCity.value.trim().length > 1, '* يرجى استيفاء بيانات العنوان كلياً');
-              const v5 = checkField(iAddr, iAddr.value.trim().length > 5, '* يرجى استيفاء بيانات العنوان كلياً لاستلامك الطلب');
+              const v1 = checkField(iName, iName.value.trim().length > 2, currentLang==='en'?'* Missing value':'* يرجى إدخال البيانات المفقودة هنا بشكل سليم');
+              const v2 = checkField(iPhone, validateEgyptianPhone(iPhone.value.trim()), currentLang==='en'?'* Review phone number':'* راجع رقم الهاتف');
+              const v3 = checkField(iGov, iGov.value !== '', currentLang==='en'?'* Please select':'* يرجى المراجعة وتحديد الحقل أدناه');
+              const v4 = checkField(iCity, iCity.value.trim().length > 1, currentLang==='en'?'* Details required':'* يرجى استيفاء بيانات العنوان كلياً');
+              const v5 = checkField(iAddr, iAddr.value.trim().length > 5, currentLang==='en'?'* Details required':'* يرجى استيفاء بيانات العنوان كلياً لاستلامك الطلب');
               
               if(!v1 || !v2 || !v3 || !v4 || !v5) {
-                  window.showToast('عفواً، برجاء مراجعة البيانات المحددة باللون الأحمر وتصليحها لتسهيل التوصيل!', 'error');
+                  window.showToast(currentLang==='en'?'Please review highlighted fields':'عفواً، برجاء مراجعة البيانات المحددة باللون الأحمر وتصليحها لتسهيل التوصيل!', 'error');
                   return;
               }
               
@@ -337,7 +342,7 @@
                   }, 150);
 
               } catch(e) {
-                  window.showToast('خطأ بالسيرفر الداخلي. يرجى محاولة تأكيد الطلب مرة أخرى بعد بضع ثوان.', 'error');
+                  window.showToast(currentLang==='en'?'Internal server error, please try again.':'خطأ بالسيرفر الداخلي. يرجى محاولة تأكيد الطلب مرة أخرى بعد بضع ثوان.', 'error');
                   btnObj.classList.remove('btn-loading');
               }
           };
@@ -383,10 +388,10 @@ document.addEventListener('keydown', (e) => {
 </style>
 <div id="cookie-notice" role="dialog" aria-live="polite" aria-label="إشعار الخصوصية">
     <div class="cookie-text">
-        نستخدم تقنية <strong>LocalStorage</strong> لحفظ سلة التسوق وتفضيلاتك. نحن لا نستخدم ملفات تعريف الارتباط (Cookies) للتتبع. يمكنك الاطلاع على <a href="./privacy" style="color:var(--accent); text-decoration:underline;">سياسة الخصوصية</a> لمزيد من التفاصيل.
+        <span data-i18n-html="cart.cookie_notice">نستخدم تقنية <strong>LocalStorage</strong> لحفظ سلة التسوق وتفضيلاتك. نحن لا نستخدم ملفات تعريف الارتباط (Cookies) للتتبع. يمكنك الاطلاع على <a href="./privacy" style="color:var(--accent); text-decoration:underline;">سياسة الخصوصية</a> لمزيد من التفاصيل.</span>
     </div>
     <div class="cookie-actions">
-        <button class="btn btn-primary" id="btn-accept-cookie" aria-label="موافق ومتابعة">موافق</button>
+        <button class="btn btn-primary" id="btn-accept-cookie" aria-label="موافق ومتابعة"><span data-i18n="cart.cookie_btn">موافق</span></button>
     </div>
 </div>
 <script>
@@ -416,6 +421,217 @@ document.addEventListener('keydown', (e) => {
   window.addEventListener('unhandledrejection', (e) => {
       if(window.showToast) window.showToast('تم رفض الاتصال بالخادم — يرجى التواصل عبر الواتساب بدلاً من ذلك.', 'error');
   });
+</script>
+
+
+
+<!-- WhatsApp FAB -->
+<style id="wa-fab-styles">
+  .wa-fab-wrapper {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    z-index: 9999;
+    font-family: var(--font-display, inherit);
+    direction: rtl;
+  }
+  .wa-fab-btn {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: #25D366;
+    color: white;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s;
+  }
+  .wa-fab-btn:hover {
+    transform: scale(1.05);
+  }
+  .wa-fab-btn svg {
+    width: 32px;
+    height: 32px;
+    fill: currentColor;
+  }
+  .wa-panel {
+    position: absolute;
+    bottom: 70px;
+    left: 0;
+    width: 300px;
+    height: 380px;
+    background-color: var(--bg-secondary, #ffffff);
+    border: 1px solid var(--border, #e5e5e5);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  .wa-panel.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+  .wa-panel-header {
+    background-color: #25D366;
+    padding: 16px;
+    color: white;
+    position: relative;
+    text-align: right;
+  }
+  .wa-panel-header h3 {
+    margin: 0 0 4px 0;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  .wa-panel-header p {
+    margin: 0;
+    font-size: 12px;
+    opacity: 0.9;
+  }
+  .wa-panel-close {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 20px;
+    line-height: 1;
+  }
+  .wa-panel-body {
+    flex: 1;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-primary, #f9f9f9);
+  }
+  .wa-panel-body textarea {
+    flex: 1;
+    resize: none;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border, #ccc);
+    font-family: inherit;
+    background-color: var(--bg-card, #fff);
+    color: var(--text-primary, #000);
+    outline: none;
+  }
+  .wa-panel-body textarea:focus {
+    border-color: #25D366;
+  }
+  .wa-panel-footer {
+    padding: 12px;
+    background-color: var(--bg-secondary, #fff);
+    border-top: 1px solid var(--border, #eee);
+  }
+  .wa-send-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #25D366;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background-color 0.2s;
+  }
+  .wa-send-btn:hover {
+    background-color: #20BA56;
+  }
+  [dir="ltr"] .wa-panel {
+    left: 0;
+  }
+  [dir="ltr"] .wa-panel-header {
+    text-align: left;
+  }
+  [dir="ltr"] .wa-panel-close {
+    left: auto;
+    right: 16px;
+  }
+</style>
+
+<div class="wa-fab-wrapper" id="wa-fab-wrapper">
+  <div class="wa-panel" id="wa-panel">
+    <div class="wa-panel-header">
+      <button class="wa-panel-close" id="wa-panel-close" aria-label="إغلاق">&times;</button>
+      <h3 data-ar="تحدث معنا 👋" data-en="Chat with us 👋">تحدث معنا 👋</h3>
+      <p data-ar="سنرد عليك في أقرب وقت" data-en="We will reply as soon as possible">سنرد عليك في أقرب وقت</p>
+    </div>
+    <div class="wa-panel-body">
+      <textarea id="wa-message" placeholder="اكتب سؤالك أو استفسارك..."></textarea>
+    </div>
+    <div class="wa-panel-footer">
+      <button class="wa-send-btn" id="wa-send-btn" data-ar="إرسال عبر واتساب" data-en="Send via WhatsApp">إرسال عبر واتساب</button>
+    </div>
+  </div>
+  <button class="wa-fab-btn" id="wa-fab-btn" aria-label="مراسلة عبر واتساب">
+    <svg viewBox="0 0 24 24">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+    </svg>
+  </button>
+</div>
+
+<script>
+  (function() {
+    const fabBtn = document.getElementById('wa-fab-btn');
+    const panel = document.getElementById('wa-panel');
+    const closeBtn = document.getElementById('wa-panel-close');
+    const sendBtn = document.getElementById('wa-send-btn');
+    const msgInput = document.getElementById('wa-message');
+    const wrapper = document.getElementById('wa-fab-wrapper');
+
+    if (!fabBtn || !panel || !closeBtn || !sendBtn || !msgInput || !wrapper) return;
+
+    fabBtn.addEventListener('click', () => {
+      panel.classList.toggle('open');
+      if (panel.classList.contains('open')) {
+        msgInput.focus();
+      }
+    });
+
+    closeBtn.addEventListener('click', () => {
+      panel.classList.remove('open');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!wrapper.contains(e.target) && panel.classList.contains('open')) {
+        panel.classList.remove('open');
+      }
+    });
+
+    sendBtn.addEventListener('click', () => {
+      let msg = msgInput.value.trim();
+      let url = 'https://wa.me/201124519232';
+      if (msg) {
+        url += '?text=' + encodeURIComponent(msg);
+      }
+      window.open(url, '_blank');
+      panel.classList.remove('open');
+      msgInput.value = '';
+    });
+    
+    // Check language to update placeholder dynamically across pages
+    setInterval(() => {
+      const currentLang = localStorage.getItem('heru-lang') || 'ar';
+      if(currentLang === 'en' && msgInput.placeholder !== 'Type your message...') {
+         msgInput.placeholder = 'Type your message...';
+      } else if (currentLang === 'ar' && msgInput.placeholder !== 'اكتب سؤالك أو استفسارك...') {
+         msgInput.placeholder = 'اكتب سؤالك أو استفسارك...';
+      }
+    }, 500);
+
+  })();
 </script>
 
 </body>

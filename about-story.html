@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>تأكيد الطلب | Heru</title>
+  <title>قصتنا | Heru</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,59 +14,16 @@
   
   <style>
     .container { max-width: 800px; margin: 0 auto; padding: 0 var(--space-4); }
-    .section { padding: var(--space-12) 0 var(--space-16); }
+    .section { padding: var(--space-16) 0; }
+    .page-header { margin-block-end: var(--space-12); padding-block-end: var(--space-6); border-bottom: 1px solid var(--border); }
+    .page-title { font-family: var(--font-display); font-size: var(--text-4xl); margin-block-end: var(--space-3); color: var(--text-primary); }
+    .last-updated { color: var(--text-secondary); font-size: var(--text-sm); font-family: var(--font-number); }
     
-    .loading-box { text-align: center; padding: var(--space-16) 0; }
-    .empty-state { text-align: center; padding: var(--space-16); background: var(--bg-elevated); border-radius: var(--radius-lg); }
-    
-    .success-icon-wrapper {
-      width: 96px; height: 96px; border-radius: 50%; background: rgba(34, 197, 94, 0.15); 
-      color: var(--success); display: flex; justify-content: center; align-items: center; 
-      font-size: 48px; margin: 0 auto var(--space-6);
-      animation: popScale 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    @keyframes popScale { 0% {transform: scale(0); opacity: 0;} 100%{transform: scale(1); opacity: 1;} }
-    
-    .page-title { font-size: var(--text-3xl); font-family: var(--font-display); text-align: center; margin-block-end: var(--space-2); }
-    .page-subtitle { color: var(--text-secondary); text-align: center; margin-block-end: var(--space-8); }
-    
-    .invoice-card {
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        border-radius: var(--radius-lg);
-        padding: var(--space-8);
-        margin-block-end: var(--space-8);
-        box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-    }
-    .ord-num-banner {
-        background: var(--bg-elevated);
-        border: 2px dashed var(--border-accent);
-        border-radius: var(--radius-md);
-        padding: var(--space-4);
-        text-align: center;
-        margin-block-end: var(--space-6);
-    }
-    .ord-num-banner p { margin: 0 0 4px 0; color: var(--text-secondary); font-size: var(--text-sm); }
-    .ord-num-banner h2 { margin: 0; font-family: var(--font-number); letter-spacing: 2px; color: var(--accent); }
-    
-    .instruction-box {
-        background: rgba(240, 235, 225, 0.05);
-        border-right: 4px solid var(--accent);
-        padding: var(--space-4);
-        border-radius: var(--radius-sm);
-        margin-block-end: var(--space-8);
-        line-height: 1.6;
-    }
-    
-    .details-row { display: flex; justify-content: space-between; margin-block-end: var(--space-3); border-bottom: 1px dashed var(--border-strong); padding-bottom: var(--space-3); }
-    .details-row:last-child { border-bottom: none; }
-    .d-total { font-weight: 700; font-size: var(--text-xl); color: var(--accent); border-top: 1px solid var(--border); padding-top: var(--space-4); }
-    
-    .actions { display: flex; gap: var(--space-4); justify-content: center; flex-wrap: wrap; }
-    .actions .btn { min-width: 200px; }
+    .content-body { color: var(--text-secondary); font-size: 1.1rem; line-height: 1.8; }
+    .content-body h2 { color: var(--text-primary); font-family: var(--font-display); font-size: var(--text-2xl); margin-block-start: var(--space-12); margin-block-end: var(--space-4); }
+    .content-body ul { margin-block-end: var(--space-6); padding-inline-start: var(--space-6); }
+    .content-body li { margin-block-end: var(--space-2); }
   </style>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <link rel="stylesheet" href="./assets/css/responsive.css">
   <script src="./assets/js/nav.js" defer></script>
   <link rel="stylesheet" href="./assets/css/themes.css">
@@ -74,164 +31,172 @@
 </head>
 <body>
 
-  <!-- Minimal Nav -->
-  <nav class="navbar" style="justify-content: center; border-bottom: none;">
-      <a href="./" class="navbar-logo" data-setting="store_name">HERU</a>
-  </nav>
-
-  <main class="container section">
-
-      <!-- View: Loading -->
-      <div id="view-loading" class="loading-box">
-          <div class="spinner font-display" style="font-size:24px; animation: pulse 1s infinite alternate;">جارِ المراجعة...</div>
-      </div>
-
-      <!-- View: Error Not Found -->
-      <div id="view-error" class="empty-state" style="display:none;">
-          <div style="font-size:64px; margin-block-end:var(--space-4);">🤔</div>
-          <h2 class="page-title">لم نتمكن من إيجاد هذا الطلب</h2>
-          <p style="color:var(--text-muted); margin-block-end:var(--space-6);">الرابط غير صحيح أو تم مسح الطلب.</p>
-          <button class="btn btn-primary" onclick="window.location.href='/'">العودة للرئيسية</button>
-      </div>
-
-      <!-- View: Success Confirmation -->
-      <div id="view-success" style="display:none;">
-          
-          <div class="success-icon-wrapper">✓</div>
-          <h1 class="page-title">تم استلام طلبك بنجاح! 🎉</h1>
-          <p class="page-subtitle">نحن سعداء لاختيارك Heru. سنتولى الأمر من هنا.</p>
-          
-          <div class="invoice-card">
-              <div class="ord-num-banner">
-                  <p>رقم الطلب المرجعي الخاص بك</p>
-                  <h2 id="lbl-ordernum">ORD-0000-0000</h2>
-              </div>
+  <header>
+      <nav class="navbar" aria-label="التنقل الرئيسي">
+          <a href="./" class="navbar-logo" aria-label="الصفحة الرئيسية">HERU</a>
+          <ul class="navbar-links" style="list-style: none; margin: 0; padding: 0;">
+              <li><a href="./">الرئيسية</a></li>
+              <li><a href="./shop">المتجر</a></li>
+              <li><a href="./suggest">اقتراح تصميم</a></li>
+          </ul>
+          <div class="navbar-actions">
+              <a href="./cart" class="cart-badge btn-ghost" data-count="0" aria-label="سلة التسوق" style="font-size: var(--text-xl);">🛒</a>
               
-              <div class="instruction-box">
-                  <strong style="display:block; margin-block-end:4px; font-size:var(--text-sm);">إرشادات الخطوة القادمة:</strong>
-                  <span id="lbl-instruction">جاري التحميل...</span>
-              </div>
-              
-              <h3 style="margin-block-end:var(--space-4); font-size:var(--text-lg);">ملخص سريع</h3>
-              
-              <div id="items-list" style="margin-block-end:var(--space-4); color:var(--text-secondary);">
-                  <!-- Dynamically populated items -->
-              </div>
-              
-              <div class="details-row">
-                  <span>طريقة الدفع المختارة</span>
-                  <span id="lbl-payment" style="font-weight:600;">...</span>
-              </div>
-              
-              <div class="details-row d-total">
-                  <span style="color:var(--text-primary);">المبلغ المتبقي / الإجمالي</span>
-                  <span id="lbl-total" class="font-num">0 ج.م</span>
-              </div>
+          <button data-lang-toggle onclick="window.toggleLanguage()" class="btn-ghost font-display" aria-label="تغيير اللغة" style="font-weight: 700;">EN</button>
+          <button class="theme-toggle btn-ghost" aria-label="تغيير المظهر" style="font-size: var(--text-xl);">☀️</button>
+              <button class="mobile-menu-toggle" aria-label="فتح القائمة الرئيسية" aria-expanded="false">☰</button>
           </div>
+      </nav>
+  </header>
+
+   <!-- Mobile Menu Drawer -->
+  <div class="mobile-menu">
+      <button class="mobile-menu-toggle open font-display" onclick="document.querySelector('.mobile-menu').classList.remove('open')" style="align-self: flex-end; font-size: 24px; display: block;" aria-label="إغلاق">✕</button>
+      <a href="./" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);">الرئيسية</a>
+      <a href="./shop" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);">المتجر</a>
+      <a href="./suggest" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);">اقتراح تصميم</a>
+  </div>
+
+  
+  <style>
+    .story-hero { 
+      background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-primary) 100%); 
+      padding: var(--space-16) 0; 
+      border-bottom: 1px solid var(--border); 
+      text-align: center; 
+    }
+    .story-grid { 
+      display: grid; 
+      grid-template-columns: 1fr 1fr; 
+      gap: var(--space-12); 
+      align-items: center; 
+    }
+    @media (max-width: 768px) {
+      .story-grid { grid-template-columns: 1fr; text-align: center; }
+    }
+    .values-grid { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+      gap: var(--space-8); 
+    }
+    .value-card { 
+      background: var(--bg-card); 
+      padding: var(--space-8); 
+      border-radius: var(--radius-lg); 
+      text-align: center; 
+      border: 1px solid var(--border); 
+      transition: transform 0.3s;
+    }
+    .value-card:hover {
+      transform: translateY(-5px);
+    }
+  </style>
+
+  <main id="main-content">
+    <!-- Hero Section -->
+    <section class="story-hero">
+      <div class="container">
+        <h1 style="font-size: var(--text-5xl); font-family: var(--font-display); margin-bottom: var(--space-4); color: var(--text-primary);">هيرو — من أين بدأنا؟</h1>
+        <p style="font-size: var(--text-xl); color: var(--text-secondary); max-width: 600px; margin: 0 auto; line-height: 1.6;">رحلتنا في عالم التفاصيل، من الفكرة إلى الواقع.</p>
+      </div>
+    </section>
+
+    <!-- Story Section -->
+    <section class="section container" style="padding: var(--space-16) var(--space-4);">
+      <div class="story-grid">
+        <div class="story-content">
+          <h2 style="font-size: var(--text-3xl); font-family: var(--font-display); margin-bottom: var(--space-6); color: var(--accent);">قصتنا</h2>
+          <p style="font-size: 1.2rem; line-height: 1.8; color: var(--text-secondary);">
+            في عالم مليء بالتفاصيل المتشابهة، آمنّا بأن كل شخص يستحق أن يحمل شيئاً يعبّر عنه. هيرو لم تكن مجرد فكرة تجارية — كانت إجابة على سؤال بسيط: ليه مش لاقيين حاجة بتتكلم عنّا فعلاً؟
+          </p>
+        </div>
+        <div class="story-visual" style="border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+          <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=800&auto=format&fit=crop" style="width: 100%; display: block; object-fit: cover; height: 100%; min-height: 400px;" alt="قصة هيرو" loading="lazy">
+        </div>
+      </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="section" style="background-color: var(--bg-elevated); padding: var(--space-16) 0;">
+      <div class="container">
+        <h2 style="text-align: center; font-size: var(--text-3xl); font-family: var(--font-display); margin-bottom: var(--space-12);">قيمنا ومبادئنا</h2>
+        <div class="values-grid">
           
-          <div class="actions">
-              <button class="btn btn-secondary" onclick="window.location.href='/shop'">تسوّق المزيد</button>
-              <button class="btn btn-secondary" id="btn-track">تتبع خط سير الطلب</button>
-              <button class="btn btn-whatsapp" id="btn-wa">تواصل للدعم (واتساب)</button>
+          <div class="value-card">
+            <div style="font-size: 3rem; margin-bottom: var(--space-4);">🎨</div>
+            <h3 style="font-size: var(--text-xl); font-family: var(--font-display); margin-bottom: var(--space-2);">التصميم أولاً</h3>
+            <p style="color: var(--text-secondary); line-height: 1.6;">كل قطعة بتتعمل بفكر وقصد.</p>
           </div>
 
-      </div>
+          <div class="value-card">
+            <div style="font-size: 3rem; margin-bottom: var(--space-4);">🤝</div>
+            <h3 style="font-size: var(--text-xl); font-family: var(--font-display); margin-bottom: var(--space-2);">مجتمع حقيقي</h3>
+            <p style="color: var(--text-secondary); line-height: 1.6;">إحنا مش بنبيع، إحنا بنبني علاقات.</p>
+          </div>
 
+          <div class="value-card">
+            <div style="font-size: 3rem; margin-bottom: var(--space-4);">✨</div>
+            <h3 style="font-size: var(--text-xl); font-family: var(--font-display); margin-bottom: var(--space-2);">التفاصيل مهمة</h3>
+            <p style="color: var(--text-secondary); line-height: 1.6;">الفرق بين العادي والاستثنائي هو الاهتمام.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="section container" style="text-align: center; padding: var(--space-16) var(--space-4);">
+      <h2 style="font-size: var(--text-3xl); font-family: var(--font-display); margin-bottom: var(--space-8);">ابدأ قصتك معانا</h2>
+      <a href="/shop" class="btn btn-primary btn-lg" style="padding: var(--space-4) var(--space-12); font-size: var(--text-xl);">ابدأ قصتك معانا</a>
+    </section>
   </main>
 
-  <script type="module">
-      import { supabaseClient } from '/assets/js/supabase.js';
+  
+  <!-- Footer -->
+  <footer class="footer">
+      <div class="container">
+          <div class="footer-grid">
+              <div class="footer-col">
+                  <h4 class="font-display" style="font-weight: 900; font-size: var(--text-3xl); color: var(--accent); letter-spacing: 2px;">HERU</h4>
+                  <p style="color: var(--text-secondary); margin-block-end: var(--space-4);">متجر هيرو للمنتجات الشبابية. بنقدم لك منتجات بتعبر عن أسلوب حياتك وروحك المختلفة.</p>
+                  <div class="social-links" id="footer-social">
+                      <!-- Instagram -->
+                      <a href="#" 
+                         class="social-link" 
+                         data-social="instagram"
+                         target="_blank" 
+                         rel="noopener noreferrer"
+                         aria-label="Instagram"
+                         style="display:none;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" 
+                             stroke="currentColor" stroke-width="1.5">
+                          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                          <circle cx="12" cy="12" r="4"/>
+                          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+                        </svg>
+                      </a>
 
-      document.addEventListener('DOMContentLoaded', async () => {
-          const params = new URLSearchParams(window.location.search);
-          const orderNum = params.get('order');
+                      <!-- Facebook -->
+                      <a href="#"
+                         class="social-link"
+                         data-social="facebook"
+                         target="_blank"
+                         rel="noopener noreferrer"
+                         aria-label="Facebook"
+                         style="display:none;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="1.5">
+                          <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                        </svg>
+                      </a>
 
-          const vLoad = document.getElementById('view-loading');
-          const vErr = document.getElementById('view-error');
-          const vSucc = document.getElementById('view-success');
-
-          if(!orderNum) {
-              vLoad.style.display = 'none'; vErr.style.display = 'block'; return;
-          }
-
-          try {
-              if(!supabaseClient) throw new Error("No DB config");
-              const { data, error } = await supabaseClient.from('orders').select('*').eq('order_number', orderNum).single();
-              if(error || !data) throw error;
-              
-              renderConfirmation(data);
-              
-          } catch(e) {
-              vLoad.style.display = 'none'; vErr.style.display = 'block';
-          }
-
-          function renderConfirmation(order) {
-              vLoad.style.display = 'none';
-              vSucc.style.display = 'block';
-              
-              document.getElementById('lbl-ordernum').innerText = order.order_number;
-              document.getElementById('lbl-total').innerText = `${order.total} ج.م`;
-              
-              // Payment method mapping specific responses
-              let pMethod = '', instStr = '';
-              if(order.payment_method === 'cash') {
-                  pMethod = 'الدفع كاش عند التسليم 💵';
-                  instStr = 'سنتواصل معك عبر الهاتف خلال 24 ساعة لتأكيد موعد التوصيل ومطابقة العنوان.';
-              } else if (order.payment_method === 'instapay') {
-                  pMethod = 'تحويل محفظة InstaPay 📱';
-                  instStr = `يُرجى إرسال إيصال التحويل بشكل واضح على رقم الدعم الفني الخاص بنا (واتساب) مصحوباً برقم الطلب [${order.order_number}] لسرعة التأكيد.`;
-              } else if (order.payment_method === 'fawry') {
-                  pMethod = 'مدفوعات ماكينة Fawry 🏧';
-                  instStr = `يرجى التوجه لأقرب فرع مدفوعات فوري واستخدام الرقم المرجعي للطلب [${order.order_number}] لدفع القيمة والمتابعة معنا.`;
-              }
-              document.getElementById('lbl-payment').innerText = pMethod;
-              document.getElementById('lbl-instruction').innerText = instStr;
-
-              // Items 
-              let iHtml = '';
-              (order.items || []).forEach(i => {
-                  iHtml += `<div class="details-row" style="border-bottom:none; margin-bottom:4px; padding-bottom:0;">
-                      <span>- ${i.name} <span class="font-num" style="color:var(--text-muted); font-size:12px;">(x${i.quantity})</span></span>
-                      <span class="font-num">${i.price * i.quantity} ج</span>
-                  </div>`;
-              });
-              document.getElementById('items-list').innerHTML = iHtml;
-
-              // Action listeners
-              document.getElementById('btn-track').onclick = () => {
-                  window.location.href = `/track-order?order=${order.order_number}`;
-              };
-              
-              document.getElementById('btn-wa').onclick = () => {
-                  const m = `مرحباً فريق هيرو،\nبخصوص طلبي رقم: *${order.order_number}*\nلدي استفسار أو مرفق بخصوصه...`;
-                  window.open(`https://wa.me/${window.ENV?.WHATSAPP_NUMBER || '201124519232'}?text=${encodeURIComponent(m)}`, '_blank');
-              };
-              
-              // Scroll to top
-              window.scrollTo({top:0, behavior:'smooth'});
-          }
-      });
-  </script>
-
-<script>
-document.addEventListener('keydown', (e) => {
-    if(e.key === 'Escape') {
-        document.querySelectorAll('.mobile-menu.open, .filter-overlay.open, .filters-wrapper.open, .modal-overlay.open').forEach(el => el.classList.remove('open'));
-    }
-});
-</script>
-
-<!-- Cookie Notice -->
-<style>
-  #cookie-notice {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    background: var(--bg-elevated);
-    border-top: 1px solid var(--border);
-    padding: var(--space-4) var(--space-6);
+                      <!-- TikTok -->
+                      <a href="#"
+                         class="social-link"
+                         data-social="tiktok"
+                         target="_blank"
+                         rel="noopener noreferrer"
+                         aria-label="TikTok"
     display: flex;
     justify-content: space-between;
     align-items: center;
