@@ -6,10 +6,10 @@
   <title>الصفحة غير موجودة | 404</title>
   
   <link rel="stylesheet" href="./assets/css/tokens.css">
-  <link rel="stylesheet" href="./assets/css/base.css">
-  <link rel="stylesheet" href="./assets/css/components.css">
-  
-  <style>
+<link rel="stylesheet" href="./assets/css/base.css">
+<link rel="stylesheet" href="./assets/css/components.css">
+<link rel="stylesheet" href="./assets/css/responsive.css">
+<style>
     .not-found-container {
         height: 100vh;
         width: 100vw;
@@ -40,11 +40,8 @@
         gap: var(--space-4);
     }
   </style>
-  <link rel="stylesheet" href="./assets/css/responsive.css">
   <script src="./assets/js/nav.js" defer></script>
-  <link rel="stylesheet" href="./assets/css/themes.css">
-  <script src="./assets/js/theme.js" defer></script>
-</head>
+  </head>
 <body>
     <div class="not-found-container">
         <h1 class="glitch-text font-num">404</h1>
@@ -213,6 +210,8 @@
   </button>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="./assets/js/supabase.js"></script>
 <script>
   (function() {
     const fabBtn = document.getElementById('wa-fab-btn');

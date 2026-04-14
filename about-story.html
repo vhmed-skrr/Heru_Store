@@ -9,10 +9,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   
   <link rel="stylesheet" href="./assets/css/tokens.css">
-  <link rel="stylesheet" href="./assets/css/base.css">
-  <link rel="stylesheet" href="./assets/css/components.css">
-  
-  <style>
+<link rel="stylesheet" href="./assets/css/base.css">
+<link rel="stylesheet" href="./assets/css/components.css">
+<link rel="stylesheet" href="./assets/css/responsive.css">
+<style>
     .container { max-width: 800px; margin: 0 auto; padding: 0 var(--space-4); }
     .section { padding: var(--space-16) 0; }
     .page-header { margin-block-end: var(--space-12); padding-block-end: var(--space-6); border-bottom: 1px solid var(--border); }
@@ -24,11 +24,8 @@
     .content-body ul { margin-block-end: var(--space-6); padding-inline-start: var(--space-6); }
     .content-body li { margin-block-end: var(--space-2); }
   </style>
-  <link rel="stylesheet" href="./assets/css/responsive.css">
   <script src="./assets/js/nav.js" defer></script>
-  <link rel="stylesheet" href="./assets/css/themes.css">
-  <script src="./assets/js/theme.js" defer></script>
-</head>
+  </head>
 <body>
 
   <header>
@@ -221,6 +218,8 @@
         <button class="btn btn-primary" id="btn-accept-cookie" aria-label="موافق ومتابعة">موافق</button>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="./assets/js/supabase.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', () => {
      if(!localStorage.getItem('heru_cookie_accepted')) {
@@ -461,5 +460,51 @@
   })();
 </script>
 
+<script>
+// Mobile Menu
+(function() {
+  const menu    = document.querySelector('.mobile-menu');
+  const toggles = document.querySelectorAll('.mobile-menu-toggle');
+  if (!menu || !toggles.length) return;
+
+  // Create overlay
+  let overlay = document.querySelector('.mobile-menu-overlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.className = 'mobile-menu-overlay';
+    document.body.appendChild(overlay);
+  }
+
+  function openMenu()  {
+    menu.classList.add('open');
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMenu() {
+    menu.classList.remove('open');
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Open buttons (☰ hamburger)
+  toggles.forEach(btn => {
+    if (!btn.closest('.mobile-menu')) {
+      btn.addEventListener('click', openMenu);
+    }
+  });
+
+  // Close button inside menu (✕)
+  const closeBtn = menu.querySelector('.mobile-menu-toggle');
+  if (closeBtn) closeBtn.addEventListener('click', closeMenu);
+
+  // Overlay click closes
+  overlay.addEventListener('click', closeMenu);
+
+  // Escape key closes
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeMenu();
+  });
+})();
+</script>
 </body>
 </html>

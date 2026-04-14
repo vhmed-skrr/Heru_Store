@@ -116,3 +116,63 @@
     padding: var(--space-2) !important;
   }
 }
+
+/* Light theme navbar visibility */
+.navbar {
+  background: var(--bg-overlay);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+
+/* Ensure text is always readable on light bg */
+.navbar-logo {
+  color: var(--text-primary);
+  font-weight: 900;
+}
+
+/* Cart badge visibility */
+.cart-badge {
+  background: var(--accent);
+  color: var(--text-inverse);
+}
+
+/* Product images — never stretch */
+.card-product img,
+.product-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* Product card image container — consistent ratio */
+.card-product .prod-img-container,
+.card-product .product-img-wrap {
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: var(--bg-elevated);
+}
+
+/* Small mobile (320px) — ensure no horizontal overflow */
+@media (max-width: 400px) {
+  .hero-title {
+    font-size: clamp(1.8rem, 8vw, 2.5rem) !important;
+  }
+  .navbar-actions {
+    gap: 6px !important;
+  }
+}
+
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.social-link[href=""],
+.social-link:not([href]) {
+  display: none !important;
+}

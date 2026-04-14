@@ -22,10 +22,10 @@
   <link rel="preconnect" href="https://res.cloudinary.com">
   
   <link rel="stylesheet" href="./assets/css/tokens.css">
-  <link rel="stylesheet" href="./assets/css/base.css">
-  <link rel="stylesheet" href="./assets/css/components.css">
-  
-  <style>
+<link rel="stylesheet" href="./assets/css/base.css">
+<link rel="stylesheet" href="./assets/css/components.css">
+<link rel="stylesheet" href="./assets/css/responsive.css">
+<style>
     /* PAGE LAYOUT */
     .container {
       max-width: 1200px;
@@ -257,10 +257,7 @@
     template { display: none; }
   </style>
   
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <link rel="stylesheet" href="./assets/css/responsive.css">
   <script src="./assets/js/nav.js" defer></script>
-  <link rel="stylesheet" href="./assets/css/themes.css">
   </head>
 <body>
 
@@ -411,7 +408,7 @@
         {statusBadge}
         <img src="{image}" alt="{name}" width="400" height="400" class="product-img" loading="lazy">
         {dots_html}
-        <button type="button" class="quick-add-btn" aria-label="أضف إلى السلة" onclick="window.quickAddToCart(event, '{id}', '{product_data}', this)">
+        <button type="button" class="quick-add-btn" aria-label="أضف إلى السلة" onclick="event.stopPropagation(); window.handleQuickAdd('{id}', '{name}', {price})">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
         </button>
       </a>
@@ -424,7 +421,9 @@
   </template>
 
 
-  <script type="module">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="./assets/js/supabase.js"></script>
+<script type="module">
       import { supabaseClient } from '/assets/js/supabase.js';
       import { clThumb } from '/assets/js/utils.js';
 
@@ -843,15 +842,11 @@
           
           // Mobile navbar script mapping
           
-const menuToggles = document.querySelectorAll('.mobile-menu-toggle');
-const mobileMenu = document.querySelector('.mobile-menu');
+
+
 
 // Create backdrop if it doesn't exist
-let backdrop = document.querySelector('.mobile-menu-backdrop');
-if (!backdrop) {
-  backdrop = document.createElement('div');
-  backdrop.className = 'mobile-menu-backdrop';
-  document.body.appendChild(backdrop);
+
 }
 
 function openMobileMenu() {
@@ -866,23 +861,18 @@ function closeMobileMenu() {
   document.body.style.overflow = '';
 }
 
-menuToggles.forEach(btn => {
-  // The open button (hamburger ☰)
-  if (!btn.classList.contains('open')) {
-    btn.addEventListener('click', openMobileMenu);
+
   }
 });
 
 // Close button inside menu (the ✕ button)
-const closeMenuBtn = mobileMenu ? mobileMenu.querySelector('.mobile-menu-toggle.open') : null;
+
 if (closeMenuBtn) {
   closeMenuBtn.onclick = closeMobileMenu;
 }
 
 // Close on backdrop click
-if (backdrop) {
-  backdrop.addEventListener('click', closeMobileMenu);
-}
+
 
 // Close on Escape key
 document.addEventListener('keydown', (e) => {
@@ -1179,5 +1169,74 @@ document.addEventListener('keydown', (e) => {
   })();
 </script>
 
+<script>
+// Mobile Menu
+(function() {
+  const menu    = document.querySelector('.mobile-menu');
+  const toggles = document.querySelectorAll('.mobile-menu-toggle');
+  if (!menu || !toggles.length) return;
+
+  // Create overlay
+  let overlay = document.querySelector('.mobile-menu-overlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.className = 'mobile-menu-overlay';
+    document.body.appendChild(overlay);
+  }
+
+  function openMenu()  {
+    menu.classList.add('open');
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMenu() {
+    menu.classList.remove('open');
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Open buttons (☰ hamburger)
+  toggles.forEach(btn => {
+    if (!btn.closest('.mobile-menu')) {
+      btn.addEventListener('click', openMenu);
+    }
+  });
+
+  // Close button inside menu (✕)
+  const closeBtn = menu.querySelector('.mobile-menu-toggle');
+  if (closeBtn) closeBtn.addEventListener('click', closeMenu);
+
+  // Overlay click closes
+  overlay.addEventListener('click', closeMenu);
+
+  // Escape key closes
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeMenu();
+  });
+})();
+</script>
+<script>
+
+window.handleQuickAdd = async function(id, name, price) {
+  const { addToCart } = await import('./assets/js/data.js');
+  addToCart({ id, name_ar: name, price }, 1);
+  // Update badge
+  const badge = document.querySelector('.cart-badge, #cart-count');
+  if (badge) {
+    const count = parseInt(localStorage.getItem('heru_cart') 
+      ? JSON.parse(localStorage.getItem('heru_cart')).reduce((s,i) => s+i.quantity, 0) 
+      : 0);
+    badge.textContent = count; // Ensure textContent is set
+    badge.setAttribute('data-count', count);
+    badge.style.display = count > 0 ? 'flex' : 'none';
+  }
+  // Visual feedback
+  const btn = event.currentTarget;
+  const originalBg = btn.style.background;
+  btn.style.background = '#16A34A';
+  setTimeout(() => btn.style.background = originalBg, 600);
+};
+
+</script>
 </body>
 </html>

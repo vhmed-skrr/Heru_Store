@@ -8,10 +8,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="../assets/css/tokens.css">
-  <link rel="stylesheet" href="../assets/css/base.css">
-  <link rel="stylesheet" href="../assets/css/components.css">
-  
-  <style>
+<link rel="stylesheet" href="../assets/css/base.css">
+<link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/responsive.css">
+<style>
     body { background-color: var(--bg-primary); margin: 0; padding: 0; overflow: hidden; }
     
     .admin-layout { display: flex; height: 100vh; width: 100vw; }
@@ -79,9 +79,6 @@
     .toast-container { position: fixed; top: 24px; left: 50%; transform: translateX(-50%); z-index: 9999; }
   </style>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-  <script src="../assets/js/supabase.js"></script>
-  <link rel="stylesheet" href="../assets/css/responsive.css">
   <script src="../assets/js/nav.js" defer></script>
 </head>
 <body>
@@ -692,7 +689,9 @@
 
 
   <!-- Core Admin Logic injection via Application script map -->
-  <script type="module" src="../assets/js/admin-app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="../assets/js/supabase.js"></script>
+<script type="module" src="../assets/js/admin-app.js"></script>
 
   <!-- Fix for Missing Data APIs and Event Handlers -->
   <script type="module">
@@ -1217,5 +1216,24 @@
         renderNavLinksManager();
     });
   </script>
+<script>
+
+async function loadAnnouncement() {
+  try {
+    const { data } = await window.supabaseClient
+      .from('settings')
+      .select('value')
+      .eq('key', 'announcement_active')
+      .single();
+    
+    if (data?.value === 'false') {
+      const bar = document.querySelector('.marquee-bar, .announcement-bar, #announcement-bar');
+      if (bar) bar.style.display = 'none';
+    }
+  } catch(e) {}
+}
+loadAnnouncement();
+
+</script>
 </body>
 </html>

@@ -7,9 +7,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="../assets/css/tokens.css">
-  <link rel="stylesheet" href="../assets/css/base.css">
-  <link rel="stylesheet" href="../assets/css/components.css">
-  <style>
+<link rel="stylesheet" href="../assets/css/base.css">
+<link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/responsive.css">
+<style>
     body { background-color: var(--bg-primary); display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
     .login-box {
       width: 100%; max-width: 420px; padding: var(--space-8);
@@ -23,9 +24,6 @@
     
     .toast-container { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 9999; }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-  <script src="../assets/js/supabase.js"></script>
-  <link rel="stylesheet" href="../assets/css/responsive.css">
   <script src="../assets/js/nav.js" defer></script>
 </head>
 <body>
@@ -55,7 +53,9 @@
       
   </div>
 
-  <script type="module">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="../assets/js/supabase.js"></script>
+<script type="module">
       import { supabaseClient } from '/assets/js/supabase.js';
 
       window.showToast = (msg, type='info') => {
