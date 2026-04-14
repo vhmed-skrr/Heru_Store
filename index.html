@@ -1,36 +1,32 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description"
-    content="اكتشف منتجات Heru — نوت بوك، كابات، جرابات وأكثر بتصاميم شبابية حصرية. شحن مجاني في القاهرة.">
-
+  <meta name="description" content="اكتشف منتجات Heru — نوت بوك، كابات، جرابات وأكثر بتصاميم شبابية حصرية. شحن مجاني في القاهرة.">
+  
   <!-- Open Graph -->
   <meta property="og:site_name" content="Heru">
   <meta property="og:locale" content="ar_EG">
   <meta property="og:title" content="Heru | منتجات شبابية بتصاميم عصرية — القاهرة">
-  <meta property="og:description"
-    content="اكتشف منتجات Heru — نوت بوك، كابات، جرابات وأكثر بتصاميم شبابية حصرية. شحن مجاني في القاهرة.">
-  <meta property="og:image"
-    content="https://res.cloudinary.com/demo/image/upload/w_1200,h_630,c_fill,q_auto,f_auto/heru-og.jpg">
+  <meta property="og:description" content="اكتشف منتجات Heru — نوت بوك، كابات، جرابات وأكثر بتصاميم شبابية حصرية. شحن مجاني في القاهرة.">
+  <meta property="og:image" content="https://res.cloudinary.com/demo/image/upload/w_1200,h_630,c_fill,q_auto,f_auto/heru-og.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:url" content="https://heru-store.vercel.app/">
   <meta property="og:type" content="website">
-
+  
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-
+  
   <!-- Canonical -->
   <link rel="canonical" href="https://heru-store.vercel.app/">
-
+  
   <!-- Preconnect for performance -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://res.cloudinary.com">
-
+  
   <!-- JSON-LD SEO Schema -->
   <script type="application/ld+json">
   {
@@ -45,57 +41,48 @@
     }
   }
   </script>
-
+  
   <title>Heru | منتجات شبابية بتصاميم عصرية — القاهرة</title>
-
+  
   <!-- Design System CSS -->
   <link rel="stylesheet" href="./assets/css/tokens.css">
-<link rel="stylesheet" href="./assets/css/base.css">
-<link rel="stylesheet" href="./assets/css/components.css">
-<link rel="stylesheet" href="./assets/css/responsive.css">
-<style>
+  <link rel="stylesheet" href="./assets/css/base.css">
+  <link rel="stylesheet" href="./assets/css/components.css">
+  
+  <style>
     /* Layout & Page-Specific Styles */
     .container {
       max-width: 1200px;
       margin: 0 auto;
       padding: 0 var(--space-4);
     }
-
     .section {
       padding: var(--space-16) 0;
     }
-
     .grid-4 {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: var(--space-6);
     }
-
     @media (max-width: 1024px) {
-      .grid-4 {
-        grid-template-columns: repeat(2, 1fr);
-      }
+      .grid-4 { grid-template-columns: repeat(2, 1fr); }
     }
-
     @media (max-width: 640px) {
-      .grid-4 {
-        grid-template-columns: repeat(2, 1fr);
+      .grid-4 { 
+        grid-template-columns: repeat(2, 1fr); 
         gap: var(--space-3);
       }
     }
-
     .section-title {
       font-size: var(--text-3xl);
       margin: 0;
     }
-
     .section-header {
       margin-block-end: var(--space-8);
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
     }
-
     .drag-scroll {
       display: flex;
       overflow-x: auto;
@@ -106,20 +93,13 @@
       cursor: grab;
       padding-block-end: var(--space-4);
     }
-
-    .drag-scroll::-webkit-scrollbar {
-      display: none;
-    }
-
-    .drag-scroll:active {
-      cursor: grabbing;
-    }
-
-    .drag-scroll>* {
+    .drag-scroll::-webkit-scrollbar { display: none; }
+    .drag-scroll:active { cursor: grabbing; }
+    .drag-scroll > * {
       flex-shrink: 0;
       scroll-snap-align: start;
     }
-
+    
     /* Hero Section */
     .hero-section {
       position: relative;
@@ -130,27 +110,23 @@
       text-align: center;
       overflow: hidden;
       background-color: var(--bg-primary);
-      margin-top: -85px;
-      /* Navbar overlap compensation */
+      margin-top: -85px; /* Navbar overlap compensation */
     }
-
     .hero-bg {
       position: absolute;
       inset: 0;
-      background: linear-gradient(to bottom, rgba(8, 8, 8, 0.7) 0%, var(--bg-primary) 100%);
+      background: linear-gradient(to bottom, rgba(8,8,8,0.7) 0%, var(--bg-primary) 100%);
       z-index: 1;
     }
-
     .hero-image {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0.5;
-      z-index: 0;
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.5;
+        z-index: 0;
     }
-
     .hero-content {
       position: relative;
       z-index: 2;
@@ -158,7 +134,6 @@
       padding: 0 var(--space-4);
       margin-top: 85px;
     }
-
     .hero-title {
       font-family: var(--font-display);
       font-size: var(--text-5xl);
@@ -166,9 +141,8 @@
       opacity: 0;
       transform: translateY(30px);
       transition: all 0.8s ease;
-      text-shadow: 0 4px 24px rgba(0, 0, 0, 0.9);
+      text-shadow: 0 4px 24px rgba(0,0,0,0.9);
     }
-
     .hero-subtitle {
       font-size: var(--text-xl);
       color: var(--text-primary);
@@ -176,9 +150,8 @@
       opacity: 0;
       transform: translateY(30px);
       transition: all 0.8s ease 0.2s;
-      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
+      text-shadow: 0 2px 12px rgba(0,0,0,0.9);
     }
-
     .hero-actions {
       display: flex;
       gap: var(--space-4);
@@ -187,18 +160,13 @@
       transform: translateY(30px);
       transition: all 0.8s ease 0.4s;
     }
-
     @media (max-width: 640px) {
-      .hero-actions {
-        flex-direction: column;
-      }
+      .hero-actions { flex-direction: column; }
     }
-
     .animate-up {
       opacity: 1 !important;
       transform: translateY(0) !important;
     }
-
     .scroll-indicator {
       position: absolute;
       bottom: var(--space-8);
@@ -209,26 +177,12 @@
       color: var(--text-secondary);
       font-size: var(--text-2xl);
     }
-
     @keyframes bounce {
-
-      0%,
-      20%,
-      50%,
-      80%,
-      100% {
-        transform: translateY(0) translateX(-50%);
-      }
-
-      40% {
-        transform: translateY(-12px) translateX(-50%);
-      }
-
-      60% {
-        transform: translateY(-6px) translateX(-50%);
-      }
+        0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+        40% { transform: translateY(-12px) translateX(-50%); }
+        60% { transform: translateY(-6px) translateX(-50%); }
     }
-
+    
     /* Trust Bar */
     .trust-bar {
       display: flex;
@@ -242,7 +196,6 @@
       position: relative;
       z-index: 10;
     }
-
     .trust-item {
       display: flex;
       align-items: center;
@@ -250,64 +203,52 @@
       font-weight: 700;
       font-size: var(--text-base);
     }
-
-    .trust-item span:first-child {
-      font-size: 24px;
-    }
-
+    .trust-item span:first-child { font-size: 24px; }
+    
     /* Category Card Details */
     .cat-item {
-      min-width: 140px;
-      padding: 20px;
-      border-radius: 16px;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      color: var(--text-primary);
-      text-decoration: none;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      flex-shrink: 0;
-      background-color: var(--bg-elevated);
-      /* default */
+        min-width: 140px;
+        padding: 20px;
+        border-radius: 16px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        color: var(--text-primary);
+        text-decoration: none;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        flex-shrink: 0;
+        background-color: var(--bg-elevated); /* default */
     }
-
     .cat-item:hover {
-      transform: scale(1.03);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transform: scale(1.03);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
-
     .cat-item span:first-child {
-      font-size: 2rem;
-      line-height: 1;
+        font-size: 2rem;
+        line-height: 1;
     }
-
     .cat-item span:last-child {
-      font-weight: 700;
-      font-size: var(--text-base);
+        font-weight: 700;
+        font-size: var(--text-base);
     }
-
+    
     /* Editorial Section */
     .editorial {
-      background-color: var(--bg-secondary);
+      background-color: #060606;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
     }
-
     .editorial-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: var(--space-12);
       align-items: center;
     }
-
     @media (max-width: 768px) {
-      .editorial-grid {
-        grid-template-columns: 1fr;
-      }
+      .editorial-grid { grid-template-columns: 1fr; }
     }
-
     .editorial-image {
       width: 100%;
       aspect-ratio: 4/5;
@@ -316,69 +257,47 @@
       box-shadow: var(--shadow-lg);
       border: 1px solid var(--border-accent);
     }
-
+    
     /* CTA Section */
     .cta-section {
-      background-color: var(--text-inverse);
+      background-color: var(--accent);
       color: var(--text-inverse);
       text-align: center;
       padding: var(--space-24) var(--space-4);
       position: relative;
       overflow: hidden;
     }
-
     .cta-section h2 {
       color: var(--text-inverse);
       font-family: var(--font-display);
     }
-
+    
     /* Footer */
     .footer {
       background-color: var(--bg-card);
       padding: var(--space-16) 0 var(--space-8);
       border-top: 1px solid var(--border);
     }
-
     .footer-grid {
       display: grid;
       grid-template-columns: 2fr 1fr 1fr 1.5fr;
       gap: var(--space-8);
       margin-block-end: var(--space-12);
     }
-
-    @media (max-width: 1024px) {
-      .footer-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    @media (max-width: 640px) {
-      .footer-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
+    @media (max-width: 1024px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 640px) { .footer-grid { grid-template-columns: 1fr; } }
     .footer-col h4 {
       font-size: var(--text-lg);
       margin-block-end: var(--space-5);
       color: var(--text-primary);
     }
-
     .footer-links {
       display: flex;
       flex-direction: column;
       gap: var(--space-3);
     }
-
-    .footer-links a {
-      color: var(--text-secondary);
-      font-weight: 500;
-    }
-
-    .footer-links a:hover {
-      color: var(--text-inverse);
-    }
-
+    .footer-links a { color: var(--text-secondary); font-weight: 500; }
+    .footer-links a:hover { color: var(--accent); }
     .copyright {
       text-align: center;
       color: var(--text-muted);
@@ -386,383 +305,343 @@
       padding-top: var(--space-8);
       border-top: 1px solid var(--border);
     }
-
+    
     /* Templates visibility */
-    template {
-      display: none;
-    }
-
-    /* New Category Cards */
-    .home-categories-grid {
-      display: flex;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      gap: 16px;
-      padding-bottom: 16px;
-    }
-
-    .home-categories-grid::-webkit-scrollbar {
-      display: none;
-    }
-
-    @media (min-width: 768px) {
-      .home-categories-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        overflow-x: visible;
-      }
-    }
-
-    .cat-card-new {
-      position: relative;
-      border-radius: 16px;
-      overflow: hidden;
-      min-width: 260px;
-      height: 200px;
-      scroll-snap-align: start;
-      transition: transform 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      background-color: var(--bg-card);
-    }
-
-    @media (min-width: 768px) {
-      .cat-card-new {
-        height: 280px;
-        min-width: unset;
-      }
-    }
-
-    .cat-card-new:hover {
-      transform: scale(1.02);
-    }
-
-    .cat-card-new .overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, transparent 55%);
-      z-index: 1;
-    }
-
-    .cat-card-new .title {
-      position: absolute;
-      bottom: 16px;
-      right: 16px;
-      color: white;
-      font-size: 1.1rem;
-      font-weight: 700;
-      z-index: 2;
-      margin: 0;
-    }
+    template { display: none; }
   </style>
-
+  
   <!-- Supabase CDN (Needed for JS module to work if importing from CDN or utilizing global) -->
-  <script src="./assets/js/nav.js" defer></script>
-  </head>
-
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
 <body>
 
   <header>
-    <!-- Announcement Bar -->
-    <div class="marquee-bar bg-accent text-inverse" role="marquee" data-setting="announcement_bar">
-      <div class="marquee-content" aria-hidden="true">
-        🔥 شحن مجاني على كل الطلبات &nbsp;&nbsp;|&nbsp;&nbsp; تصاميم شبابية حصرية
-          &nbsp;&nbsp;|&nbsp;&nbsp; اقترح تصميمك لطباعته
-      </div>
-    </div>
-
-    <!-- Navbar -->
-    <nav class="navbar" aria-label="التنقل الرئيسي">
-      <a href="./" class="navbar-logo" aria-label="الصفحة الرئيسية" data-setting="store_name">HERU</a>
-
-      <ul class="navbar-links" style="list-style: none; margin: 0; padding: 0;">
-        <li><a href="./">الرئيسية</a></li>
-        <li><a href="./shop">المتجر</a></li>
-        <li><a href="./suggest">اقتراح تصميم</a></li>
-      </ul>
-
-      <div class="navbar-actions">
-        <div class="nav-search" id="nav-search" role="search">
-          <!-- الحالة المغلقة: Pill صغير -->
-          <button class="nav-search__pill" id="search-toggle" aria-label="فتح البحث" aria-expanded="false"
-            aria-controls="search-input-wrapper">
-            <svg class="nav-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="11" cy="11" r="8" />
-              <path d="m21 21-4.35-4.35" />
-            </svg>
-            <span class="nav-search__hint" aria-hidden="true">ابحث</span>
-          </button>
-
-          <!-- الحالة المفتوحة: Input موسّع -->
-          <div class="nav-search__expanded" id="search-input-wrapper" role="search" aria-hidden="true">
-            <svg class="nav-search__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="11" cy="11" r="8" />
-              <path d="m21 21-4.35-4.35" />
-            </svg>
-            <input type="search" id="nav-search-input" class="nav-search__input" placeholder="ابحث عن منتج..." autocomplete="off" aria-label="البحث في المتجر" dir="rtl">
-            <button class="nav-search__close" id="search-close" aria-label="إغلاق البحث" type="button">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                stroke-linecap="round">
-                <path d="M18 6 6 18M6 6l12 12" />
-              </svg>
-            </button>
+      <!-- Announcement Bar -->
+      <div class="marquee-bar bg-accent text-inverse" role="marquee" data-setting="announcement_bar">
+          <div class="marquee-content" aria-hidden="true">
+              🔥 شحن مجاني على كل الطلبات &nbsp;&nbsp;|&nbsp;&nbsp; تصاميم شبابية حصرية &nbsp;&nbsp;|&nbsp;&nbsp; اقترح تصميمك لطباعته &nbsp;&nbsp;|&nbsp;&nbsp; 🔥 شحن مجاني على كل الطلبات &nbsp;&nbsp;|&nbsp;&nbsp; تصاميم شبابية حصرية
           </div>
-        </div>
-        <a href="./cart" class="cart-badge btn-ghost" data-count="0" aria-label="سلة التسوق"
-          style="font-size: var(--text-xl);">🛒</a>
-        <button class="mobile-menu-toggle" aria-label="فتح القائمة الرئيسية" aria-expanded="false">☰</button>
       </div>
-    </nav>
+
+      <!-- Navbar -->
+      <nav class="navbar" aria-label="التنقل الرئيسي">
+          <a href="./" class="navbar-logo" aria-label="الصفحة الرئيسية" data-setting="store_name">HERU</a>
+          
+          <ul class="navbar-links" style="list-style: none; margin: 0; padding: 0;">
+              <li><a href="./" data-ar="الرئيسية" data-en="Home">الرئيسية</a></li>
+              <li><a href="./shop" data-ar="المتجر" data-en="Shop">المتجر</a></li>
+              <li><a href="./suggest" data-ar="اقترح تصميم" data-en="Suggest Design">اقتراح تصميم</a></li>
+          </ul>
+          
+          <div class="navbar-actions">
+              <div class="nav-search" id="nav-search" role="search">
+  <!-- الحالة المغلقة: Pill صغير -->
+  <button class="nav-search__pill" 
+          id="search-toggle"
+          aria-label="فتح البحث"
+          aria-expanded="false"
+          aria-controls="search-input-wrapper">
+    <svg class="nav-search__icon" width="16" height="16" 
+         viewBox="0 0 24 24" fill="none" 
+         stroke="currentColor" stroke-width="2"
+         stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="8"/>
+      <path d="m21 21-4.35-4.35"/>
+    </svg>
+    <span class="nav-search__hint" aria-hidden="true">ابحث</span>
+  </button>
+
+  <!-- الحالة المفتوحة: Input موسّع -->
+  <div class="nav-search__expanded" 
+       id="search-input-wrapper"
+       role="search"
+       aria-hidden="true">
+    <svg class="nav-search__icon" width="16" height="16"
+         viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="2"
+         stroke-linecap="round" stroke-linejoin="round"
+         aria-hidden="true">
+      <circle cx="11" cy="11" r="8"/>
+      <path d="m21 21-4.35-4.35"/>
+    </svg>
+    <input type="search"
+           id="nav-search-input"
+           class="nav-search__input"
+           placeholder="ابحث عن منتج..."
+           autocomplete="off"
+           aria-label="البحث في المتجر"
+           dir="rtl">
+    <button class="nav-search__close"
+            id="search-close"
+            aria-label="إغلاق البحث"
+            type="button">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2.5"
+           stroke-linecap="round">
+        <path d="M18 6 6 18M6 6l12 12"/>
+      </svg>
+    </button>
+  </div>
+</div>
+              <a href="./cart" class="cart-badge btn-ghost" data-count="0" aria-label="سلة التسوق" style="font-size: var(--text-xl);">🛒</a>
+              <button data-lang-toggle onclick="window.toggleLanguage()" class="btn-ghost font-display" aria-label="تغيير اللغة" style="font-weight: 700;">EN</button>
+              <button class="mobile-menu-toggle" aria-label="فتح القائمة الرئيسية" aria-expanded="false">☰</button>
+          </div>
+      </nav>
   </header>
 
   <!-- Mobile Menu Drawer -->
   <div class="mobile-menu">
-    <button class="mobile-menu-toggle open font-display"
-      onclick="document.querySelector('.mobile-menu').classList.remove('open')"
-      style="align-self: flex-end; font-size: 24px; display: block;" aria-label="إغلاق">✕</button>
-    <a href="./" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);">الرئيسية</a>
-    <a href="./shop" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);">المتجر</a>
-    <a href="./suggest" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);">اقتراح تصميم</a>
+      <button class="mobile-menu-toggle open font-display" onclick="document.querySelector('.mobile-menu').classList.remove('open')" style="align-self: flex-end; font-size: 24px; display: block;" aria-label="إغلاق">✕</button>
+      <a href="./" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);" data-ar="الرئيسية" data-en="Home">الرئيسية</a>
+      <a href="./shop" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);" data-ar="المتجر" data-en="Shop">المتجر</a>
+      <a href="./suggest" class="btn btn-ghost" style="justify-content: flex-start; font-size: var(--text-xl);" data-ar="اقترح تصميم" data-en="Suggest Design">اقتراح تصميم</a>
   </div>
 
   <!-- Hero Section -->
   <main id="main-content">
-    <section class="hero-section">
+  <section class="hero-section">
       <div class="hero-bg"></div>
-      <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?q=80&w=2000&auto=format&fit=crop"
-        alt="صورة ترويجية لمتجر Heru" class="hero-image" loading="eager">
+      <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?q=80&w=2000&auto=format&fit=crop" alt="صورة ترويجية لمتجر Heru" class="hero-image" loading="eager">
       <div class="hero-content">
-        <h1 class="hero-title" data-setting="hero_title">صمّم بصمتك</h1>
-        <p class="hero-subtitle" data-setting="hero_subtitle">منتجات شبابية بتصاميم
-            مختلفة — فقط في هيرو</p>
-        <div class="hero-actions">
-          <a href="./shop" class="btn btn-primary btn-lg" data-setting="hero_cta_primary">تسوّق الآن</a>
-          <a href="./suggest" class="btn btn-secondary btn-lg" style="background-color: var(--bg-overlay)"
-            data-setting="hero_cta_secondary">اقترح تصميم</a>
-        </div>
+          <h1 class="hero-title" data-setting="hero_title">صمّم بصمتك</h1>
+          <p class="hero-subtitle" data-setting="hero_subtitle">منتجات شبابية بتصاميم مختلفة — فقط في هيرو</p>
+          <div class="hero-actions">
+              <a href="./shop" class="btn btn-primary btn-lg" data-setting="hero_cta_primary">تسوّق الآن</a>
+              <a href="./suggest" class="btn btn-secondary btn-lg" style="background-color: var(--bg-overlay)" data-setting="hero_cta_secondary">اقترح تصميم</a>
+          </div>
       </div>
       <div class="scroll-indicator">⬇</div>
-    </section>
+  </section>
 
-    <!-- Trust Bar -->
-    <div class="trust-bar">
-      <div class="trust-item"><span>🚚</span> شحن مجاني</div>
-      <div class="trust-item"><span>✅</span> جودة مضمونة</div>
-      <div class="trust-item"><span>💬</span> دعم واتساب</div>
-      <div class="trust-item"><span>🎨</span> تصاميم حصرية</div>
-    </div>
+  <!-- Trust Bar -->
+  <div class="trust-bar">
+      <div class="trust-item"><span>🚚</span> <span>شحن مجاني</span></div>
+      <div class="trust-item"><span>✅</span> <span>جودة مضمونة</span></div>
+      <div class="trust-item"><span>💬</span> <span>دعم واتساب</span></div>
+      <div class="trust-item"><span>🎨</span> <span>تصاميم حصرية</span></div>
+  </div>
 
-
-    <!-- Categories Carousel -->
-    <section class="section container">
-      <h2 class="section-title" style="margin-block-end: var(--space-8)">تسوّق
-          حسب الفئة</h2>
-      <div class="home-categories-grid" id="categories-slider">
-        <!-- Skeletons Loader -->
-        <div class="cat-card-new skeleton"></div>
-        <div class="cat-card-new skeleton"></div>
-        <div class="cat-card-new skeleton"></div>
-        <div class="cat-card-new skeleton"></div>
-        <div class="cat-card-new skeleton"></div>
-        <div class="cat-card-new skeleton"></div>
+  <!-- Categories Carousel -->
+  <section class="section container">
+      <h2 class="section-title" style="margin-block-end: var(--space-8)">تسوّق حسب الفئة</h2>
+      <div class="drag-scroll" id="categories-slider">
+          <!-- Skeletons Loader -->
+          <div class="card-category cat-item skeleton"></div>
+          <div class="card-category cat-item skeleton"></div>
+          <div class="card-category cat-item skeleton"></div>
+          <div class="card-category cat-item skeleton"></div>
+          <div class="card-category cat-item skeleton"></div>
+          <div class="card-category cat-item skeleton"></div>
       </div>
-    </section>
+  </section>
 
-    <!-- Featured Products -->
-    <section class="section container">
+  <!-- Featured Products -->
+  <section class="section container">
       <div class="section-header">
-        <h2 class="section-title">الأكثر طلباً</h2>
-        <a href="./shop" class="btn btn-ghost">عرض الكل ←</a>
+          <h2 class="section-title">الأكثر طلباً</h2>
+          <a href="./shop" class="btn btn-ghost">عرض الكل ←</a>
       </div>
       <div class="grid-4" id="featured-grid">
-        <!-- Skeletons Loader -->
-        <div class="card-product skeleton-card">
-          <div class="skeleton skeleton-image"></div>
-          <div class="skeleton skeleton-text" style="width: 100%;"></div>
-          <div class="skeleton skeleton-text" style="width: 50%;"></div>
-        </div>
-        <div class="card-product skeleton-card">
-          <div class="skeleton skeleton-image"></div>
-          <div class="skeleton skeleton-text" style="width: 100%;"></div>
-          <div class="skeleton skeleton-text" style="width: 50%;"></div>
-        </div>
-        <div class="card-product skeleton-card">
-          <div class="skeleton skeleton-image"></div>
-          <div class="skeleton skeleton-text" style="width: 100%;"></div>
-          <div class="skeleton skeleton-text" style="width: 50%;"></div>
-        </div>
-        <div class="card-product skeleton-card">
-          <div class="skeleton skeleton-image"></div>
-          <div class="skeleton skeleton-text" style="width: 100%;"></div>
-          <div class="skeleton skeleton-text" style="width: 50%;"></div>
-        </div>
+          <!-- Skeletons Loader -->
+          <div class="card-product skeleton-card">
+              <div class="skeleton skeleton-image"></div>
+              <div class="skeleton skeleton-text" style="width: 100%;"></div>
+              <div class="skeleton skeleton-text" style="width: 50%;"></div>
+          </div>
+          <div class="card-product skeleton-card">
+              <div class="skeleton skeleton-image"></div>
+              <div class="skeleton skeleton-text" style="width: 100%;"></div>
+              <div class="skeleton skeleton-text" style="width: 50%;"></div>
+          </div>
+          <div class="card-product skeleton-card">
+              <div class="skeleton skeleton-image"></div>
+              <div class="skeleton skeleton-text" style="width: 100%;"></div>
+              <div class="skeleton skeleton-text" style="width: 50%;"></div>
+          </div>
+          <div class="card-product skeleton-card">
+              <div class="skeleton skeleton-image"></div>
+              <div class="skeleton skeleton-text" style="width: 100%;"></div>
+              <div class="skeleton skeleton-text" style="width: 50%;"></div>
+          </div>
       </div>
-    </section>
+  </section>
 
-    <!-- Editorial Section -->
-    <section class="section editorial">
+  <!-- Editorial Section -->
+  <section class="section editorial">
       <div class="container editorial-grid">
-        <div>
-          <h2 class="section-title" style="font-size: var(--text-4xl); margin-block-end: var(--space-6);">مش بس منتج
-            —<br>دا أسلوب حياة</h2>
-          <p
-            style="color: var(--text-secondary); margin-block-end: var(--space-8); font-size: var(--text-lg); line-height: 1.8;">
-            في هيرو، إحنا بنعمل تصميمات تتكلم عنك وتحكي قصتك. من أول النوت بوك اللي بتكتب فيها أفكارك لحد الكاب اللي
-            بيميز ستايلك وملابسك. كل دي تفاصيل بتشكل شخصيتك الفريدة في الشارع.
-          </p>
-          <a href="./about-story" class="btn btn-secondary btn-lg">اكتشف القصة</a>
-        </div>
-        <div>
-          <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=800&auto=format&fit=crop" alt=""
-            class="editorial-image" loading="lazy">
-        </div>
+          <div>
+              <h2 class="section-title" style="font-size: var(--text-4xl); margin-block-end: var(--space-6);">مش بس منتج —<br>دا أسلوب حياة</h2>
+              <p style="color: var(--text-secondary); margin-block-end: var(--space-8); font-size: var(--text-lg); line-height: 1.8;">
+                  في هيرو، إحنا بنعمل تصميمات تتكلم عنك وتحكي قصتك. من أول النوت بوك اللي بتكتب فيها أفكارك لحد الكاب اللي بيميز ستايلك وملابسك. كل دي تفاصيل بتشكل شخصيتك الفريدة في الشارع.
+              </p>
+              <a href="./about" class="btn btn-secondary btn-lg">اكتشف القصة</a>
+          </div>
+          <div>
+              <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=800&auto=format&fit=crop" alt="" class="editorial-image" loading="lazy">
+          </div>
       </div>
-    </section>
+  </section>
 
-    <!-- New Arrivals -->
-    <section class="section container">
+  <!-- New Arrivals -->
+  <section class="section container">
       <div class="section-header">
-        <h2 class="section-title" style="display:flex; align-items:center; gap:var(--space-2)">
-          وصل جديد <span class="badge-new" style="position:static;">NEW</span>
-        </h2>
-        <a href="./shop?sort=newest" class="btn btn-ghost">تصفح الجديد ←</a>
+          <h2 class="section-title" style="display:flex; align-items:center; gap:var(--space-2)">
+              وصل جديد <span class="badge-new" style="position:static;">NEW</span>
+          </h2>
+          <a href="./shop?sort=newest" class="btn btn-ghost">تصفح الجديد ←</a>
       </div>
       <div class="grid-4" id="new-grid">
-        <!-- Skeletons Loader -->
-        <div class="card-product skeleton-card">
-          <div class="skeleton skeleton-image"></div>
-          <div class="skeleton skeleton-text" style="width: 100%;"></div>
-          <div class="skeleton skeleton-text" style="width: 50%;"></div>
-        </div>
-        <div class="card-product skeleton-card">
-          <div class="skeleton skeleton-image"></div>
-          <div class="skeleton skeleton-text" style="width: 100%;"></div>
-          <div class="skeleton skeleton-text" style="width: 50%;"></div>
-        </div>
-        <div class="card-product skeleton-card">
-          <div class="skeleton skeleton-image"></div>
-          <div class="skeleton skeleton-text" style="width: 100%;"></div>
-          <div class="skeleton skeleton-text" style="width: 50%;"></div>
-        </div>
-        <div class="card-product skeleton-card">
-          <div class="skeleton skeleton-image"></div>
-          <div class="skeleton skeleton-text" style="width: 100%;"></div>
-          <div class="skeleton skeleton-text" style="width: 50%;"></div>
-        </div>
+          <!-- Skeletons Loader -->
+          <div class="card-product skeleton-card">
+              <div class="skeleton skeleton-image"></div>
+              <div class="skeleton skeleton-text" style="width: 100%;"></div>
+              <div class="skeleton skeleton-text" style="width: 50%;"></div>
+          </div>
+          <div class="card-product skeleton-card">
+              <div class="skeleton skeleton-image"></div>
+              <div class="skeleton skeleton-text" style="width: 100%;"></div>
+              <div class="skeleton skeleton-text" style="width: 50%;"></div>
+          </div>
+          <div class="card-product skeleton-card">
+              <div class="skeleton skeleton-image"></div>
+              <div class="skeleton skeleton-text" style="width: 100%;"></div>
+              <div class="skeleton skeleton-text" style="width: 50%;"></div>
+          </div>
+          <div class="card-product skeleton-card">
+              <div class="skeleton skeleton-image"></div>
+              <div class="skeleton skeleton-text" style="width: 100%;"></div>
+              <div class="skeleton skeleton-text" style="width: 50%;"></div>
+          </div>
       </div>
-    </section>
+  </section>
 
-    <!-- Reviews Slider -->
-    <section class="section container">
+  <!-- Reviews Slider -->
+  <section class="section container">
       <div class="section-header">
-        <h2 class="section-title">إيه رأي عملاءنا</h2>
-        <a href="./review" class="btn btn-secondary">أضف تقييمك</a>
+          <h2 class="section-title">إيه رأي عملاءنا</h2>
+          <a href="./review" class="btn btn-secondary">أضف تقييمك</a>
       </div>
       <div class="drag-scroll" id="reviews-slider">
-        <div class="card-review skeleton" style="min-width: 300px; height: 120px;"></div>
-        <div class="card-review skeleton" style="min-width: 300px; height: 120px;"></div>
-        <div class="card-review skeleton" style="min-width: 300px; height: 120px;"></div>
+           <div class="card-review skeleton" style="min-width: 300px; height: 120px;"></div>
+           <div class="card-review skeleton" style="min-width: 300px; height: 120px;"></div>
+           <div class="card-review skeleton" style="min-width: 300px; height: 120px;"></div>
       </div>
-    </section>
+  </section>
 
-    <!-- CTA Section -->
-    <section class="cta-section">
+  <!-- CTA Section -->
+  <section class="cta-section">
       <div class="container">
-        <h2 style="font-size: var(--text-5xl); margin-block-end: var(--space-8);">عندك
-            تصميم في بالك؟</h2>
-        <a href="./suggest" class="btn btn-lg"
-          style="background-color: var(--bg-primary); color: var(--text-primary); font-size: var(--text-xl); padding: var(--space-4) var(--space-12);">اقترح
-          الآن</a>
+          <h2 style="font-size: var(--text-5xl); margin-block-end: var(--space-8);">عندك تصميم في بالك؟</h2>
+          <a href="./suggest" class="btn btn-lg" style="background-color: var(--bg-primary); color: var(--text-primary); font-size: var(--text-xl); padding: var(--space-4) var(--space-12);">اقترح الآن</a>
       </div>
-    </section>
+  </section>
 
   </main>
 
   <!-- Footer -->
   <footer class="footer">
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-col">
-          <h4 class="font-display"
-            style="font-weight: 900; font-size: var(--text-3xl); color: var(--text-inverse); letter-spacing: 2px;"
-            data-setting="store_name">HERU</h4>
-          <p style="color: var(--text-secondary); margin-block-end: var(--space-4);" data-setting="footer_tagline">متجر هيرو للمنتجات الشبابية. بنقدم لك منتجات بتعبر عن أسلوب حياتك وروحك
-              المختلفة.</p>
-          <div class="social-links" id="footer-social">
-            <!-- Instagram -->
-            <a href="#" class="social-link" data-social="instagram" target="_blank" rel="noopener noreferrer"
-              aria-label="Instagram" style="display:none;">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                <circle cx="12" cy="12" r="4" />
-                <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
-              </svg>
-            </a>
+      <div class="container">
+          <div class="footer-grid">
+              <div class="footer-col">
+                  <h4 class="font-display" style="font-weight: 900; font-size: var(--text-3xl); color: var(--accent); letter-spacing: 2px;" data-setting="store_name">HERU</h4>
+                  <p style="color: var(--text-secondary); margin-block-end: var(--space-4);" data-setting="footer_tagline">متجر هيرو للمنتجات الشبابية. بنقدم لك منتجات بتعبر عن أسلوب حياتك وروحك المختلفة.</p>
+                  <div class="social-links" id="footer-social">
+                      <!-- Instagram -->
+                      <a href="#" 
+                         class="social-link" 
+                         data-social="instagram"
+                         target="_blank" 
+                         rel="noopener noreferrer"
+                         aria-label="Instagram"
+                         style="display:none;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" 
+                             stroke="currentColor" stroke-width="1.5">
+                          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                          <circle cx="12" cy="12" r="4"/>
+                          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+                        </svg>
+                      </a>
 
-            <!-- Facebook -->
-            <a href="#" class="social-link" data-social="facebook" target="_blank" rel="noopener noreferrer"
-              aria-label="Facebook" style="display:none;">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-              </svg>
-            </a>
+                      <!-- Facebook -->
+                      <a href="#"
+                         class="social-link"
+                         data-social="facebook"
+                         target="_blank"
+                         rel="noopener noreferrer"
+                         aria-label="Facebook"
+                         style="display:none;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="1.5">
+                          <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                        </svg>
+                      </a>
 
-            <!-- TikTok -->
-            <a href="#" class="social-link" data-social="tiktok" target="_blank" rel="noopener noreferrer"
-              aria-label="TikTok" style="display:none;">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5
+                      <!-- TikTok -->
+                      <a href="#"
+                         class="social-link"
+                         data-social="tiktok"
+                         target="_blank"
+                         rel="noopener noreferrer"
+                         aria-label="TikTok"
+                         style="display:none;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5
                                    2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1
                                    V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34
                                    6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69
-                                   a8.18 8.18 0 0 0 4.78 1.52V6.74a4.85 4.85 0 0 1-1.01-.05z" />
-              </svg>
-            </a>
+                                   a8.18 8.18 0 0 0 4.78 1.52V6.74a4.85 4.85 0 0 1-1.01-.05z"/>
+                        </svg>
+                      </a>
 
-            <!-- Telegram -->
-            <a href="#" class="social-link" data-social="telegram" target="_blank" rel="noopener noreferrer"
-              aria-label="Telegram" style="display:none;">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="m22 2-7 20-4-9-9-4 20-7z" />
-                <path d="M22 2 11 13" />
-              </svg>
-            </a>
+                      <!-- Telegram -->
+                      <a href="#"
+                         class="social-link"
+                         data-social="telegram"
+                         target="_blank"
+                         rel="noopener noreferrer"
+                         aria-label="Telegram"
+                         style="display:none;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="1.5">
+                          <path d="m22 2-7 20-4-9-9-4 20-7z"/>
+                          <path d="M22 2 11 13"/>
+                        </svg>
+                      </a>
+                  </div>
+              </div>
+              <div class="footer-col">
+                  <h4>المتجر</h4>
+                  <div class="footer-links">
+                      <a href="./shop">كل المنتجات</a>
+                      <a href="./shop?category=caps">كابات</a>
+                      <a href="./shop?filter=new">الجديد</a>
+                      <a href="./shop?filter=best">الأكثر مبيعاً</a>
+                  </div>
+              </div>
+              <div class="footer-col">
+                  <h4>الدعم</h4>
+                  <div class="footer-links">
+                      <a href="./track-order">تتبع الطلب</a>
+                      <a href="./suggest">اقتراح تصميم</a>
+                      <a href="./privacy">سياسة الخصوصية</a>
+                      <a href="./terms">شروط الاستخدام</a>
+                  </div>
+              </div>
+              <div class="footer-col">
+                  <h4>تواصل معنا</h4>
+                  <div class="footer-links">
+                      <span style="color: var(--text-secondary);">💬 واتساب:</span>
+                      <a href="https://wa.me/201124519232" dir="ltr" class="font-num" style="font-size: var(--text-lg); font-weight: 700;">+20 112 451 9232</a>
+                      <span style="color: var(--text-secondary); margin-block-start: var(--space-2);">⏰ ساعات الرد:</span>
+                      <span class="font-num" data-setting="footer_support_hours">10:00 AM - 10:00 PM</span>
+                  </div>
+              </div>
           </div>
-        </div>
-        <div class="footer-col">
-          <h4>المتجر</h4>
-          <div class="footer-links">
-            <a href="./shop">كل المنتجات</a>
-            <a href="./shop?category=caps">كابات</a>
-            <a href="./shop?filter=new">الجديد</a>
-            <a href="./shop?filter=best">الأكثر مبيعاً</a>
+          <div class="copyright">
+              &copy; <span class="font-num">2026</span> Heru Store. كافة الحقوق محفوظة.
           </div>
-        </div>
-        <div class="footer-col">
-          <h4>الدعم</h4>
-          <div class="footer-links">
-            <a href="./track-order">تتبع الطلب</a>
-            <a href="./suggest">اقتراح تصميم</a>
-            <a href="./privacy">سياسة الخصوصية</a>
-            <a href="./terms">شروط الاستخدام</a>
-          </div>
-        </div>
-        <div class="footer-col">
-          <h4>تواصل معنا</h4>
-          <div class="footer-links" style="align-items: flex-start;">
-            <a href="https://wa.me/201124519232" class="btn btn-secondary" style="margin-top: 8px;">تواصل معنا عبر واتساب</a>
-          </div>
-        </div>
       </div>
-      <div class="copyright">
-        &copy; <span class="font-num">2026</span> Heru Store. كافة الحقوق
-          محفوظة.
-      </div>
-    </div>
   </footer>
 
   <!-- Toast Container -->
@@ -773,10 +652,7 @@
     <a href="./product?id={id}" class="card-product">
       <div class="prod-img-container">
         <img src="{image}" alt="{name} - متجر هيرو" width="400" height="400" class="product-img" loading="lazy">
-        {dots_html}
-        <button type="button" class="quick-add-btn" aria-label="أضف إلى السلة" onclick="event.stopPropagation(); window.handleQuickAdd('{id}', '{name}', {price})">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-        </button>
+        <div class="prod-overlay">عرض سريع</div>
       </div>
       <div class="product-info">
         <div class="product-cat">شحن مجاني</div>
@@ -794,787 +670,364 @@
   </template>
 
   <template id="tpl-review">
-    <div class="card-review" style="min-width: 320px; max-width: 320px;">
-      <div style="color: var(--warning); letter-spacing: 2px;">{stars}</div>
-      <p style="font-style: italic; margin-block-end: var(--space-2);">"{comment}"</p>
-      <div style="font-weight: 700; font-size: var(--text-sm); color: var(--text-inverse);">- {name}</div>
-    </div>
+      <div class="card-review" style="min-width: 320px; max-width: 320px;">
+        <div style="color: var(--warning); letter-spacing: 2px;">{stars}</div>
+        <p style="font-style: italic; margin-block-end: var(--space-2);">"{comment}"</p>
+        <div style="font-weight: 700; font-size: var(--text-sm); color: var(--accent);">- {name}</div>
+      </div>
   </template>
 
   <!-- Page Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="./assets/js/supabase.js"></script>
-<script type="module">
-    import { supabaseClient } from '/assets/js/supabase.js';
-    import { clThumb } from '/assets/js/utils.js';
-    import { applyDynamicSettings } from '/assets/js/settings.js';
+  <script type="module">
+      import { supabaseClient } from '/assets/js/supabase.js';
+      import { clThumb } from '/assets/js/utils.js';
+      import { applyDynamicSettings } from '/assets/js/settings.js';
 
-    document.addEventListener('DOMContentLoaded', () => {
-      // 0. Apply Settings
-      applyDynamicSettings();
+      document.addEventListener('DOMContentLoaded', () => {
+          // 0. Apply Settings
+          applyDynamicSettings();
+          
+          // 1. Intersection Observer for scroll animations (Hero section initially handled)
+          setTimeout(() => {
+              const heroTitle = document.querySelector('.hero-title');
+              const heroSub = document.querySelector('.hero-subtitle');
+              const heroActions = document.querySelector('.hero-actions');
+              if(heroTitle) heroTitle.classList.add('animate-up');
+              if(heroSub) heroSub.classList.add('animate-up');
+              if(heroActions) heroActions.classList.add('animate-up');
+          }, 100);
 
-      // 1. Intersection Observer for scroll animations (Hero section initially handled)
-      setTimeout(() => {
-        const heroTitle = document.querySelector('.hero-title');
-        const heroSub = document.querySelector('.hero-subtitle');
-        const heroActions = document.querySelector('.hero-actions');
-        if (heroTitle) heroTitle.classList.add('animate-up');
-        if (heroSub) heroSub.classList.add('animate-up');
-        if (heroActions) heroActions.classList.add('animate-up');
-      }, 100);
+          // 2. Global Toast Helper
+          window.showToast = function(message, type = 'info') {
+              const container = document.getElementById('toast-container');
+              if(!container) return;
+              const toast = document.createElement('div');
+              toast.className = `toast toast-${type}`;
+              toast.innerHTML = message;
+              container.appendChild(toast);
+              setTimeout(() => toast.remove(), 3000);
+          };
 
-      // 2. Global Toast Helper
-      window.showToast = function (message, type = 'info') {
-        const container = document.getElementById('toast-container');
-        if (!container) return;
-        const toast = document.createElement('div');
-        toast.className = `toast toast-${type}`;
-        toast.innerHTML = message;
-        container.appendChild(toast);
-        setTimeout(() => toast.remove(), 3000);
-      };
-
-      // 3. Cart Badge Initializer
-      const updateCartBadge = () => {
-        try {
-          const cart = JSON.parse(localStorage.getItem('heru_cart')) || [];
-          const badge = document.querySelector('.cart-badge');
-          if (badge) {
-            const count = cart.reduce((acc, item) => acc + item.quantity, 0);
-            badge.setAttribute('data-count', count);
-          }
-        } catch (e) { }
-      };
-      updateCartBadge();
-
-      // 4. Data Fetching from Supabase
-      const fetchSupabaseData = async () => {
-
-        // Helper to generate empty states
-        const emptyStateHTML = (msg) => `<div class="empty-state" style="grid-column: 1 / -1;"><p>${msg}</p></div>`;
-
-        // Load Featured Products
-        try {
-          const container = document.getElementById('featured-grid');
-          if (!supabaseClient) throw new Error("No client");
-          const { data, error } = await supabaseClient
-            .from('products')
-            .select('id, name_ar, price, images')
-            .eq('featured', true)
-            .eq('active', true)
-            .limit(8);
-
-          if (error) throw error;
-          container.innerHTML = '';
-          if (!data || data.length === 0) {
-            container.innerHTML = emptyStateHTML('لم نتمكن من العثور على منتجات مميزة حالياً.');
-          } else {
-            const tpl = document.getElementById('tpl-product').innerHTML;
-            data.forEach(p => {
-              const img = (p.images && p.images.length > 0) ? clThumb(p.images[0]) : 'https://placehold.co/400x400/141414/F0EBE1?text=Heru';
-              const pDataStr = encodeURIComponent(JSON.stringify(p));
-              let dotsHtml = '';
-              if (p.images && p.images.length > 1) {
-                  dotsHtml = '<div class="multi-img-dots" onmousedown="event.preventDefault(); event.stopPropagation();" onclick="event.preventDefault(); event.stopPropagation();">';
-                  const maxDots = Math.min(p.images.length, 5);
-                  for (let i = 0; i < maxDots; i++) {
-                      const dotImg = clThumb ? clThumb(p.images[i]) : p.images[i];
-                      dotsHtml += `<button type="button" class="multi-image-dot ${i===0?'active':''}" aria-label="صورة ${i+1}" onclick="window.switchProductCardImage(event, '${dotImg}', this)"></button>`;
+          // 3. Cart Badge Initializer
+          const updateCartBadge = () => {
+              try {
+                  const cart = JSON.parse(localStorage.getItem('heru_cart')) || [];
+                  const badge = document.querySelector('.cart-badge');
+                  if(badge) {
+                      const count = cart.reduce((acc, item) => acc + item.quantity, 0);
+                      badge.setAttribute('data-count', count);
                   }
-                  dotsHtml += '</div>';
+              } catch(e) {}
+          };
+          updateCartBadge();
+
+          // 4. Data Fetching from Supabase
+          const fetchSupabaseData = async () => {
+              
+              // Helper to generate empty states
+              const emptyStateHTML = (msg) => `<div class="empty-state" style="grid-column: 1 / -1;"><p>${msg}</p></div>`;
+              
+              // Load Featured Products
+              try {
+                  const container = document.getElementById('featured-grid');
+                  if(!supabaseClient) throw new Error("No client");
+                  const { data, error } = await supabaseClient
+                      .from('products')
+                      .select('id, name_ar, price, images')
+                      .eq('featured', true)
+                      .eq('active', true)
+                      .limit(8);
+                  
+                  if(error) throw error;
+                  container.innerHTML = '';
+                  if(!data || data.length === 0) {
+                      container.innerHTML = emptyStateHTML('لم نتمكن من العثور على منتجات مميزة حالياً.');
+                  } else {
+                      const tpl = document.getElementById('tpl-product').innerHTML;
+                      data.forEach(p => {
+                          const img = (p.images && p.images.length > 0) ? clThumb(p.images[0]) : 'https://placehold.co/400x400/141414/F0EBE1?text=Heru';
+                          let html = tpl.replace(/{id}/g, p.id).replace(/{name}/g, p.name_ar).replace(/{price}/g, p.price).replace(/{image}/g, img);
+                          container.insertAdjacentHTML('beforeend', html);
+                      });
+                  }
+              } catch (err) {
+                  const c = document.getElementById('featured-grid');
+                  if(c) c.innerHTML = emptyStateHTML('حدث خطأ أثناء تحميل المنتجات. الرجاء المحاولة لاحقاً.');
+                  showToast('فشل في جلب المنتجات', 'error');
               }
-              let html = tpl.replace(/{id}/g, p.id).replace(/{name}/g, p.name_ar).replace(/{price}/g, p.price).replace(/{image}/g, img).replace('{dots_html}', dotsHtml).replace('{product_data}', pDataStr);
-              container.insertAdjacentHTML('beforeend', html);
-            });
-          }
-        } catch (err) {
-          const c = document.getElementById('featured-grid');
-          if (c) c.innerHTML = emptyStateHTML('حدث خطأ أثناء تحميل المنتجات. الرجاء المحاولة لاحقاً.');
-          showToast('فشل في جلب المنتجات', 'error');
-        }
 
-        // Load New Products
-        try {
-          const container = document.getElementById('new-grid');
-          if (supabaseClient) {
-            const { data, error } = await supabaseClient
-              .from('products').select('id, name_ar, price, images')
-              .eq('active', true).order('created_at', { ascending: false }).limit(4);
-
-            if (!error) {
-              container.innerHTML = '';
-              if (!data || data.length === 0) {
-                container.innerHTML = emptyStateHTML('ترقبوا أحدث منتجاتنا قريباً!');
-              } else {
-                const tpl = document.getElementById('tpl-product').innerHTML;
-                data.forEach(p => {
-                  const img = (p.images && p.images.length > 0) ? clThumb(p.images[0]) : 'https://placehold.co/400x400/141414/F0EBE1?text=New';
-                  const pDataStr = encodeURIComponent(JSON.stringify(p));
-                  let dotsHtml = '';
-                  if (p.images && p.images.length > 1) {
-                      dotsHtml = '<div class="multi-img-dots" onmousedown="event.preventDefault(); event.stopPropagation();" onclick="event.preventDefault(); event.stopPropagation();">';
-                      const maxDots = Math.min(p.images.length, 5);
-                      for (let i = 0; i < maxDots; i++) {
-                          const dotImg = clThumb ? clThumb(p.images[i]) : p.images[i];
-                          dotsHtml += `<button type="button" class="multi-image-dot ${i===0?'active':''}" aria-label="صورة ${i+1}" onclick="window.switchProductCardImage(event, '${dotImg}', this)"></button>`;
+              // Load New Products
+              try {
+                  const container = document.getElementById('new-grid');
+                  if(supabaseClient) {
+                      const { data, error } = await supabaseClient
+                          .from('products').select('id, name_ar, price, images')
+                          .eq('active', true).order('created_at', { ascending: false }).limit(4);
+                      
+                      if(!error) {
+                          container.innerHTML = '';
+                          if(!data || data.length === 0) {
+                              container.innerHTML = emptyStateHTML('ترقبوا أحدث منتجاتنا قريباً!');
+                          } else {
+                              const tpl = document.getElementById('tpl-product').innerHTML;
+                              data.forEach(p => {
+                                  const img = (p.images && p.images.length > 0) ? clThumb(p.images[0]) : 'https://placehold.co/400x400/141414/F0EBE1?text=New';
+                                  let html = tpl.replace(/{id}/g, p.id).replace(/{name}/g, p.name_ar).replace(/{price}/g, p.price).replace(/{image}/g, img);
+                                  container.insertAdjacentHTML('beforeend', html);
+                              });
+                          }
                       }
-                      dotsHtml += '</div>';
                   }
-                  let html = tpl.replace(/{id}/g, p.id).replace(/{name}/g, p.name_ar).replace(/{price}/g, p.price).replace(/{image}/g, img).replace('{dots_html}', dotsHtml).replace('{product_data}', pDataStr);
-                  container.insertAdjacentHTML('beforeend', html);
-                });
+              } catch (err) {}
+
+              // Load Categories
+              try {
+                  const container = document.getElementById('categories-slider');
+                  if(supabaseClient) {
+                      const { data, error } = await supabaseClient
+                          .from('categories').select('*')
+                          .eq('active', true).order('sort_order', { ascending: true });
+                          
+                      console.log('Categories fetched on load:', data, error);
+                      
+                      container.innerHTML = '';
+                      
+                      if (error || !data || data.length === 0) {
+                          container.innerHTML = emptyStateHTML('لا توجد تصنيفات حالياً');
+                      } else {
+                          const tpl = document.getElementById('tpl-category').innerHTML;
+                          data.forEach(c => {
+                              let visual = `<span style="font-size:2rem; display:block;">${c.icon || '📦'}</span>`;
+                              let bgColor = c.color || 'var(--bg-elevated)';
+                              let html = tpl.replace(/{id}/g, c.id)
+                                            .replace(/{name}/g, c.name_ar)
+                                            .replace('{visual}', visual)
+                                            .replace('{color}', bgColor);
+                              container.insertAdjacentHTML('beforeend', html);
+                          });
+                      }
+                  }
+              } catch (err) {
+                  console.error('Error rendering categories:', err);
+                  const container = document.getElementById('categories-slider');
+                  if(container) container.innerHTML = emptyStateHTML('لا توجد تصنيفات حالياً');
               }
-            }
-          }
-        } catch (err) { }
 
-        // Load Categories
-        try {
-          const container = document.getElementById('categories-slider');
-          if (supabaseClient) {
-            const { data, error } = await supabaseClient
-              .from('categories').select('*')
-              .eq('active', true).order('sort_order', { ascending: true });
+              // Load Store Reviews
+              try {
+                  const container = document.getElementById('reviews-slider');
+                  if(supabaseClient) {
+                      const { data, error } = await supabaseClient
+                          .from('store_reviews').select('reviewer_name, rating, comment')
+                          .eq('approved', true).order('created_at', { ascending: false }).limit(6);
+                      
+                      if(!error) {
+                          container.innerHTML = '';
+                          const tpl = document.getElementById('tpl-review').innerHTML;
+                          const reviews = (data && data.length > 0) ? data : [{ reviewer_name: 'أحمد سعيد', rating: 5, comment: 'جودة الشنط فوق الوصف والتعامل سلس جداً شكراً هيرو!' }];
+                          reviews.forEach(r => {
+                              const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+                              let html = tpl.replace(/{stars}/g, stars).replace(/{comment}/g, r.comment).replace(/{name}/g, r.reviewer_name);
+                              container.insertAdjacentHTML('beforeend', html);
+                          });
+                      }
+                  }
+              } catch (err) {}
+          };
+          fetchSupabaseData();
 
-            container.innerHTML = '';
+          // 5. Drag-to-Scroll Mechanism for Sliders
+          const sliders = document.querySelectorAll('.drag-scroll');
+          sliders.forEach(slider => {
+              let isDown = false;
+              let startX;
+              let scrollLeft;
 
-            if (error || !data || data.length === 0) {
-              container.innerHTML = '<p style="color:var(--text-muted);text-align:center;">لا توجد تصنيفات متاحة حالياً</p>';
-            } else {
-              const CATEGORY_FALLBACKS = {
-                'نوت بوك': 'https://images.unsplash.com/photo-1517842645767-c639042777db?w=400',
-                'كابات': 'https://images.unsplash.com/photo-1556306535-38febf6782e7?w=400',
-                'جرابات موبايل': 'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?w=400',
-                'ستيكرات': 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400',
-                'لوحات وبوسترات': 'https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=400',
-                'إكسسوارات': 'https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=400'
-              };
-
-              window.usColorFallback = function(card, catDataStr) {
-                if(!card) return;
-                try {
-                  const cat = JSON.parse(decodeURIComponent(catDataStr));
-                  const currentLang = localStorage.getItem('heru-lang') || 'ar';
-                  const displayName = currentLang === 'ar' ? cat.name_ar : (cat.name_en || cat.name_ar);
-                  card.style.backgroundColor = cat.color || 'var(--bg-elevated)';
-                  card.style.flexDirection = 'column';
-                  card.style.gap = '8px';
-                  card.innerHTML = `
-                    <span style="font-size:2.5rem; z-index:2; display:block;">${cat.icon || '📦'}</span>
-                    <h3 class="title" style="position:relative; right:auto; bottom:auto;">${displayName}</h3>
-                  `;
-                } catch(e) {}
-              };
-
-              data.forEach(c => {
-                const bgImage = c.image_url || CATEGORY_FALLBACKS[c.name_ar] || null;
-                const currentLang = localStorage.getItem('heru-lang') || 'ar';
-                const displayName = currentLang === 'ar' ? c.name_ar : (c.name_en || c.name_ar);
-                let html = '';
-
-                if (bgImage) {
-                  const encodedCat = encodeURIComponent(JSON.stringify(c));
-                  html = `
-                    <a href="./shop?category=${c.id}" class="cat-card-new">
-                      <img src="${bgImage}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;" alt="${displayName}" onerror="usColorFallback(this.parentElement, '${encodedCat}')" loading="lazy">
-                      <div class="overlay"></div>
-                      <h3 class="title">${displayName}</h3>
-                    </a>
-                  `;
-                } else {
-                  html = `
-                    <a href="./shop?category=${c.id}" class="cat-card-new" style="background-color: ${c.color || 'var(--bg-elevated)'}; flex-direction: column; gap: 8px;">
-                      <span style="font-size:2.5rem; z-index:2; display:block;">${c.icon || '📦'}</span>
-                      <h3 class="title" style="position:relative; right:auto; bottom:auto;">${displayName}</h3>
-                    </a>
-                  `;
-                }
-                container.insertAdjacentHTML('beforeend', html);
+              slider.addEventListener('mousedown', (e) => {
+                  isDown = true;
+                  slider.style.cursor = 'grabbing';
+                  startX = e.pageX - slider.offsetLeft;
+                  scrollLeft = slider.scrollLeft;
               });
-            }
-          }
-        } catch (err) {
-          console.error('Error rendering categories:', err);
-          const container = document.getElementById('categories-slider');
-          if (container) container.innerHTML = '<p style="color:var(--text-muted);text-align:center;">لا توجد تصنيفات متاحة حالياً</p>';
-        }
-
-        // Load Store Reviews
-        try {
-          const container = document.getElementById('reviews-slider');
-          if (supabaseClient) {
-            const { data, error } = await supabaseClient
-              .from('store_reviews').select('reviewer_name, rating, comment')
-              .eq('approved', true).order('created_at', { ascending: false }).limit(6);
-
-            if (!error) {
-              container.innerHTML = '';
-              const tpl = document.getElementById('tpl-review').innerHTML;
-              const reviews = (data && data.length > 0) ? data : [{ reviewer_name: 'أحمد سعيد', rating: 5, comment: 'جودة الشنط فوق الوصف والتعامل سلس جداً شكراً هيرو!' }];
-              reviews.forEach(r => {
-                const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
-                let html = tpl.replace(/{stars}/g, stars).replace(/{comment}/g, r.comment).replace(/{name}/g, r.reviewer_name);
-                container.insertAdjacentHTML('beforeend', html);
+              const stopGrab = () => {
+                  isDown = false;
+                  slider.style.cursor = 'grab';
+              };
+              slider.addEventListener('mouseleave', stopGrab);
+              slider.addEventListener('mouseup', stopGrab);
+              slider.addEventListener('mousemove', (e) => {
+                  if (!isDown) return;
+                  e.preventDefault();
+                  const x = e.pageX - slider.offsetLeft;
+                  const walk = (x - startX) * 2; // Scroll-fast
+                  slider.scrollLeft = scrollLeft - walk;
               });
-            }
-          }
-        } catch (err) { }
-      };
-      fetchSupabaseData();
+              
+              // Auto-Scroll for Reviews Slider
+              if(slider.id === 'reviews-slider') {
+                  setInterval(() => {
+                     if(!isDown) {
+                         slider.scrollBy({ left: -320, behavior: 'smooth' }); // Scroll step
+                     }
+                  }, 4000);
+              }
+          });
 
-      // 5. Drag-to-Scroll Mechanism for Sliders
-      const sliders = document.querySelectorAll('.drag-scroll');
-      sliders.forEach(slider => {
-        let isDown = false;
-        let startX;
-        let scrollLeft;
-
-        slider.addEventListener('mousedown', (e) => {
-          isDown = true;
-          slider.style.cursor = 'grabbing';
-          startX = e.pageX - slider.offsetLeft;
-          scrollLeft = slider.scrollLeft;
-        });
-        const stopGrab = () => {
-          isDown = false;
-          slider.style.cursor = 'grab';
-        };
-        slider.addEventListener('mouseleave', stopGrab);
-        slider.addEventListener('mouseup', stopGrab);
-        slider.addEventListener('mousemove', (e) => {
-          if (!isDown) return;
-          e.preventDefault();
-          const x = e.pageX - slider.offsetLeft;
-          const walk = (x - startX) * 2; // Scroll-fast
-          slider.scrollLeft = scrollLeft - walk;
-        });
-
-        // Auto-Scroll for Reviews Slider
-        if (slider.id === 'reviews-slider') {
-          setInterval(() => {
-            if (!isDown) {
-              slider.scrollBy({ left: -320, behavior: 'smooth' }); // Scroll step
-            }
-          }, 4000);
-        }
+          // 6. Mobile Menu Logic
+          const menuToggles = document.querySelectorAll('.mobile-menu-toggle');
+          const mobileMenu = document.querySelector('.mobile-menu');
+          menuToggles.forEach(btn => {
+              btn.addEventListener('click', () => {
+                  if(mobileMenu) mobileMenu.classList.toggle('open');
+              });
+          });
       });
+  </script>
 
-      // Mobile Menu Logic
-
-
-
-
-// Create backdrop if it doesn't exist
-
-}
-
-function openMobileMenu() {
-  if (mobileMenu) mobileMenu.classList.add('open');
-  if (backdrop) backdrop.classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeMobileMenu() {
-  if (mobileMenu) mobileMenu.classList.remove('open');
-  if (backdrop) backdrop.classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-
-  }
-});
-
-// Close button inside menu (the ✕ button)
-
-if (closeMenuBtn) {
-  closeMenuBtn.onclick = closeMobileMenu;
-}
-
-// Close on backdrop click
-
-
-// Close on Escape key
+<script>
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && mobileMenu && mobileMenu.classList.contains('open')) {
-    closeMobileMenu();
-  }
-});
-
-
-  </script>
-
-  <script>
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
+    if(e.key === 'Escape') {
         document.querySelectorAll('.mobile-menu.open, .filter-overlay.open, .filters-wrapper.open, .modal-overlay.open').forEach(el => el.classList.remove('open'));
-      }
-    });
-  </script>
-
-  <!-- Cookie Notice -->
-  <style>
-    #cookie-notice {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      width: 100%;
-      background: var(--bg-elevated);
-      border-top: 1px solid var(--border);
-      padding: var(--space-4) var(--space-6);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: var(--space-4);
-      z-index: 9999;
-      box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.6);
-      transform: translateY(100%);
-      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     }
+});
+</script>
 
-    #cookie-notice.visible {
-      transform: translateY(0);
-    }
-
-    .cookie-text {
-      font-size: var(--text-sm);
-      color: var(--text-secondary);
-      flex: 1;
-    }
-
-    .cookie-actions {
-      display: flex;
-      gap: var(--space-3);
-      flex-shrink: 0;
-    }
-
-    @media(max-width: 600px) {
-      #cookie-notice {
-        flex-direction: column;
-        text-align: center;
-        padding: var(--space-4);
-        margin-bottom: -1px;
-      }
-
-      .cookie-actions {
-        width: 100%;
-      }
-
-      .cookie-actions button {
-        flex: 1;
-        padding: var(--space-3);
-      }
-    }
-  </style>
-  <div id="cookie-notice" role="dialog" aria-live="polite" aria-label="إشعار الخصوصية">
-    <div class="cookie-text">
-      نستخدم تقنية <strong>LocalStorage</strong> لحفظ سلة التسوق وتفضيلاتك. نحن لا نستخدم ملفات تعريف الارتباط (Cookies)
-      للتتبع. يمكنك الاطلاع على <a href="./privacy" style="color: var(--text-inverse); text-decoration:underline;">سياسة
-        الخصوصية</a> لمزيد من التفاصيل.
-    </div>
-    <div class="cookie-actions">
-      <button class="btn btn-primary" id="btn-accept-cookie" aria-label="موافق ومتابعة">موافق</button>
-    </div>
-  </div>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      if (!localStorage.getItem('heru_cookie_accepted')) {
-        setTimeout(() => { const c = document.getElementById('cookie-notice'); if (c) c.classList.add('visible'); }, 800);
-      }
-      const btnC = document.getElementById('btn-accept-cookie');
-      if (btnC) {
-        btnC.addEventListener('click', () => {
-          localStorage.setItem('heru_cookie_accepted', 'yes');
-          document.getElementById('cookie-notice').classList.remove('visible');
-        });
-      }
-    });
-  </script>
-
-
-  <!-- Vercel Performance & Reliability -->
-  <script defer src="./_vercel/speed-insights/script.js"></script>
-  <script defer src="./_vercel/insights/script.js"></script>
-  <script>
-    window.addEventListener('error', (e) => {
-      // Prevent verbose console if handled, silent UX failure mode
-      if (window.showToast) window.showToast('حدث خطأ غير متوقع — حاول مرة أخرى', 'error');
-    });
-    window.addEventListener('unhandledrejection', (e) => {
-      if (window.showToast) window.showToast('تم رفض الاتصال بالخادم — يرجى التواصل عبر الواتساب بدلاً من ذلك.', 'error');
-    });
-  </script>
-
-
-  <script>
-    (function () {
-      const navSearch = document.getElementById('nav-search');
-      const toggleBtn = document.getElementById('search-toggle');
-      const closeBtn = document.getElementById('search-close');
-      const searchInput = document.getElementById('nav-search-input');
-      const inputWrapper = document.getElementById('search-input-wrapper');
-
-      if (!navSearch || !toggleBtn || !searchInput) return;
-
-      // ══ فتح البحث ══
-      function openSearch() {
-        navSearch.classList.add('is-open');
-        toggleBtn.setAttribute('aria-expanded', 'true');
-        inputWrapper.setAttribute('aria-hidden', 'false');
-        // focus بعد انتهاء الـ animation
-        setTimeout(() => searchInput.focus(), 300);
-      }
-
-      // ══ إغلاق البحث ══
-      function closeSearch() {
-        navSearch.classList.remove('is-open');
-        toggleBtn.setAttribute('aria-expanded', 'false');
-        inputWrapper.setAttribute('aria-hidden', 'true');
-        searchInput.value = '';
-        toggleBtn.focus();
-      }
-
-      // ══ تنفيذ البحث والانتقال لصفحة المتجر ══
-      function executeSearch() {
-        const query = searchInput.value.trim();
-        if (query.length < 1) return;
-        // الانتقال لصفحة المتجر مع كلمة البحث في الـ URL
-        window.location.href = './shop?search=' + encodeURIComponent(query);
-      }
-
-      // ══ Event Listeners ══
-      toggleBtn.addEventListener('click', openSearch);
-
-      closeBtn.addEventListener('click', closeSearch);
-
-      // Enter ينفذ البحث
-      searchInput.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          executeSearch();
-        }
-        if (e.key === 'Escape') {
-          closeSearch();
-        }
-      });
-
-      // إغلاق عند الضغط خارج البحث
-      document.addEventListener('click', function (e) {
-        if (navSearch.classList.contains('is-open') &&
-          !navSearch.contains(e.target)) {
-          closeSearch();
-        }
-      });
-
-      // إغلاق عند Escape من أي مكان
-      document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && navSearch.classList.contains('is-open')) {
-          closeSearch();
-        }
-      });
-
-    })();
-  </script>
-
-
-
-<!-- WhatsApp FAB -->
-<style id="wa-fab-styles">
-  .wa-fab-wrapper {
+<!-- Cookie Notice -->
+<style>
+  #cookie-notice {
     position: fixed;
-    bottom: 24px;
-    left: 24px;
-    z-index: 9999;
-    font-family: var(--font-display, inherit);
-    direction: rtl;
-  }
-  .wa-fab-btn {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background-color: #25D366;
-    color: white;
-    border: none;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: transform 0.2s;
-  }
-  .wa-fab-btn:hover {
-    transform: scale(1.05);
-  }
-  .wa-fab-btn svg {
-    width: 32px;
-    height: 32px;
-    fill: currentColor;
-  }
-  .wa-panel {
-    position: absolute;
-    bottom: 70px;
+    bottom: 0;
     left: 0;
-    width: 300px;
-    height: 380px;
-    background-color: var(--bg-secondary, #ffffff);
-    border: 1px solid var(--border, #e5e5e5);
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(20px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
-  }
-  .wa-panel.open {
-    opacity: 1;
-    pointer-events: auto;
-    transform: translateY(0);
-  }
-  .wa-panel-header {
-    background-color: #25D366;
-    padding: 16px;
-    color: white;
-    position: relative;
-    text-align: right;
-  }
-  .wa-panel-header h3 {
-    margin: 0 0 4px 0;
-    font-size: 16px;
-    font-weight: bold;
-  }
-  .wa-panel-header p {
-    margin: 0;
-    font-size: 12px;
-    opacity: 0.9;
-  }
-  .wa-panel-close {
-    position: absolute;
-    top: 16px;
-    left: 16px;
-    background: none;
-    border: none;
-    color: white;
-    cursor: pointer;
-    font-size: 20px;
-    line-height: 1;
-  }
-  .wa-panel-body {
-    flex: 1;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    background-color: var(--bg-primary, #f9f9f9);
-  }
-  .wa-panel-body textarea {
-    flex: 1;
-    resize: none;
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid var(--border, #ccc);
-    font-family: inherit;
-    background-color: var(--bg-card, #fff);
-    color: var(--text-primary, #000);
-    outline: none;
-  }
-  .wa-panel-body textarea:focus {
-    border-color: #25D366;
-  }
-  .wa-panel-footer {
-    padding: 12px;
-    background-color: var(--bg-secondary, #fff);
-    border-top: 1px solid var(--border, #eee);
-  }
-  .wa-send-btn {
+    right: 0;
     width: 100%;
-    padding: 10px;
-    background-color: #25D366;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 14px;
-    transition: background-color 0.2s;
+    background: var(--bg-elevated);
+    border-top: 1px solid var(--border);
+    padding: var(--space-4) var(--space-6);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-4);
+    z-index: 9999;
+    box-shadow: 0 -4px 24px rgba(0,0,0,0.6);
+    transform: translateY(100%);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  .wa-send-btn:hover {
-    background-color: #20BA56;
-  }
-  [dir="ltr"] .wa-panel {
-    left: 0;
-  }
-  [dir="ltr"] .wa-panel-header {
-    text-align: left;
-  }
-  [dir="ltr"] .wa-panel-close {
-    left: auto;
-    right: 16px;
+  #cookie-notice.visible { transform: translateY(0); }
+  .cookie-text { font-size: var(--text-sm); color: var(--text-secondary); flex: 1; }
+  .cookie-actions { display: flex; gap: var(--space-3); flex-shrink:0; }
+  @media(max-width: 600px) {
+    #cookie-notice { flex-direction: column; text-align: center; padding: var(--space-4); margin-bottom:-1px;}
+    .cookie-actions { width: 100%; }
+    .cookie-actions button { flex: 1; padding: var(--space-3); }
   }
 </style>
-
-<div class="wa-fab-wrapper" id="wa-fab-wrapper">
-  <div class="wa-panel" id="wa-panel">
-    <div class="wa-panel-header">
-      <button class="wa-panel-close" id="wa-panel-close" aria-label="إغلاق">&times;</button>
-      <h3 data-ar="تحدث معنا 👋" data-en="Chat with us 👋">تحدث معنا 👋</h3>
-      <p data-ar="سنرد عليك في أقرب وقت" data-en="We will reply as soon as possible">سنرد عليك في أقرب وقت</p>
+<div id="cookie-notice" role="dialog" aria-live="polite" aria-label="إشعار الخصوصية">
+    <div class="cookie-text">
+        نستخدم تقنية <strong>LocalStorage</strong> لحفظ سلة التسوق وتفضيلاتك. نحن لا نستخدم ملفات تعريف الارتباط (Cookies) للتتبع. يمكنك الاطلاع على <a href="./privacy" style="color:var(--accent); text-decoration:underline;">سياسة الخصوصية</a> لمزيد من التفاصيل.
     </div>
-    <div class="wa-panel-body">
-      <textarea id="wa-message" placeholder="اكتب سؤالك أو استفسارك..."></textarea>
+    <div class="cookie-actions">
+        <button class="btn btn-primary" id="btn-accept-cookie" aria-label="موافق ومتابعة">موافق</button>
     </div>
-    <div class="wa-panel-footer">
-      <button class="wa-send-btn" id="wa-send-btn" data-ar="إرسال عبر واتساب" data-en="Send via WhatsApp">إرسال عبر واتساب</button>
-    </div>
-  </div>
-  <button class="wa-fab-btn" id="wa-fab-btn" aria-label="مراسلة عبر واتساب">
-    <svg viewBox="0 0 24 24">
-      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
-    </svg>
-  </button>
 </div>
-
 <script>
-  (function() {
-    const fabBtn = document.getElementById('wa-fab-btn');
-    const panel = document.getElementById('wa-panel');
-    const closeBtn = document.getElementById('wa-panel-close');
-    const sendBtn = document.getElementById('wa-send-btn');
-    const msgInput = document.getElementById('wa-message');
-    const wrapper = document.getElementById('wa-fab-wrapper');
-
-    if (!fabBtn || !panel || !closeBtn || !sendBtn || !msgInput || !wrapper) return;
-
-    fabBtn.addEventListener('click', () => {
-      panel.classList.toggle('open');
-      if (panel.classList.contains('open')) {
-        msgInput.focus();
-      }
-    });
-
-    closeBtn.addEventListener('click', () => {
-      panel.classList.remove('open');
-    });
-
-    document.addEventListener('click', (e) => {
-      if (!wrapper.contains(e.target) && panel.classList.contains('open')) {
-        panel.classList.remove('open');
-      }
-    });
-
-    sendBtn.addEventListener('click', () => {
-      let msg = msgInput.value.trim();
-      let url = 'https://wa.me/201124519232';
-      if (msg) {
-        url += '?text=' + encodeURIComponent(msg);
-      }
-      window.open(url, '_blank');
-      panel.classList.remove('open');
-      msgInput.value = '';
-    });
-    
-    // Check language to update placeholder dynamically across pages
-    setInterval(() => {
-      const currentLang = localStorage.getItem('heru-lang') || 'ar';
-      if(currentLang === 'en' && msgInput.placeholder !== 'Type your message...') {
-         msgInput.placeholder = 'Type your message...';
-      } else if (currentLang === 'ar' && msgInput.placeholder !== 'اكتب سؤالك أو استفسارك...') {
-         msgInput.placeholder = 'اكتب سؤالك أو استفسارك...';
-      }
-    }, 500);
-
-  })();
+  document.addEventListener('DOMContentLoaded', () => {
+     if(!localStorage.getItem('heru_cookie_accepted')) {
+         setTimeout(() => { const c = document.getElementById('cookie-notice'); if(c) c.classList.add('visible'); }, 800);
+     }
+     const btnC = document.getElementById('btn-accept-cookie');
+     if(btnC) {
+         btnC.addEventListener('click', () => {
+             localStorage.setItem('heru_cookie_accepted', 'yes');
+             document.getElementById('cookie-notice').classList.remove('visible');
+         });
+     }
+  });
 </script>
 
+
+<!-- Vercel Performance & Reliability -->
+<script defer src="./_vercel/speed-insights/script.js"></script>
+<script defer src="./_vercel/insights/script.js"></script>
 <script>
-// Mobile Menu
+  window.addEventListener('error', (e) => {
+      // Prevent verbose console if handled, silent UX failure mode
+      if(window.showToast) window.showToast('حدث خطأ غير متوقع — حاول مرة أخرى', 'error');
+  });
+  window.addEventListener('unhandledrejection', (e) => {
+      if(window.showToast) window.showToast('تم رفض الاتصال بالخادم — يرجى التواصل عبر الواتساب بدلاً من ذلك.', 'error');
+  });
+</script>
+
+
+<script>
 (function() {
-  const menu    = document.querySelector('.mobile-menu');
-  const toggles = document.querySelectorAll('.mobile-menu-toggle');
-  if (!menu || !toggles.length) return;
+  const navSearch    = document.getElementById('nav-search');
+  const toggleBtn    = document.getElementById('search-toggle');
+  const closeBtn     = document.getElementById('search-close');
+  const searchInput  = document.getElementById('nav-search-input');
+  const inputWrapper = document.getElementById('search-input-wrapper');
 
-  // Create overlay
-  let overlay = document.querySelector('.mobile-menu-overlay');
-  if (!overlay) {
-    overlay = document.createElement('div');
-    overlay.className = 'mobile-menu-overlay';
-    document.body.appendChild(overlay);
+  if (!navSearch || !toggleBtn || !searchInput) return;
+
+  // ══ فتح البحث ══
+  function openSearch() {
+    navSearch.classList.add('is-open');
+    toggleBtn.setAttribute('aria-expanded', 'true');
+    inputWrapper.setAttribute('aria-hidden', 'false');
+    // focus بعد انتهاء الـ animation
+    setTimeout(() => searchInput.focus(), 300);
   }
 
-  function openMenu()  {
-    menu.classList.add('open');
-    overlay.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeMenu() {
-    menu.classList.remove('open');
-    overlay.classList.remove('open');
-    document.body.style.overflow = '';
+  // ══ إغلاق البحث ══
+  function closeSearch() {
+    navSearch.classList.remove('is-open');
+    toggleBtn.setAttribute('aria-expanded', 'false');
+    inputWrapper.setAttribute('aria-hidden', 'true');
+    searchInput.value = '';
+    toggleBtn.focus();
   }
 
-  // Open buttons (☰ hamburger)
-  toggles.forEach(btn => {
-    if (!btn.closest('.mobile-menu')) {
-      btn.addEventListener('click', openMenu);
+  // ══ تنفيذ البحث والانتقال لصفحة المتجر ══
+  function executeSearch() {
+    const query = searchInput.value.trim();
+    if (query.length < 1) return;
+    // الانتقال لصفحة المتجر مع كلمة البحث في الـ URL
+    window.location.href = './shop?search=' + encodeURIComponent(query);
+  }
+
+  // ══ Event Listeners ══
+  toggleBtn.addEventListener('click', openSearch);
+
+  closeBtn.addEventListener('click', closeSearch);
+
+  // Enter ينفذ البحث
+  searchInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      executeSearch();
+    }
+    if (e.key === 'Escape') {
+      closeSearch();
     }
   });
 
-  // Close button inside menu (✕)
-  const closeBtn = menu.querySelector('.mobile-menu-toggle');
-  if (closeBtn) closeBtn.addEventListener('click', closeMenu);
-
-  // Overlay click closes
-  overlay.addEventListener('click', closeMenu);
-
-  // Escape key closes
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeMenu();
+  // إغلاق عند الضغط خارج البحث
+  document.addEventListener('click', function(e) {
+    if (navSearch.classList.contains('is-open') && 
+        !navSearch.contains(e.target)) {
+      closeSearch();
+    }
   });
+
+  // إغلاق عند Escape من أي مكان
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && navSearch.classList.contains('is-open')) {
+      closeSearch();
+    }
+  });
+
 })();
 </script>
-<script>
 
-async function loadAnnouncement() {
-  try {
-    const { data } = await window.supabaseClient
-      .from('settings')
-      .select('value')
-      .eq('key', 'announcement_active')
-      .single();
-    
-    if (data?.value === 'false') {
-      const bar = document.querySelector('.marquee-bar, .announcement-bar, #announcement-bar');
-      if (bar) bar.style.display = 'none';
-    }
-  } catch(e) {}
-}
-loadAnnouncement();
-
-</script>
-<script>
-
-window.handleQuickAdd = async function(id, name, price) {
-  const { addToCart } = await import('./assets/js/data.js');
-  addToCart({ id, name_ar: name, price }, 1);
-  // Update badge
-  const badge = document.querySelector('.cart-badge, #cart-count');
-  if (badge) {
-    const count = parseInt(localStorage.getItem('heru_cart') 
-      ? JSON.parse(localStorage.getItem('heru_cart')).reduce((s,i) => s+i.quantity, 0) 
-      : 0);
-    badge.textContent = count; // Ensure textContent is set
-    badge.setAttribute('data-count', count);
-    badge.style.display = count > 0 ? 'flex' : 'none';
-  }
-  // Visual feedback
-  const btn = event.currentTarget;
-  const originalBg = btn.style.background;
-  btn.style.background = '#16A34A';
-  setTimeout(() => btn.style.background = originalBg, 600);
-};
-
-</script>
 </body>
-
 </html>

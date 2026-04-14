@@ -143,86 +143,6 @@
   box-shadow: var(--shadow-md), var(--shadow-accent);
 }
 
-.card-product .prod-img-container {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  overflow: hidden;
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-  background: var(--bg-card); /* Fallback similar to secondary */
-}
-
-.card-product .product-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  display: block;
-  transition: transform 0.4s ease;
-}
-
-.card-product:hover .product-img {
-  transform: scale(1.05);
-}
-
-.multi-img-dots {
-  position: absolute;
-  bottom: 8px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 4px;
-  z-index: 2;
-}
-
-.multi-image-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: white;
-  opacity: 0.4;
-  cursor: pointer;
-  transition: opacity 0.2s ease;
-  border: none;
-  padding: 0;
-}
-
-.multi-image-dot.active {
-  opacity: 1;
-}
-
-.quick-add-btn {
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background-color: var(--accent);
-  color: var(--text-inverse);
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 3;
-  transition: background-color 0.2s ease, transform 0.2s ease;
-  padding: 0;
-}
-
-.quick-add-btn:hover {
-  transform: scale(1.1);
-}
-
-.quick-add-btn.success {
-  background-color: #22C55E !important;
-}
-
-.quick-add-btn svg {
-  width: 18px;
-  height: 18px;
-}
-
 .card-category {
   background-color: var(--bg-card);
   border: 1px solid var(--border);
@@ -290,7 +210,7 @@
 .card-product .prod-img-container {
   aspect-ratio: 1/1;
   overflow: hidden;
-  background-color: var(--bg-secondary);
+  background-color: #111;
   border-radius: inherit;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
@@ -419,8 +339,8 @@
   top: 0;
   z-index: 50;
   background-color: var(--bg-overlay);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
@@ -508,11 +428,30 @@
   cursor: pointer;
 }
 
+.mobile-menu {
+  position: fixed;
+  inset-block: 0;
+  inset-inline-start: 0; /* Menu comes from the right in RTL */
+  width: 300px;
+  max-width: 100vw;
+  background-color: var(--bg-elevated);
+  z-index: 100;
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  box-shadow: var(--shadow-lg);
+  transition: transform var(--transition-base);
+  transform: translateX(100%); /* Start hidden on the right */
+}
 
+.mobile-menu.open {
+  transform: translateX(0);
+}
 
-
-
-
+[dir="ltr"] .mobile-menu {
+  transform: translateX(-100%); /* Start hidden on the left in LTR */
+}
 
 @media (max-width: 768px) {
   .navbar-links { display: none; }
@@ -979,153 +918,6 @@
   background: var(--accent-dim);
 }
 
-
-
-/* ══════════════════════════════
-   Nav Search — Expandable Pill
-   ══════════════════════════════ */
-
-.nav-search {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-/* الـ Pill المغلق */
-.nav-search__pill {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-full);
-  padding: 8px 14px;
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: all var(--transition-base);
-  font-family: var(--font-arabic);
-  font-size: var(--text-sm);
-  white-space: nowrap;
-}
-
-.nav-search__pill:hover {
-  border-color: var(--border-accent);
-  color: var(--accent);
-  background: var(--accent-dim);
-}
-
-.nav-search__pill:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-.nav-search__hint {
-  font-size: 13px;
-  letter-spacing: 0.02em;
-}
-
-/* الـ Input الموسّع */
-.nav-search__expanded {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--bg-card);
-  border: 1px solid var(--border-accent);
-  border-radius: var(--radius-full);
-  padding: 8px 14px;
-  width: 0;
-  opacity: 0;
-  overflow: hidden;
-  pointer-events: none;
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  transition: width var(--transition-slow), 
-              opacity var(--transition-base),
-              border-color var(--transition-base);
-  box-shadow: var(--shadow-accent);
-  min-width: 0;
-  z-index: 100;
-}
-
-/* الحالة المفتوحة */
-.nav-search.is-open .nav-search__pill {
-  opacity: 0;
-  pointer-events: none;
-  width: 0;
-  padding: 0;
-  overflow: hidden;
-  border-width: 0;
-}
-
-.nav-search.is-open .nav-search__expanded {
-  width: 260px;
-  opacity: 1;
-  pointer-events: all;
-}
-
-@media (max-width: 768px) {
-  .nav-search.is-open .nav-search__expanded {
-    width: 200px;
-  }
-}
-
-@media (max-width: 480px) {
-  .nav-search.is-open .nav-search__expanded {
-    width: 160px;
-  }
-}
-
-.nav-search__input {
-  background: transparent;
-  border: none;
-  outline: none;
-  color: var(--text-primary);
-  font-family: var(--font-arabic);
-  font-size: var(--text-sm);
-  width: 100%;
-  direction: rtl;
-}
-
-.nav-search__input::placeholder {
-  color: var(--text-muted);
-}
-
-/* إزالة الـ X الافتراضي للـ search input */
-.nav-search__input::-webkit-search-cancel-button {
-  display: none;
-}
-
-.nav-search__icon {
-  flex-shrink: 0;
-  color: var(--text-secondary);
-}
-
-.nav-search.is-open .nav-search__icon {
-  color: var(--accent);
-}
-
-.nav-search__close {
-  background: none;
-  border: none;
-  color: var(--text-muted);
-  cursor: pointer;
-  padding: 2px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  border-radius: 50%;
-  transition: color var(--transition-fast),
-              background var(--transition-fast);
-}
-
-.nav-search__close:hover {
-  color: var(--accent);
-  background: var(--accent-dim);
-}
-
 .nav-search__close:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
@@ -1137,105 +929,4 @@
   .nav-search__pill {
     transition: none;
   }
-}
-
-/* ════════════════════════════════════════════════
-   11. Dropdown Nav Menu
-════════════════════════════════════════════════ */
-.nav-dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-.nav-dropdown-menu {
-  position: absolute;
-  top: 100%;
-  inset-inline-start: 0;
-  transform: translateY(10px);
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-accent);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
-  min-width: 220px;
-  opacity: 0;
-  visibility: hidden;
-  transition: all var(--transition-base);
-  z-index: 100;
-  padding: var(--space-2) 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.nav-dropdown:hover .nav-dropdown-menu,
-.nav-dropdown:focus-within .nav-dropdown-menu {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
-.nav-dropdown-item {
-  color: var(--text-primary);
-  text-decoration: none;
-  padding: var(--space-2) var(--space-4);
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  transition: background-color var(--transition-base), color var(--transition-base);
-  font-weight: 500;
-  font-size: var(--text-base);
-}
-
-.nav-dropdown-item::after {
-  content: none !important; /* Remove underbar animation from navbar links inside dropdown */
-}
-
-.nav-dropdown-item:hover {
-  background-color: var(--bg-elevated);
-  color: var(--accent);
-}
-
-.nav-dropdown-item .cat-icon {
-  font-size: 1.25rem;
-}
-
-.mobile-menu {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: min(300px, 85vw);
-  height: 100dvh;
-  background-color: var(--bg-card);
-  border-left: 1px solid var(--border);
-  z-index: 200;
-  padding: var(--space-6);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-5);
-  box-shadow: var(--shadow-lg);
-  transition: transform var(--transition-base);
-  transform: translateX(100%);
-  overflow-y: auto;
-  overscroll-behavior: contain;
-}
-
-.mobile-menu.open {
-  transform: translateX(0);
-}
-
-.mobile-menu-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.35);
-  z-index: 199;
-  cursor: pointer;
-}
-.mobile-menu-overlay.open {
-  display: block;
-}
-
-/* Footer Section Rules added to fulfill phase 1 */
-.footer, footer {
-  background: var(--bg-secondary);
-  color: var(--text-primary);
 }

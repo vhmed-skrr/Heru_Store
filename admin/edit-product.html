@@ -5,10 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>تعديل المنتج — Heru Admin</title>
   <link rel="stylesheet" href="../assets/css/tokens.css">
-<link rel="stylesheet" href="../assets/css/base.css">
-<link rel="stylesheet" href="../assets/css/components.css">
-<link rel="stylesheet" href="../assets/css/responsive.css">
-<style>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <style>
     body { background: var(--bg-primary); color: var(--text-primary);
            font-family: var(--font-arabic); min-height: 100vh; padding: 24px; }
     .page-container { max-width: 640px; margin: 0 auto; }
@@ -107,7 +106,6 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
   </style>
-  <script src="../assets/js/nav.js" defer></script>
 </head>
 <body>
 
@@ -235,7 +233,6 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="../assets/js/supabase.js"></script>
 <script>
 const SUPABASE_URL = 'https://yynewmzzurjvghicerby.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5bmV3bXp6dXJqdmdoaWNlcmJ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU4NjI2NTIsImV4cCI6MjA5MTQzODY1Mn0.vov2TwtQAOyNMJshx5YZEWms8LvXdlCQ5U7VOJU71H8';
@@ -402,11 +399,11 @@ async function handleFiles(files) {
   for (const file of newFiles) {
     const id = Date.now() + Math.random().toString(36).substr(2, 9);
     renderPreviewStub(id);
-    await uploadToCloudinary(file);
+    await uploadToCloudinary(file, id);
   }
 }
 
-async function uploadToCloudinary(file) {
+async function uploadToCloudinary(file, stubId) {
   const formData = new FormData();
   formData.append('file', file);
   formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
@@ -416,13 +413,6 @@ async function uploadToCloudinary(file) {
       method: 'POST',
       body: formData
     });
-    
-    if (!res.ok) {
-      const errData = await res.json();
-      console.error('Cloudinary error:', errData);
-      throw new Error('Upload failed');
-    }
-        
     const data = await res.json();
     if (data.secure_url) {
       uploadedImages.push(data.secure_url);

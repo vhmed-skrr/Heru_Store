@@ -32,31 +32,6 @@ export async function loadAllSettings() {
         safeSet('store-accent-color', map['store_accent_color'] || '#F0EBE1');
         safeSet('cloudinary-cloud-name', map['cloudinary_cloud_name']);
         safeSet('cloudinary-upload-preset', map['cloudinary_upload_preset']);
-        
-        // --- Navigation Settings Load ---
-        const logoType = map['logo_type'] || 'text';
-        if (document.getElementById('logo-type-text') && document.getElementById('logo-type-image')) {
-            if (logoType === 'text') {
-                document.getElementById('logo-type-text').checked = true;
-            } else {
-                document.getElementById('logo-type-image').checked = true;
-            }
-            // Trigger UI update natively
-            document.getElementById('logo-type-text').dispatchEvent(new Event('change', { bubbles: true }));
-        }
-
-        const logoValue = map['logo_value'] || '';
-        safeSet('logo-value-text', logoType === 'text' ? logoValue : 'Heru');
-        safeSet('logo-value-image', logoType === 'image' ? logoValue : '');
-        const preview = document.getElementById('logo-preview');
-        if(preview && logoType === 'image' && logoValue) {
-            preview.src = logoValue;
-            preview.style.display = 'block';
-        }
-        
-        safeSet('logo-height', map['logo_height'] || '40');
-        safeSet('nav-links-json', map['nav_links'] || '[]');
-        if(window.renderNavLinksManager) window.renderNavLinksManager();
     } catch(e) {
         console.error("Error loading settings", e);
     }
@@ -82,10 +57,6 @@ export async function saveAllSettings() {
     { key: 'store_accent_color', value: document.getElementById('store-accent-color').value },
     { key: 'cloudinary_cloud_name', value: document.getElementById('cloudinary-cloud-name').value },
     { key: 'cloudinary_upload_preset', value: document.getElementById('cloudinary-upload-preset').value },
-    { key: 'logo_type', value: document.getElementById('logo-type-text').checked ? 'text' : 'image' },
-    { key: 'logo_value', value: document.getElementById('logo-type-text').checked ? document.getElementById('logo-value-text').value : document.getElementById('logo-value-image').value },
-    { key: 'logo_height', value: document.getElementById('logo-height').value || '40' },
-    { key: 'nav_links', value: document.getElementById('nav-links-json').value || '[]' },
   ];
 
   const sBtn = document.querySelector('#view-settings .btn-primary');
@@ -210,17 +181,17 @@ export async function applyDynamicSettings() {
 // استدعاء الدالة عند تحميل الصفحة
 document.addEventListener('DOMContentLoaded', applyDynamicSettings);
 
-export function initBilingual() {
-  const saved = localStorage.getItem('heru-lang') || 'ar';
-  document.documentElement.lang = saved;
+function initLanguage() {
+  const saved = localStorage.getItem('heru_lang') || 'ar';
+  applyLanguage(saved);
   
   // تحديث زر اللغة
   const langBtn = document.querySelector('[data-lang-toggle]');
   if (langBtn) langBtn.textContent = saved === 'ar' ? 'EN' : 'AR';
 }
 
-function setLanguage(lang) {
-  localStorage.setItem('heru-lang', lang);
+function applyLanguage(lang) {
+  localStorage.setItem('heru_lang', lang);
   
   // تطبيق اتجاه الصفحة
   document.documentElement.lang = lang;
@@ -238,13 +209,13 @@ function setLanguage(lang) {
   if (langBtn) langBtn.textContent = lang === 'ar' ? 'EN' : 'AR';
 }
 
-window.toggleLanguage = function() {
-  const current = localStorage.getItem('heru-lang') || 'ar';
-  setLanguage(current === 'ar' ? 'en' : 'ar');
+function toggleLanguage() {
+  const current = localStorage.getItem('heru_lang') || 'ar';
+  applyLanguage(current === 'ar' ? 'en' : 'ar');
 }
 
 if (typeof window !== 'undefined') {
-  window.toggleLanguage = window.toggleLanguage;
+  window.toggleLanguage = toggleLanguage;
 }
 
 // تشغيل عند تحميل الصفحة

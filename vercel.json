@@ -22,7 +22,6 @@
     { "source": "/review", "destination": "/review.html" },
     { "source": "/privacy", "destination": "/privacy.html" },
     { "source": "/terms", "destination": "/terms.html" },
-    { "source": "/about-story", "destination": "/about-story.html" },
     { "source": "/admin", "destination": "/admin/index.html" },
     { "source": "/admin/login", "destination": "/admin/login.html" },
     { "source": "/admin/add-product", "destination": "/admin/add-product.html" },

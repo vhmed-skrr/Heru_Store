@@ -4,7 +4,7 @@
 
 export const CONSTANTS = {
     // Toggle for Dev Mode (Errors will only show if this is true)
-    DEV_MODE: false,
+    DEV_MODE: true,
     
     WHATSAPP_NUMBER: '201124519232',
     
